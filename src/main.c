@@ -4,7 +4,7 @@
 #include <string.h>
 #include <linux/limits.h>
 
-#define VERSION "0.1"
+#define VERSION "0.0.1"
 
 void usage( const char * name )
 {
