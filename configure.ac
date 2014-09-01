@@ -2,8 +2,8 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([antvm], [0.1], [tassardge@hotmail.com])
-AC_CONFIG_SRCDIR([src/main.c])
+AC_INIT([antvm], [0.0.1], [tassardge@hotmail.com])
+AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE
 
@@ -22,5 +22,6 @@ AC_CHECK_HEADERS([stdlib.h string.h unistd.h])
 
 AC_CONFIG_FILES([Makefile
                  src/Makefile
+                 src/common/Makefile
                  src/i386/Makefile])
 AC_OUTPUT

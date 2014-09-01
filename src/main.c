@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <linux/limits.h>
+#include "i386/i386.h"
 
 #define VERSION "0.0.1"
 
@@ -27,6 +28,7 @@ int g_debug_mode = 0;
 int main( int argc, char * argv[] )
 {
 	int	c;
+	int res = 0;
 	char bios_path[PATH_MAX] = {0};
 	char rootfs_path[PATH_MAX] = {0};
 	char kernel_path[PATH_MAX] = {0};
@@ -82,6 +84,12 @@ int main( int argc, char * argv[] )
 	if ( strlen( kernel_path ) == 0 ) {
 		printf( "Error: linux kernel image path can't be empty.\n" );
 		usage( argv[0] );
+		return EXIT_FAILURE;
+	}
+	
+	res = emulator_i386( bios_path, rootfs_path, kernel_path );
+	if ( res ) {
+		printf( "i386 emulater failed with %d\n", res );
 		return EXIT_FAILURE;
 	}
 

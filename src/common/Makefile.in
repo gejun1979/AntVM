@@ -76,7 +76,7 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-subdir = src/i386
+subdir = src/common
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/depcomp
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -94,10 +94,10 @@ AM_V_AR = $(am__v_AR_@AM_V@)
 am__v_AR_ = $(am__v_AR_@AM_DEFAULT_V@)
 am__v_AR_0 = @echo "  AR      " $@;
 am__v_AR_1 = 
-libi386_a_AR = $(AR) $(ARFLAGS)
-libi386_a_LIBADD =
-am_libi386_a_OBJECTS = i386.$(OBJEXT)
-libi386_a_OBJECTS = $(am_libi386_a_OBJECTS)
+libcommon_a_AR = $(AR) $(ARFLAGS)
+libcommon_a_LIBADD =
+am_libcommon_a_OBJECTS = tool.$(OBJEXT)
+libcommon_a_OBJECTS = $(am_libcommon_a_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -126,8 +126,8 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(libi386_a_SOURCES)
-DIST_SOURCES = $(libi386_a_SOURCES)
+SOURCES = $(libcommon_a_SOURCES)
+DIST_SOURCES = $(libcommon_a_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -242,9 +242,8 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AUTOMAKE_OPTIONS = foreign
-AM_CPPFLAGS = -I$(top_srcdir)/src/common
-noinst_LIBRARIES = libi386.a
-libi386_a_SOURCES = i386.h i386.c
+noinst_LIBRARIES = libcommon.a
+libcommon_a_SOURCES = tool.h tool.c
 all: all-am
 
 .SUFFIXES:
@@ -258,9 +257,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign src/i386/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign src/common/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign src/i386/Makefile
+	  $(AUTOMAKE) --foreign src/common/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -283,10 +282,10 @@ $(am__aclocal_m4_deps):
 clean-noinstLIBRARIES:
 	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
 
-libi386.a: $(libi386_a_OBJECTS) $(libi386_a_DEPENDENCIES) $(EXTRA_libi386_a_DEPENDENCIES) 
-	$(AM_V_at)-rm -f libi386.a
-	$(AM_V_AR)$(libi386_a_AR) libi386.a $(libi386_a_OBJECTS) $(libi386_a_LIBADD)
-	$(AM_V_at)$(RANLIB) libi386.a
+libcommon.a: $(libcommon_a_OBJECTS) $(libcommon_a_DEPENDENCIES) $(EXTRA_libcommon_a_DEPENDENCIES) 
+	$(AM_V_at)-rm -f libcommon.a
+	$(AM_V_AR)$(libcommon_a_AR) libcommon.a $(libcommon_a_OBJECTS) $(libcommon_a_LIBADD)
+	$(AM_V_at)$(RANLIB) libcommon.a
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -294,7 +293,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/i386.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tool.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
