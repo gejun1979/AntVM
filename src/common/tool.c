@@ -11,7 +11,12 @@ int load_image( const char * image_path, char * p_memory, int image_address )
     size = ftell( p_file );
 
     fseek( p_file, 0L, SEEK_SET );
-	fread( (p_memory + image_address), 1, size, p_file );
+	if ( fread( (p_memory + image_address), 1, size, p_file ) != size ) {
+		fclose( p_file );
+
+		printf( "Failed to load image %s", image_path );
+		exit( 1 );
+	}
 
 	fclose( p_file );
 	return 0;
