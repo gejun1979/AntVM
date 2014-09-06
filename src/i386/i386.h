@@ -17,6 +17,11 @@
 #define	EDI		8
 #define TOTAL_REGS	9
 
+extern unsigned char phy_memory[MEMORY_SIZE];
+extern int registers[TOTAL_REGS];
+extern const char * registers_desc[TOTAL_REGS];
+extern int restore_registers[TOTAL_REGS];
+
 int emulator_i386( const char * bios_path, const char * kernel_path, const char * rootfs_path );
 
 #endif
