@@ -96,8 +96,9 @@ am__v_AR_0 = @echo "  AR      " $@;
 am__v_AR_1 = 
 libi386_a_AR = $(AR) $(ARFLAGS)
 libi386_a_LIBADD =
-am_libi386_a_OBJECTS = i386.$(OBJEXT) interupt.$(OBJEXT) \
-	instruction.$(OBJEXT) i386_library.$(OBJEXT)
+am_libi386_a_OBJECTS = i386_arch.$(OBJEXT) i386_emu.$(OBJEXT) \
+	interupt.$(OBJEXT) instruction.$(OBJEXT) \
+	i386_utility.$(OBJEXT)
 libi386_a_OBJECTS = $(am_libi386_a_OBJECTS)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -244,7 +245,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AUTOMAKE_OPTIONS = foreign
 noinst_LIBRARIES = libi386.a
-libi386_a_SOURCES = i386.h i386.c interupt.c interupt.h instruction.c instruction.h i386_library.h i386_library.c
+libi386_a_SOURCES = i386_arch.h i386_arch.c i386_emu.h i386_emu.c interupt.c interupt.h instruction.c instruction.h i386_utility.h i386_utility.c
 all: all-am
 
 .SUFFIXES:
@@ -294,8 +295,9 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/i386.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/i386_library.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/i386_arch.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/i386_emu.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/i386_utility.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/instruction.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/interupt.Po@am__quote@
 

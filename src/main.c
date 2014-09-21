@@ -3,9 +3,12 @@
 #include <unistd.h>
 #include <string.h>
 #include <linux/limits.h>
-#include "i386/i386.h"
+#include "i386/i386_arch.h"
+#include "i386/i386_emu.h"
 
 #define VERSION "0.0.1"
+
+int g_debug_mode = 0;
 
 void usage( const char * name )
 {
@@ -22,8 +25,6 @@ void show_version()
 {
 	printf( "version:%s\n", VERSION );
 }
-
-int g_debug_mode = 0;
 
 int main( int argc, char * argv[] )
 {

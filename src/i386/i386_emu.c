@@ -1,26 +1,30 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "i386_library.h"
+#include <memory.h>
+#include "i386_utility.h"
+#include "i386_arch.h"
 #include "interupt.h"
 #include "instruction.h"
-#include "i386.h"
 
-unsigned char phy_memory[MEMORY_SIZE] = { 0 };
-int registers[TOTAL_REGS] = { 0 };
-int restore_registers[TOTAL_REGS] = { 0 }; //save registers for interupt mode
-
-const char * registers_desc[TOTAL_REGS] = 
+void reset()
 {
-"eip",
-"eax",
-"ecx",
-"edx",
-"ebx",
-"esp",
-"ebp",
-"esi",
-"edi"
-};
+	memset( registers, '\0', sizeof(registers) );
+
+	registers[EIP] = BIOS_BASE_ADDRESS;
+	registers[EAX] = 0x01000000;
+	registers[EBX] = 0x00200000;
+	registers[ECX] = 0x0000F800;
+}
+
+void process_next_instruction()
+{
+	instruction_t ins;
+
+	instruction_construct( &ins );
+	instruction_decode( &ins );
+	instruction_run( &ins );
+	instruction_destruct( &ins );
+}
 
 int emulator_i386( const char * bios_path, const char * kernel_path, const char * rootfs_path )
 {
@@ -43,18 +47,13 @@ int emulator_i386( const char * bios_path, const char * kernel_path, const char 
 		printf( "i386 emulater failed to load rootfs %d\n", res );
 		return -1;
 	}
-	
-	init_instruction_op();
-	
-	registers[EIP] = BIOS_BASE_ADDRESS;
-	registers[EAX] = 0x01000000;
-	registers[EBX] = 0x00200000;
-	registers[ECX] = 0x0000F800;
 
-	for (;;) {
-		interupt_process();
+	reset();
 
-		instruction_process();
+	while ( 1 ) {
+		interupt_check();
+
+		process_next_instruction();
 	}
 
 	return 0;
