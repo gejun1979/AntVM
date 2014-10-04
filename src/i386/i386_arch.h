@@ -32,8 +32,8 @@
 extern const unsigned char parity_table[256];
 
 extern unsigned char phy_memory[MEMORY_SIZE];
-extern int registers[TOTAL_REGS];
-extern int restore_registers[TOTAL_REGS];
+extern unsigned int registers[TOTAL_REGS];
+extern unsigned int restore_registers[TOTAL_REGS];
 extern const char * registers_desc[TOTAL_REGS];
 
 #define set_efl( flag ) ( registers[EFL] = registers[EFL] | 1 << flag )

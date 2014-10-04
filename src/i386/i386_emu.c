@@ -14,6 +14,7 @@ void reset()
 	registers[EAX] = 0x01000000;
 	registers[EBX] = 0x00200000;
 	registers[ECX] = 0x0000F800;
+	registers[EFL] = 0x00000002;
 }
 
 void process_next_instruction()

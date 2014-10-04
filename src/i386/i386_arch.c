@@ -24,8 +24,8 @@ const unsigned char parity_table[256] = {
 };
 
 unsigned char phy_memory[MEMORY_SIZE] = { 0 };
-int registers[TOTAL_REGS] = { 0 };
-int restore_registers[TOTAL_REGS] = { 0 };
+unsigned int registers[TOTAL_REGS] = { 0 };
+unsigned int restore_registers[TOTAL_REGS] = { 0 };
 
 const char * registers_desc[TOTAL_REGS] = 
 {
