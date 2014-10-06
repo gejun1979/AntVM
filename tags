@@ -1,0 +1,699 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+ACLOCAL	Makefile	/^ACLOCAL = aclocal-1.14$/;"	m
+ACLOCAL	src/Makefile	/^ACLOCAL = aclocal-1.14$/;"	m
+ACLOCAL	src/i386/Makefile	/^ACLOCAL = aclocal-1.14$/;"	m
+ACLOCAL_M4	Makefile	/^ACLOCAL_M4 = $(top_srcdir)\/aclocal.m4$/;"	m
+ACLOCAL_M4	src/Makefile	/^ACLOCAL_M4 = $(top_srcdir)\/aclocal.m4$/;"	m
+ACLOCAL_M4	src/i386/Makefile	/^ACLOCAL_M4 = $(top_srcdir)\/aclocal.m4$/;"	m
+AMTAR	Makefile	/^AMTAR = $${TAR-tar}$/;"	m
+AMTAR	src/Makefile	/^AMTAR = $${TAR-tar}$/;"	m
+AMTAR	src/i386/Makefile	/^AMTAR = $${TAR-tar}$/;"	m
+AM_CPPFLAGS	Makefile	/^AM_CPPFLAGS = -I$(top_srcdir)\/src\/common$/;"	m
+AM_DEFAULT_VERBOSITY	Makefile	/^AM_DEFAULT_VERBOSITY = 0$/;"	m
+AM_DEFAULT_VERBOSITY	src/Makefile	/^AM_DEFAULT_VERBOSITY = 0$/;"	m
+AM_DEFAULT_VERBOSITY	src/i386/Makefile	/^AM_DEFAULT_VERBOSITY = 0$/;"	m
+AM_RECURSIVE_TARGETS	Makefile	/^AM_RECURSIVE_TARGETS = $(am__recursive_targets:-recursive=) TAGS CTAGS \\$/;"	m
+AM_RECURSIVE_TARGETS	src/Makefile	/^AM_RECURSIVE_TARGETS = $(am__recursive_targets:-recursive=) TAGS CTAGS \\$/;"	m
+AM_V_AR	src/i386/Makefile	/^AM_V_AR = $(am__v_AR_$(V))$/;"	m
+AM_V_CC	src/Makefile	/^AM_V_CC = $(am__v_CC_$(V))$/;"	m
+AM_V_CC	src/i386/Makefile	/^AM_V_CC = $(am__v_CC_$(V))$/;"	m
+AM_V_CCLD	src/Makefile	/^AM_V_CCLD = $(am__v_CCLD_$(V))$/;"	m
+AM_V_CCLD	src/i386/Makefile	/^AM_V_CCLD = $(am__v_CCLD_$(V))$/;"	m
+AM_V_GEN	Makefile	/^AM_V_GEN = $(am__v_GEN_$(V))$/;"	m
+AM_V_GEN	src/Makefile	/^AM_V_GEN = $(am__v_GEN_$(V))$/;"	m
+AM_V_GEN	src/i386/Makefile	/^AM_V_GEN = $(am__v_GEN_$(V))$/;"	m
+AM_V_P	Makefile	/^AM_V_P = $(am__v_P_$(V))$/;"	m
+AM_V_P	src/Makefile	/^AM_V_P = $(am__v_P_$(V))$/;"	m
+AM_V_P	src/i386/Makefile	/^AM_V_P = $(am__v_P_$(V))$/;"	m
+AM_V_at	Makefile	/^AM_V_at = $(am__v_at_$(V))$/;"	m
+AM_V_at	src/Makefile	/^AM_V_at = $(am__v_at_$(V))$/;"	m
+AM_V_at	src/i386/Makefile	/^AM_V_at = $(am__v_at_$(V))$/;"	m
+AR	src/i386/Makefile	/^AR = ar$/;"	m
+ARFLAGS	src/i386/Makefile	/^ARFLAGS = cru$/;"	m
+AUTOCONF	Makefile	/^AUTOCONF = autoconf$/;"	m
+AUTOCONF	src/Makefile	/^AUTOCONF = autoconf$/;"	m
+AUTOCONF	src/i386/Makefile	/^AUTOCONF = autoconf$/;"	m
+AUTOHEADER	Makefile	/^AUTOHEADER = autoheader$/;"	m
+AUTOHEADER	src/Makefile	/^AUTOHEADER = autoheader$/;"	m
+AUTOHEADER	src/i386/Makefile	/^AUTOHEADER = autoheader$/;"	m
+AUTOMAKE	Makefile	/^AUTOMAKE = automake-1.14$/;"	m
+AUTOMAKE	src/Makefile	/^AUTOMAKE = automake-1.14$/;"	m
+AUTOMAKE	src/i386/Makefile	/^AUTOMAKE = automake-1.14$/;"	m
+AUTOMAKE_OPTIONS	Makefile	/^AUTOMAKE_OPTIONS = foreign$/;"	m
+AUTOMAKE_OPTIONS	src/Makefile	/^AUTOMAKE_OPTIONS = foreign$/;"	m
+AUTOMAKE_OPTIONS	src/i386/Makefile	/^AUTOMAKE_OPTIONS = foreign$/;"	m
+AWK	Makefile	/^AWK = mawk$/;"	m
+AWK	src/Makefile	/^AWK = mawk$/;"	m
+AWK	src/i386/Makefile	/^AWK = mawk$/;"	m
+BIOS_BASE_ADDRESS	src/i386/i386_arch.h	5;"	d
+CC	Makefile	/^CC = gcc$/;"	m
+CC	src/Makefile	/^CC = gcc$/;"	m
+CC	src/i386/Makefile	/^CC = gcc$/;"	m
+CCDEPMODE	Makefile	/^CCDEPMODE = depmode=gcc3$/;"	m
+CCDEPMODE	src/Makefile	/^CCDEPMODE = depmode=gcc3$/;"	m
+CCDEPMODE	src/i386/Makefile	/^CCDEPMODE = depmode=gcc3$/;"	m
+CCLD	src/Makefile	/^CCLD = $(CC)$/;"	m
+CCLD	src/i386/Makefile	/^CCLD = $(CC)$/;"	m
+CFLAGS	Makefile	/^CFLAGS = -Wall -Werror$/;"	m
+CFLAGS	src/Makefile	/^CFLAGS = -g -O2$/;"	m
+CFLAGS	src/i386/Makefile	/^CFLAGS = -g -O2$/;"	m
+COMPILE	src/Makefile	/^COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \\$/;"	m
+COMPILE	src/i386/Makefile	/^COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \\$/;"	m
+CONFIG_CLEAN_FILES	Makefile	/^CONFIG_CLEAN_FILES =$/;"	m
+CONFIG_CLEAN_FILES	src/Makefile	/^CONFIG_CLEAN_FILES =$/;"	m
+CONFIG_CLEAN_FILES	src/i386/Makefile	/^CONFIG_CLEAN_FILES =$/;"	m
+CONFIG_CLEAN_VPATH_FILES	Makefile	/^CONFIG_CLEAN_VPATH_FILES =$/;"	m
+CONFIG_CLEAN_VPATH_FILES	src/Makefile	/^CONFIG_CLEAN_VPATH_FILES =$/;"	m
+CONFIG_CLEAN_VPATH_FILES	src/i386/Makefile	/^CONFIG_CLEAN_VPATH_FILES =$/;"	m
+CONFIG_HEADER	Makefile	/^CONFIG_HEADER = config.h$/;"	m
+CONFIG_HEADER	src/Makefile	/^CONFIG_HEADER = $(top_builddir)\/config.h$/;"	m
+CONFIG_HEADER	src/i386/Makefile	/^CONFIG_HEADER = $(top_builddir)\/config.h$/;"	m
+CPP	Makefile	/^CPP = gcc -E$/;"	m
+CPP	src/Makefile	/^CPP = gcc -E$/;"	m
+CPP	src/i386/Makefile	/^CPP = gcc -E$/;"	m
+CPPFLAGS	Makefile	/^CPPFLAGS = $/;"	m
+CPPFLAGS	src/Makefile	/^CPPFLAGS = $/;"	m
+CPPFLAGS	src/i386/Makefile	/^CPPFLAGS = $/;"	m
+CSCOPE	Makefile	/^CSCOPE = cscope$/;"	m
+CTAGS	Makefile	/^CTAGS = ctags$/;"	m
+CTAGS	src/Makefile	/^CTAGS = ctags$/;"	m
+CTAGS	src/i386/Makefile	/^CTAGS = ctags$/;"	m
+CYGPATH_W	Makefile	/^CYGPATH_W = echo$/;"	m
+CYGPATH_W	src/Makefile	/^CYGPATH_W = echo$/;"	m
+CYGPATH_W	src/i386/Makefile	/^CYGPATH_W = echo$/;"	m
+DATA	Makefile	/^DATA = $(dist_doc_DATA)$/;"	m
+DEFAULT_INCLUDES	src/Makefile	/^DEFAULT_INCLUDES = -I. -I$(top_builddir)$/;"	m
+DEFAULT_INCLUDES	src/i386/Makefile	/^DEFAULT_INCLUDES = -I. -I$(top_builddir)$/;"	m
+DEFS	Makefile	/^DEFS = -DHAVE_CONFIG_H$/;"	m
+DEFS	src/Makefile	/^DEFS = -DHAVE_CONFIG_H$/;"	m
+DEFS	src/i386/Makefile	/^DEFS = -DHAVE_CONFIG_H$/;"	m
+DEPDIR	Makefile	/^DEPDIR = .deps$/;"	m
+DEPDIR	src/Makefile	/^DEPDIR = .deps$/;"	m
+DEPDIR	src/i386/Makefile	/^DEPDIR = .deps$/;"	m
+DISTFILES	Makefile	/^DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)$/;"	m
+DISTFILES	src/Makefile	/^DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)$/;"	m
+DISTFILES	src/i386/Makefile	/^DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)$/;"	m
+DIST_ARCHIVES	Makefile	/^DIST_ARCHIVES = $(distdir).tar.gz$/;"	m
+DIST_COMMON	Makefile	/^DIST_COMMON = $(srcdir)\/Makefile.in $(srcdir)\/Makefile.am \\$/;"	m
+DIST_COMMON	src/Makefile	/^DIST_COMMON = $(srcdir)\/Makefile.in $(srcdir)\/Makefile.am \\$/;"	m
+DIST_COMMON	src/i386/Makefile	/^DIST_COMMON = $(srcdir)\/Makefile.in $(srcdir)\/Makefile.am \\$/;"	m
+DIST_SOURCES	Makefile	/^DIST_SOURCES =$/;"	m
+DIST_SOURCES	src/Makefile	/^DIST_SOURCES = $(antvm_SOURCES)$/;"	m
+DIST_SOURCES	src/i386/Makefile	/^DIST_SOURCES = $(libi386_a_SOURCES)$/;"	m
+DIST_SUBDIRS	Makefile	/^DIST_SUBDIRS = $(SUBDIRS)$/;"	m
+DIST_SUBDIRS	src/Makefile	/^DIST_SUBDIRS = $(SUBDIRS)$/;"	m
+DIST_TARGETS	Makefile	/^DIST_TARGETS = dist-gzip$/;"	m
+EAX	src/i386/i386_arch.h	10;"	d
+EBP	src/i386/i386_arch.h	15;"	d
+EBX	src/i386/i386_arch.h	13;"	d
+ECHO_C	Makefile	/^ECHO_C = $/;"	m
+ECHO_C	src/Makefile	/^ECHO_C = $/;"	m
+ECHO_C	src/i386/Makefile	/^ECHO_C = $/;"	m
+ECHO_N	Makefile	/^ECHO_N = -n$/;"	m
+ECHO_N	src/Makefile	/^ECHO_N = -n$/;"	m
+ECHO_N	src/i386/Makefile	/^ECHO_N = -n$/;"	m
+ECHO_T	Makefile	/^ECHO_T = $/;"	m
+ECHO_T	src/Makefile	/^ECHO_T = $/;"	m
+ECHO_T	src/i386/Makefile	/^ECHO_T = $/;"	m
+ECX	src/i386/i386_arch.h	11;"	d
+EDI	src/i386/i386_arch.h	17;"	d
+EDX	src/i386/i386_arch.h	12;"	d
+EFL	src/i386/i386_arch.h	18;"	d
+EFL_AF	src/i386/i386_arch.h	23;"	d
+EFL_CF	src/i386/i386_arch.h	21;"	d
+EFL_DF	src/i386/i386_arch.h	28;"	d
+EFL_IF	src/i386/i386_arch.h	27;"	d
+EFL_OF	src/i386/i386_arch.h	29;"	d
+EFL_PF	src/i386/i386_arch.h	22;"	d
+EFL_RF	src/i386/i386_arch.h	30;"	d
+EFL_SF	src/i386/i386_arch.h	25;"	d
+EFL_TF	src/i386/i386_arch.h	26;"	d
+EFL_ZF	src/i386/i386_arch.h	24;"	d
+EGREP	Makefile	/^EGREP = \/bin\/grep -E$/;"	m
+EGREP	src/Makefile	/^EGREP = \/bin\/grep -E$/;"	m
+EGREP	src/i386/Makefile	/^EGREP = \/bin\/grep -E$/;"	m
+EIP	src/i386/i386_arch.h	9;"	d
+ESI	src/i386/i386_arch.h	16;"	d
+ESP	src/i386/i386_arch.h	14;"	d
+ETAGS	Makefile	/^ETAGS = etags$/;"	m
+ETAGS	src/Makefile	/^ETAGS = etags$/;"	m
+ETAGS	src/i386/Makefile	/^ETAGS = etags$/;"	m
+EXEEXT	Makefile	/^EXEEXT = $/;"	m
+EXEEXT	src/Makefile	/^EXEEXT = $/;"	m
+EXEEXT	src/i386/Makefile	/^EXEEXT = $/;"	m
+GREP	Makefile	/^GREP = \/bin\/grep$/;"	m
+GREP	src/Makefile	/^GREP = \/bin\/grep$/;"	m
+GREP	src/i386/Makefile	/^GREP = \/bin\/grep$/;"	m
+GZIP_ENV	Makefile	/^GZIP_ENV = --best$/;"	m
+HAVE_INTTYPES_H	config.h	5;"	d
+HAVE_MALLOC	config.h	9;"	d
+HAVE_MALLOC_H	config.h	12;"	d
+HAVE_MEMORY_H	config.h	15;"	d
+HAVE_MEMSET	config.h	18;"	d
+HAVE_STDINT_H	config.h	21;"	d
+HAVE_STDLIB_H	config.h	24;"	d
+HAVE_STRINGS_H	config.h	27;"	d
+HAVE_STRING_H	config.h	30;"	d
+HAVE_SYS_STAT_H	config.h	33;"	d
+HAVE_SYS_TYPES_H	config.h	36;"	d
+HAVE_UNISTD_H	config.h	39;"	d
+INSTALL	Makefile	/^INSTALL = \/usr\/bin\/install -c$/;"	m
+INSTALL	src/Makefile	/^INSTALL = \/usr\/bin\/install -c$/;"	m
+INSTALL	src/i386/Makefile	/^INSTALL = \/usr\/bin\/install -c$/;"	m
+INSTALL_DATA	Makefile	/^INSTALL_DATA = ${INSTALL} -m 644$/;"	m
+INSTALL_DATA	src/Makefile	/^INSTALL_DATA = ${INSTALL} -m 644$/;"	m
+INSTALL_DATA	src/i386/Makefile	/^INSTALL_DATA = ${INSTALL} -m 644$/;"	m
+INSTALL_HEADER	Makefile	/^INSTALL_HEADER = $(INSTALL_DATA)$/;"	m
+INSTALL_HEADER	src/Makefile	/^INSTALL_HEADER = $(INSTALL_DATA)$/;"	m
+INSTALL_HEADER	src/i386/Makefile	/^INSTALL_HEADER = $(INSTALL_DATA)$/;"	m
+INSTALL_PROGRAM	Makefile	/^INSTALL_PROGRAM = ${INSTALL}$/;"	m
+INSTALL_PROGRAM	src/Makefile	/^INSTALL_PROGRAM = ${INSTALL}$/;"	m
+INSTALL_PROGRAM	src/i386/Makefile	/^INSTALL_PROGRAM = ${INSTALL}$/;"	m
+INSTALL_SCRIPT	Makefile	/^INSTALL_SCRIPT = ${INSTALL}$/;"	m
+INSTALL_SCRIPT	src/Makefile	/^INSTALL_SCRIPT = ${INSTALL}$/;"	m
+INSTALL_SCRIPT	src/i386/Makefile	/^INSTALL_SCRIPT = ${INSTALL}$/;"	m
+INSTALL_STRIP_PROGRAM	Makefile	/^INSTALL_STRIP_PROGRAM = $(install_sh) -c -s$/;"	m
+INSTALL_STRIP_PROGRAM	src/Makefile	/^INSTALL_STRIP_PROGRAM = $(install_sh) -c -s$/;"	m
+INSTALL_STRIP_PROGRAM	src/i386/Makefile	/^INSTALL_STRIP_PROGRAM = $(install_sh) -c -s$/;"	m
+KERNEL_BASE_ADDRESS	src/i386/i386_arch.h	6;"	d
+LDFLAGS	Makefile	/^LDFLAGS = $/;"	m
+LDFLAGS	src/Makefile	/^LDFLAGS = $/;"	m
+LDFLAGS	src/i386/Makefile	/^LDFLAGS = $/;"	m
+LIBOBJS	Makefile	/^LIBOBJS = $/;"	m
+LIBOBJS	src/Makefile	/^LIBOBJS = $/;"	m
+LIBOBJS	src/i386/Makefile	/^LIBOBJS = $/;"	m
+LIBRARIES	src/i386/Makefile	/^LIBRARIES = $(noinst_LIBRARIES)$/;"	m
+LIBS	Makefile	/^LIBS = $/;"	m
+LIBS	src/Makefile	/^LIBS = $/;"	m
+LIBS	src/i386/Makefile	/^LIBS = $/;"	m
+LINK	src/Makefile	/^LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@$/;"	m
+LINK	src/i386/Makefile	/^LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@$/;"	m
+LTLIBOBJS	Makefile	/^LTLIBOBJS = $/;"	m
+LTLIBOBJS	src/Makefile	/^LTLIBOBJS = $/;"	m
+LTLIBOBJS	src/i386/Makefile	/^LTLIBOBJS = $/;"	m
+MAKEINFO	Makefile	/^MAKEINFO = makeinfo$/;"	m
+MAKEINFO	src/Makefile	/^MAKEINFO = makeinfo$/;"	m
+MAKEINFO	src/i386/Makefile	/^MAKEINFO = makeinfo$/;"	m
+MEMORY_SIZE	src/i386/i386_arch.h	4;"	d
+MKDIR_P	Makefile	/^MKDIR_P = \/bin\/mkdir -p$/;"	m
+MKDIR_P	src/Makefile	/^MKDIR_P = \/bin\/mkdir -p$/;"	m
+MKDIR_P	src/i386/Makefile	/^MKDIR_P = \/bin\/mkdir -p$/;"	m
+NORMAL_INSTALL	Makefile	/^NORMAL_INSTALL = :$/;"	m
+NORMAL_INSTALL	src/Makefile	/^NORMAL_INSTALL = :$/;"	m
+NORMAL_INSTALL	src/i386/Makefile	/^NORMAL_INSTALL = :$/;"	m
+NORMAL_UNINSTALL	Makefile	/^NORMAL_UNINSTALL = :$/;"	m
+NORMAL_UNINSTALL	src/Makefile	/^NORMAL_UNINSTALL = :$/;"	m
+NORMAL_UNINSTALL	src/i386/Makefile	/^NORMAL_UNINSTALL = :$/;"	m
+OBJEXT	Makefile	/^OBJEXT = o$/;"	m
+OBJEXT	src/Makefile	/^OBJEXT = o$/;"	m
+OBJEXT	src/i386/Makefile	/^OBJEXT = o$/;"	m
+PACKAGE	Makefile	/^PACKAGE = antvm$/;"	m
+PACKAGE	config.h	42;"	d
+PACKAGE	src/Makefile	/^PACKAGE = antvm$/;"	m
+PACKAGE	src/i386/Makefile	/^PACKAGE = antvm$/;"	m
+PACKAGE_BUGREPORT	Makefile	/^PACKAGE_BUGREPORT = tassardge@hotmail.com$/;"	m
+PACKAGE_BUGREPORT	config.h	45;"	d
+PACKAGE_BUGREPORT	src/Makefile	/^PACKAGE_BUGREPORT = tassardge@hotmail.com$/;"	m
+PACKAGE_BUGREPORT	src/i386/Makefile	/^PACKAGE_BUGREPORT = tassardge@hotmail.com$/;"	m
+PACKAGE_NAME	Makefile	/^PACKAGE_NAME = antvm$/;"	m
+PACKAGE_NAME	config.h	48;"	d
+PACKAGE_NAME	src/Makefile	/^PACKAGE_NAME = antvm$/;"	m
+PACKAGE_NAME	src/i386/Makefile	/^PACKAGE_NAME = antvm$/;"	m
+PACKAGE_STRING	Makefile	/^PACKAGE_STRING = antvm 0.1$/;"	m
+PACKAGE_STRING	config.h	51;"	d
+PACKAGE_STRING	src/Makefile	/^PACKAGE_STRING = antvm 0.1$/;"	m
+PACKAGE_STRING	src/i386/Makefile	/^PACKAGE_STRING = antvm 0.1$/;"	m
+PACKAGE_TARNAME	Makefile	/^PACKAGE_TARNAME = antvm$/;"	m
+PACKAGE_TARNAME	config.h	54;"	d
+PACKAGE_TARNAME	src/Makefile	/^PACKAGE_TARNAME = antvm$/;"	m
+PACKAGE_TARNAME	src/i386/Makefile	/^PACKAGE_TARNAME = antvm$/;"	m
+PACKAGE_URL	Makefile	/^PACKAGE_URL = $/;"	m
+PACKAGE_URL	config.h	57;"	d
+PACKAGE_URL	src/Makefile	/^PACKAGE_URL = $/;"	m
+PACKAGE_URL	src/i386/Makefile	/^PACKAGE_URL = $/;"	m
+PACKAGE_VERSION	Makefile	/^PACKAGE_VERSION = 0.1$/;"	m
+PACKAGE_VERSION	config.h	60;"	d
+PACKAGE_VERSION	src/Makefile	/^PACKAGE_VERSION = 0.1$/;"	m
+PACKAGE_VERSION	src/i386/Makefile	/^PACKAGE_VERSION = 0.1$/;"	m
+PATH_SEPARATOR	Makefile	/^PATH_SEPARATOR = :$/;"	m
+PATH_SEPARATOR	src/Makefile	/^PATH_SEPARATOR = :$/;"	m
+PATH_SEPARATOR	src/i386/Makefile	/^PATH_SEPARATOR = :$/;"	m
+POST_INSTALL	Makefile	/^POST_INSTALL = :$/;"	m
+POST_INSTALL	src/Makefile	/^POST_INSTALL = :$/;"	m
+POST_INSTALL	src/i386/Makefile	/^POST_INSTALL = :$/;"	m
+POST_UNINSTALL	Makefile	/^POST_UNINSTALL = :$/;"	m
+POST_UNINSTALL	src/Makefile	/^POST_UNINSTALL = :$/;"	m
+POST_UNINSTALL	src/i386/Makefile	/^POST_UNINSTALL = :$/;"	m
+PRE_INSTALL	Makefile	/^PRE_INSTALL = :$/;"	m
+PRE_INSTALL	src/Makefile	/^PRE_INSTALL = :$/;"	m
+PRE_INSTALL	src/i386/Makefile	/^PRE_INSTALL = :$/;"	m
+PRE_UNINSTALL	Makefile	/^PRE_UNINSTALL = :$/;"	m
+PRE_UNINSTALL	src/Makefile	/^PRE_UNINSTALL = :$/;"	m
+PRE_UNINSTALL	src/i386/Makefile	/^PRE_UNINSTALL = :$/;"	m
+PROGRAMS	src/Makefile	/^PROGRAMS = $(bin_PROGRAMS)$/;"	m
+RANLIB	Makefile	/^RANLIB = ranlib$/;"	m
+RANLIB	src/Makefile	/^RANLIB = ranlib$/;"	m
+RANLIB	src/i386/Makefile	/^RANLIB = ranlib$/;"	m
+RECURSIVE_CLEAN_TARGETS	Makefile	/^RECURSIVE_CLEAN_TARGETS = mostlyclean-recursive clean-recursive	\\$/;"	m
+RECURSIVE_CLEAN_TARGETS	src/Makefile	/^RECURSIVE_CLEAN_TARGETS = mostlyclean-recursive clean-recursive	\\$/;"	m
+RECURSIVE_TARGETS	Makefile	/^RECURSIVE_TARGETS = all-recursive check-recursive cscopelist-recursive \\$/;"	m
+RECURSIVE_TARGETS	src/Makefile	/^RECURSIVE_TARGETS = all-recursive check-recursive cscopelist-recursive \\$/;"	m
+ROOTFS_BASE_ADDRESS	src/i386/i386_arch.h	7;"	d
+SET_MAKE	Makefile	/^SET_MAKE = $/;"	m
+SET_MAKE	src/Makefile	/^SET_MAKE = $/;"	m
+SET_MAKE	src/i386/Makefile	/^SET_MAKE = $/;"	m
+SHELL	Makefile	/^SHELL = \/bin\/bash$/;"	m
+SHELL	src/Makefile	/^SHELL = \/bin\/bash$/;"	m
+SHELL	src/i386/Makefile	/^SHELL = \/bin\/bash$/;"	m
+SOURCES	Makefile	/^SOURCES =$/;"	m
+SOURCES	src/Makefile	/^SOURCES = $(antvm_SOURCES)$/;"	m
+SOURCES	src/i386/Makefile	/^SOURCES = $(libi386_a_SOURCES)$/;"	m
+STDC_HEADERS	config.h	63;"	d
+STRIP	Makefile	/^STRIP = $/;"	m
+STRIP	src/Makefile	/^STRIP = $/;"	m
+STRIP	src/i386/Makefile	/^STRIP = $/;"	m
+SUBDIRS	Makefile	/^SUBDIRS = src$/;"	m
+SUBDIRS	src/Makefile	/^SUBDIRS = i386$/;"	m
+TOTAL_REGS	src/i386/i386_arch.h	19;"	d
+VERSION	Makefile	/^VERSION = 0.1$/;"	m
+VERSION	config.h	66;"	d
+VERSION	src/Makefile	/^VERSION = 0.1$/;"	m
+VERSION	src/i386/Makefile	/^VERSION = 0.1$/;"	m
+VERSION	src/main.c	9;"	d	file:
+_EMULATOR_I386_H_	src/i386/i386_arch.h	2;"	d
+_EMULATOR_I386_H_	src/i386/i386_emu.h	2;"	d
+_EMULATOR_INSTRUCTION_H_	src/i386/instruction.h	2;"	d
+_EMULATOR_INTERUPT_H_	src/i386/interupt.h	2;"	d
+_I386_LIBRARY_H_	src/i386/i386_utility.h	2;"	d
+__decode_dis	src/i386/instruction.c	/^void __decode_dis( instruction_t * p_inst, int len )$/;"	f
+_decode_d32	src/i386/instruction.c	/^void _decode_d32( instruction_t * p_inst )$/;"	f
+_decode_d8	src/i386/instruction.c	/^void _decode_d8( instruction_t * p_inst )$/;"	f
+_decode_i32	src/i386/instruction.c	/^void _decode_i32( instruction_t * p_inst )$/;"	f
+_decode_i8	src/i386/instruction.c	/^void _decode_i8( instruction_t * p_inst )$/;"	f
+_decode_imm	src/i386/instruction.c	/^void _decode_imm( instruction_t * p_inst, int len )$/;"	f
+_decode_m	src/i386/instruction.c	/^void _decode_m( instruction_t * p_inst )$/;"	f
+_decode_op	src/i386/instruction.c	/^void _decode_op( instruction_t * p_inst )$/;"	f
+_decode_s	src/i386/instruction.c	/^void _decode_s( instruction_t * p_inst )$/;"	f
+_private_instruction_t	src/i386/instruction.c	/^typedef struct _private_instruction_t {$/;"	s	file:
+abs_builddir	Makefile	/^abs_builddir = \/home\/ibm\/AntVM$/;"	m
+abs_builddir	src/Makefile	/^abs_builddir = \/home\/ibm\/AntVM\/src$/;"	m
+abs_builddir	src/i386/Makefile	/^abs_builddir = \/home\/ibm\/AntVM\/src\/i386$/;"	m
+abs_srcdir	Makefile	/^abs_srcdir = \/home\/ibm\/AntVM$/;"	m
+abs_srcdir	src/Makefile	/^abs_srcdir = \/home\/ibm\/AntVM\/src$/;"	m
+abs_srcdir	src/i386/Makefile	/^abs_srcdir = \/home\/ibm\/AntVM\/src\/i386$/;"	m
+abs_top_builddir	Makefile	/^abs_top_builddir = \/home\/ibm\/AntVM$/;"	m
+abs_top_builddir	src/Makefile	/^abs_top_builddir = \/home\/ibm\/AntVM$/;"	m
+abs_top_builddir	src/i386/Makefile	/^abs_top_builddir = \/home\/ibm\/AntVM$/;"	m
+abs_top_srcdir	Makefile	/^abs_top_srcdir = \/home\/ibm\/AntVM$/;"	m
+abs_top_srcdir	src/Makefile	/^abs_top_srcdir = \/home\/ibm\/AntVM$/;"	m
+abs_top_srcdir	src/i386/Makefile	/^abs_top_srcdir = \/home\/ibm\/AntVM$/;"	m
+ac_ct_CC	Makefile	/^ac_ct_CC = gcc$/;"	m
+ac_ct_CC	src/Makefile	/^ac_ct_CC = gcc$/;"	m
+ac_ct_CC	src/i386/Makefile	/^ac_ct_CC = gcc$/;"	m
+ac_fn_c_check_func	configure	/^ac_fn_c_check_func ()$/;"	f
+ac_fn_c_check_header_compile	configure	/^ac_fn_c_check_header_compile ()$/;"	f
+ac_fn_c_check_header_mongrel	configure	/^ac_fn_c_check_header_mongrel ()$/;"	f
+ac_fn_c_try_compile	configure	/^ac_fn_c_try_compile ()$/;"	f
+ac_fn_c_try_cpp	configure	/^ac_fn_c_try_cpp ()$/;"	f
+ac_fn_c_try_link	configure	/^ac_fn_c_try_link ()$/;"	f
+ac_fn_c_try_run	configure	/^ac_fn_c_try_run ()$/;"	f
+aix_post_process_depfile	depcomp	/^aix_post_process_depfile ()$/;"	f
+am__CONFIG_DISTCLEAN_FILES	Makefile	/^am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \\$/;"	m
+am__aclocal_m4_deps	Makefile	/^am__aclocal_m4_deps = $(top_srcdir)\/configure.ac$/;"	m
+am__aclocal_m4_deps	src/Makefile	/^am__aclocal_m4_deps = $(top_srcdir)\/configure.ac$/;"	m
+am__aclocal_m4_deps	src/i386/Makefile	/^am__aclocal_m4_deps = $(top_srcdir)\/configure.ac$/;"	m
+am__base_list	Makefile	/^am__base_list = \\$/;"	m
+am__can_run_installinfo	Makefile	/^am__can_run_installinfo = \\$/;"	m
+am__can_run_installinfo	src/Makefile	/^am__can_run_installinfo = \\$/;"	m
+am__can_run_installinfo	src/i386/Makefile	/^am__can_run_installinfo = \\$/;"	m
+am__cd	Makefile	/^am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd$/;"	m
+am__cd	src/Makefile	/^am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd$/;"	m
+am__cd	src/i386/Makefile	/^am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd$/;"	m
+am__configure_deps	Makefile	/^am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \\$/;"	m
+am__configure_deps	src/Makefile	/^am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \\$/;"	m
+am__configure_deps	src/i386/Makefile	/^am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \\$/;"	m
+am__define_uniq_tagged_files	Makefile	/^am__define_uniq_tagged_files = \\$/;"	m
+am__define_uniq_tagged_files	src/Makefile	/^am__define_uniq_tagged_files = \\$/;"	m
+am__define_uniq_tagged_files	src/i386/Makefile	/^am__define_uniq_tagged_files = \\$/;"	m
+am__depfiles_maybe	src/Makefile	/^am__depfiles_maybe = depfiles$/;"	m
+am__depfiles_maybe	src/i386/Makefile	/^am__depfiles_maybe = depfiles$/;"	m
+am__distuninstallcheck_listfiles	Makefile	/^am__distuninstallcheck_listfiles = $(distuninstallcheck_listfiles) \\$/;"	m
+am__include	Makefile	/^am__include = include$/;"	m
+am__include	src/Makefile	/^am__include = include$/;"	m
+am__include	src/i386/Makefile	/^am__include = include$/;"	m
+am__install_max	Makefile	/^am__install_max = 40$/;"	m
+am__installdirs	Makefile	/^am__installdirs = "$(DESTDIR)$(docdir)"$/;"	m
+am__installdirs	src/Makefile	/^am__installdirs = "$(DESTDIR)$(bindir)"$/;"	m
+am__is_gnu_make	Makefile	/^am__is_gnu_make = test -n '$(MAKEFILE_LIST)' && test -n '$(MAKELEVEL)'$/;"	m
+am__is_gnu_make	src/Makefile	/^am__is_gnu_make = test -n '$(MAKEFILE_LIST)' && test -n '$(MAKELEVEL)'$/;"	m
+am__is_gnu_make	src/i386/Makefile	/^am__is_gnu_make = test -n '$(MAKEFILE_LIST)' && test -n '$(MAKELEVEL)'$/;"	m
+am__leading_dot	Makefile	/^am__leading_dot = .$/;"	m
+am__leading_dot	src/Makefile	/^am__leading_dot = .$/;"	m
+am__leading_dot	src/i386/Makefile	/^am__leading_dot = .$/;"	m
+am__make_dryrun	Makefile	/^am__make_dryrun = (target_option=n; $(am__make_running_with_option))$/;"	m
+am__make_dryrun	src/Makefile	/^am__make_dryrun = (target_option=n; $(am__make_running_with_option))$/;"	m
+am__make_dryrun	src/i386/Makefile	/^am__make_dryrun = (target_option=n; $(am__make_running_with_option))$/;"	m
+am__make_keepgoing	Makefile	/^am__make_keepgoing = (target_option=k; $(am__make_running_with_option))$/;"	m
+am__make_keepgoing	src/Makefile	/^am__make_keepgoing = (target_option=k; $(am__make_running_with_option))$/;"	m
+am__make_keepgoing	src/i386/Makefile	/^am__make_keepgoing = (target_option=k; $(am__make_running_with_option))$/;"	m
+am__make_running_with_option	Makefile	/^am__make_running_with_option = \\$/;"	m
+am__make_running_with_option	src/Makefile	/^am__make_running_with_option = \\$/;"	m
+am__make_running_with_option	src/i386/Makefile	/^am__make_running_with_option = \\$/;"	m
+am__mv	src/Makefile	/^am__mv = mv -f$/;"	m
+am__mv	src/i386/Makefile	/^am__mv = mv -f$/;"	m
+am__nobase_list	Makefile	/^am__nobase_list = $(am__nobase_strip_setup); \\$/;"	m
+am__nobase_strip	Makefile	/^am__nobase_strip = \\$/;"	m
+am__nobase_strip_setup	Makefile	/^am__nobase_strip_setup = \\$/;"	m
+am__post_remove_distdir	Makefile	/^am__post_remove_distdir = $(am__remove_distdir)$/;"	m
+am__quote	Makefile	/^am__quote = $/;"	m
+am__quote	src/Makefile	/^am__quote = $/;"	m
+am__quote	src/i386/Makefile	/^am__quote = $/;"	m
+am__recursive_targets	Makefile	/^am__recursive_targets = \\$/;"	m
+am__recursive_targets	src/Makefile	/^am__recursive_targets = \\$/;"	m
+am__relativize	Makefile	/^am__relativize = \\$/;"	m
+am__relativize	src/Makefile	/^am__relativize = \\$/;"	m
+am__remove_distdir	Makefile	/^am__remove_distdir = \\$/;"	m
+am__strip_dir	Makefile	/^am__strip_dir = f=`echo $$p | sed -e 's|^.*\/||'`;$/;"	m
+am__tagged_files	Makefile	/^am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) \\$/;"	m
+am__tagged_files	src/Makefile	/^am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)$/;"	m
+am__tagged_files	src/i386/Makefile	/^am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)$/;"	m
+am__tar	Makefile	/^am__tar = $${TAR-tar} chof - "$$tardir"$/;"	m
+am__tar	src/Makefile	/^am__tar = $${TAR-tar} chof - "$$tardir"$/;"	m
+am__tar	src/i386/Makefile	/^am__tar = $${TAR-tar} chof - "$$tardir"$/;"	m
+am__uninstall_files_from_dir	Makefile	/^am__uninstall_files_from_dir = { \\$/;"	m
+am__uniquify_input	Makefile	/^am__uniquify_input = $(AWK) '\\$/;"	m
+am__uniquify_input	src/Makefile	/^am__uniquify_input = $(AWK) '\\$/;"	m
+am__uniquify_input	src/i386/Makefile	/^am__uniquify_input = $(AWK) '\\$/;"	m
+am__untar	Makefile	/^am__untar = $${TAR-tar} xf -$/;"	m
+am__untar	src/Makefile	/^am__untar = $${TAR-tar} xf -$/;"	m
+am__untar	src/i386/Makefile	/^am__untar = $${TAR-tar} xf -$/;"	m
+am__v_AR_	src/i386/Makefile	/^am__v_AR_ = $(am__v_AR_$(AM_DEFAULT_VERBOSITY))$/;"	m
+am__v_AR_0	src/i386/Makefile	/^am__v_AR_0 = @echo "  AR      " $@;$/;"	m
+am__v_AR_1	src/i386/Makefile	/^am__v_AR_1 = $/;"	m
+am__v_CCLD_	src/Makefile	/^am__v_CCLD_ = $(am__v_CCLD_$(AM_DEFAULT_VERBOSITY))$/;"	m
+am__v_CCLD_	src/i386/Makefile	/^am__v_CCLD_ = $(am__v_CCLD_$(AM_DEFAULT_VERBOSITY))$/;"	m
+am__v_CCLD_0	src/Makefile	/^am__v_CCLD_0 = @echo "  CCLD    " $@;$/;"	m
+am__v_CCLD_0	src/i386/Makefile	/^am__v_CCLD_0 = @echo "  CCLD    " $@;$/;"	m
+am__v_CCLD_1	src/Makefile	/^am__v_CCLD_1 = $/;"	m
+am__v_CCLD_1	src/i386/Makefile	/^am__v_CCLD_1 = $/;"	m
+am__v_CC_	src/Makefile	/^am__v_CC_ = $(am__v_CC_$(AM_DEFAULT_VERBOSITY))$/;"	m
+am__v_CC_	src/i386/Makefile	/^am__v_CC_ = $(am__v_CC_$(AM_DEFAULT_VERBOSITY))$/;"	m
+am__v_CC_0	src/Makefile	/^am__v_CC_0 = @echo "  CC      " $@;$/;"	m
+am__v_CC_0	src/i386/Makefile	/^am__v_CC_0 = @echo "  CC      " $@;$/;"	m
+am__v_CC_1	src/Makefile	/^am__v_CC_1 = $/;"	m
+am__v_CC_1	src/i386/Makefile	/^am__v_CC_1 = $/;"	m
+am__v_GEN_	Makefile	/^am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))$/;"	m
+am__v_GEN_	src/Makefile	/^am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))$/;"	m
+am__v_GEN_	src/i386/Makefile	/^am__v_GEN_ = $(am__v_GEN_$(AM_DEFAULT_VERBOSITY))$/;"	m
+am__v_GEN_0	Makefile	/^am__v_GEN_0 = @echo "  GEN     " $@;$/;"	m
+am__v_GEN_0	src/Makefile	/^am__v_GEN_0 = @echo "  GEN     " $@;$/;"	m
+am__v_GEN_0	src/i386/Makefile	/^am__v_GEN_0 = @echo "  GEN     " $@;$/;"	m
+am__v_GEN_1	Makefile	/^am__v_GEN_1 = $/;"	m
+am__v_GEN_1	src/Makefile	/^am__v_GEN_1 = $/;"	m
+am__v_GEN_1	src/i386/Makefile	/^am__v_GEN_1 = $/;"	m
+am__v_P_	Makefile	/^am__v_P_ = $(am__v_P_$(AM_DEFAULT_VERBOSITY))$/;"	m
+am__v_P_	src/Makefile	/^am__v_P_ = $(am__v_P_$(AM_DEFAULT_VERBOSITY))$/;"	m
+am__v_P_	src/i386/Makefile	/^am__v_P_ = $(am__v_P_$(AM_DEFAULT_VERBOSITY))$/;"	m
+am__v_P_0	Makefile	/^am__v_P_0 = false$/;"	m
+am__v_P_0	src/Makefile	/^am__v_P_0 = false$/;"	m
+am__v_P_0	src/i386/Makefile	/^am__v_P_0 = false$/;"	m
+am__v_P_1	Makefile	/^am__v_P_1 = :$/;"	m
+am__v_P_1	src/Makefile	/^am__v_P_1 = :$/;"	m
+am__v_P_1	src/i386/Makefile	/^am__v_P_1 = :$/;"	m
+am__v_at_	Makefile	/^am__v_at_ = $(am__v_at_$(AM_DEFAULT_VERBOSITY))$/;"	m
+am__v_at_	src/Makefile	/^am__v_at_ = $(am__v_at_$(AM_DEFAULT_VERBOSITY))$/;"	m
+am__v_at_	src/i386/Makefile	/^am__v_at_ = $(am__v_at_$(AM_DEFAULT_VERBOSITY))$/;"	m
+am__v_at_0	Makefile	/^am__v_at_0 = @$/;"	m
+am__v_at_0	src/Makefile	/^am__v_at_0 = @$/;"	m
+am__v_at_0	src/i386/Makefile	/^am__v_at_0 = @$/;"	m
+am__v_at_1	Makefile	/^am__v_at_1 = $/;"	m
+am__v_at_1	src/Makefile	/^am__v_at_1 = $/;"	m
+am__v_at_1	src/i386/Makefile	/^am__v_at_1 = $/;"	m
+am__vpath_adj	Makefile	/^am__vpath_adj = case $$p in \\$/;"	m
+am__vpath_adj_setup	Makefile	/^am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;$/;"	m
+am_antvm_OBJECTS	src/Makefile	/^am_antvm_OBJECTS = main.$(OBJEXT)$/;"	m
+am_libi386_a_OBJECTS	src/i386/Makefile	/^am_libi386_a_OBJECTS = i386_arch.$(OBJEXT) i386_emu.$(OBJEXT) \\$/;"	m
+antvm_DEPENDENCIES	src/Makefile	/^antvm_DEPENDENCIES = i386\/libi386.a$/;"	m
+antvm_LDADD	src/Makefile	/^antvm_LDADD = i386\/libi386.a$/;"	m
+antvm_OBJECTS	src/Makefile	/^antvm_OBJECTS = $(am_antvm_OBJECTS)$/;"	m
+antvm_SOURCES	src/Makefile	/^antvm_SOURCES = main.c$/;"	m
+as_fn_append	config.status	/^  as_fn_append ()$/;"	f
+as_fn_append	configure	/^  as_fn_append ()$/;"	f
+as_fn_arith	config.status	/^  as_fn_arith ()$/;"	f
+as_fn_arith	configure	/^  as_fn_arith ()$/;"	f
+as_fn_error	config.status	/^as_fn_error ()$/;"	f
+as_fn_error	configure	/^as_fn_error ()$/;"	f
+as_fn_executable_p	config.status	/^as_fn_executable_p ()$/;"	f
+as_fn_executable_p	configure	/^as_fn_executable_p ()$/;"	f
+as_fn_exit	config.status	/^as_fn_exit ()$/;"	f
+as_fn_exit	configure	/^as_fn_exit ()$/;"	f
+as_fn_failure	configure	/^as_fn_failure () { as_fn_return 1; }$/;"	f
+as_fn_mkdir_p	config.status	/^as_fn_mkdir_p ()$/;"	f
+as_fn_mkdir_p	configure	/^as_fn_mkdir_p ()$/;"	f
+as_fn_ret_failure	configure	/^as_fn_ret_failure () { return 1; }$/;"	f
+as_fn_ret_success	configure	/^as_fn_ret_success () { return 0; }$/;"	f
+as_fn_set_status	config.status	/^as_fn_set_status ()$/;"	f
+as_fn_set_status	configure	/^as_fn_set_status ()$/;"	f
+as_fn_success	configure	/^as_fn_success () { as_fn_return 0; }$/;"	f
+as_fn_unset	config.status	/^as_fn_unset ()$/;"	f
+as_fn_unset	configure	/^as_fn_unset ()$/;"	f
+base	src/i386/instruction.c	/^			unsigned base:3;$/;"	m	struct:_private_instruction_t::__anon4::__anon5	file:
+bin_PROGRAMS	src/Makefile	/^bin_PROGRAMS = antvm$(EXEEXT)$/;"	m
+bindir	Makefile	/^bindir = ${exec_prefix}\/bin$/;"	m
+bindir	src/Makefile	/^bindir = ${exec_prefix}\/bin$/;"	m
+bindir	src/i386/Makefile	/^bindir = ${exec_prefix}\/bin$/;"	m
+build_alias	Makefile	/^build_alias = $/;"	m
+build_alias	src/Makefile	/^build_alias = $/;"	m
+build_alias	src/i386/Makefile	/^build_alias = $/;"	m
+builddir	Makefile	/^builddir = .$/;"	m
+builddir	src/Makefile	/^builddir = .$/;"	m
+builddir	src/i386/Makefile	/^builddir = .$/;"	m
+call_op	src/i386/instruction.c	/^int call_op( instruction_t * p_inst )$/;"	f
+check_interupt_register	src/i386/interupt.c	/^int check_interupt_register()$/;"	f
+clr_efl	src/i386/i386_arch.h	40;"	d
+d1o	src/i386/instruction.c	/^void d1o( instruction_t * p_inst )$/;"	f
+d2od32	src/i386/instruction.c	/^void d2od32( instruction_t * p_inst )$/;"	f
+d2oi32	src/i386/instruction.c	/^void d2oi32( instruction_t * p_inst )$/;"	f
+d2om	src/i386/instruction.c	/^void d2om( instruction_t * p_inst )$/;"	f
+d3omd8	src/i386/instruction.c	/^void d3omd8( instruction_t * p_inst )$/;"	f
+d3omi8	src/i386/instruction.c	/^void d3omi8( instruction_t * p_inst )$/;"	f
+d3omsi32	src/i386/instruction.c	/^void d3omsi32( instruction_t * p_inst )$/;"	f
+d_inst2	src/i386/instruction.c	/^void d_inst2( instruction_t * p_inst )$/;"	f
+datadir	Makefile	/^datadir = ${datarootdir}$/;"	m
+datadir	src/Makefile	/^datadir = ${datarootdir}$/;"	m
+datadir	src/i386/Makefile	/^datadir = ${datarootdir}$/;"	m
+datarootdir	Makefile	/^datarootdir = ${prefix}\/share$/;"	m
+datarootdir	src/Makefile	/^datarootdir = ${prefix}\/share$/;"	m
+datarootdir	src/i386/Makefile	/^datarootdir = ${prefix}\/share$/;"	m
+decode_array_1byte	src/i386/instruction.c	/^instruction_decode_ftype decode_array_1byte[256] = {$/;"	v
+decode_array_2bytes	src/i386/instruction.c	/^instruction_decode_ftype decode_array_2bytes[256] = {$/;"	v
+depcomp	src/Makefile	/^depcomp = $(SHELL) $(top_srcdir)\/depcomp$/;"	m
+depcomp	src/i386/Makefile	/^depcomp = $(SHELL) $(top_srcdir)\/depcomp$/;"	m
+displacement	src/i386/instruction.c	/^	} displacement;$/;"	m	struct:_private_instruction_t	typeref:union:_private_instruction_t::__anon6	file:
+displacement_len	src/i386/instruction.c	/^	int displacement_len;$/;"	m	struct:_private_instruction_t	file:
+dist_doc_DATA	Makefile	/^dist_doc_DATA = README.md$/;"	m
+distcleancheck_listfiles	Makefile	/^distcleancheck_listfiles = find . -type f -print$/;"	m
+distdir	Makefile	/^distdir = $(PACKAGE)-$(VERSION)$/;"	m
+distuninstallcheck_listfiles	Makefile	/^distuninstallcheck_listfiles = find . -type f -print$/;"	m
+docdir	Makefile	/^docdir = ${datarootdir}\/doc\/${PACKAGE_TARNAME}$/;"	m
+docdir	src/Makefile	/^docdir = ${datarootdir}\/doc\/${PACKAGE_TARNAME}$/;"	m
+docdir	src/i386/Makefile	/^docdir = ${datarootdir}\/doc\/${PACKAGE_TARNAME}$/;"	m
+dump_instruction	src/i386/i386_utility.c	/^void dump_instruction( int index, unsigned char * instruction, int len )$/;"	f
+dump_registers	src/i386/i386_utility.c	/^void dump_registers()$/;"	f
+dvidir	Makefile	/^dvidir = ${docdir}$/;"	m
+dvidir	src/Makefile	/^dvidir = ${docdir}$/;"	m
+dvidir	src/i386/Makefile	/^dvidir = ${docdir}$/;"	m
+emulator_i386	src/i386/i386_emu.c	/^int emulator_i386( const char * bios_path, const char * kernel_path, const char * rootfs_path )$/;"	f
+enter_interupt_mode	src/i386/interupt.c	/^void enter_interupt_mode()$/;"	f
+exec_prefix	Makefile	/^exec_prefix = ${prefix}$/;"	m
+exec_prefix	src/Makefile	/^exec_prefix = ${prefix}$/;"	m
+exec_prefix	src/i386/Makefile	/^exec_prefix = ${prefix}$/;"	m
+exit_interupt_mode	src/i386/interupt.c	/^void exit_interupt_mode()$/;"	f
+fetch_char	src/i386/i386_utility.c	/^unsigned char fetch_char( unsigned char * p_memory, int pos )$/;"	f
+fetch_int	src/i386/i386_utility.c	/^unsigned int fetch_int( unsigned char * p_memory, int pos )$/;"	f
+func_cl_dashL	compile	/^func_cl_dashL ()$/;"	f
+func_cl_dashl	compile	/^func_cl_dashl ()$/;"	f
+func_cl_wrapper	compile	/^func_cl_wrapper ()$/;"	f
+func_file_conv	compile	/^func_file_conv ()$/;"	f
+g_debug_mode	src/main.c	/^int g_debug_mode = 0;$/;"	v
+give_advice	missing	/^give_advice ()$/;"	f
+grp1_op	src/i386/instruction.c	/^int grp1_op( instruction_t * p_inst )$/;"	f
+grp1_op_array	src/i386/instruction.c	/^instruction_oper_ftype grp1_op_array[8] = {$/;"	v
+host_alias	Makefile	/^host_alias = $/;"	m
+host_alias	src/Makefile	/^host_alias = $/;"	m
+host_alias	src/i386/Makefile	/^host_alias = $/;"	m
+htmldir	Makefile	/^htmldir = ${docdir}$/;"	m
+htmldir	src/Makefile	/^htmldir = ${docdir}$/;"	m
+htmldir	src/i386/Makefile	/^htmldir = ${docdir}$/;"	m
+imm	src/i386/instruction.c	/^	} imm;$/;"	m	struct:_private_instruction_t	typeref:union:_private_instruction_t::__anon7	file:
+imm_len	src/i386/instruction.c	/^	int imm_len;$/;"	m	struct:_private_instruction_t	file:
+includedir	Makefile	/^includedir = ${prefix}\/include$/;"	m
+includedir	src/Makefile	/^includedir = ${prefix}\/include$/;"	m
+includedir	src/i386/Makefile	/^includedir = ${prefix}\/include$/;"	m
+index	src/i386/instruction.c	/^			unsigned index:3;$/;"	m	struct:_private_instruction_t::__anon4::__anon5	file:
+infodir	Makefile	/^infodir = ${datarootdir}\/info$/;"	m
+infodir	src/Makefile	/^infodir = ${datarootdir}\/info$/;"	m
+infodir	src/i386/Makefile	/^infodir = ${datarootdir}\/info$/;"	m
+inst_2b_op	src/i386/instruction.c	/^int inst_2b_op( instruction_t * p_inst )$/;"	f
+install_sh	Makefile	/^install_sh = ${SHELL} \/home\/ibm\/install-sh$/;"	m
+install_sh	src/Makefile	/^install_sh = ${SHELL} \/home\/ibm\/install-sh$/;"	m
+install_sh	src/i386/Makefile	/^install_sh = ${SHELL} \/home\/ibm\/install-sh$/;"	m
+install_sh_DATA	Makefile	/^install_sh_DATA = $(install_sh) -c -m 644$/;"	m
+install_sh_DATA	src/Makefile	/^install_sh_DATA = $(install_sh) -c -m 644$/;"	m
+install_sh_DATA	src/i386/Makefile	/^install_sh_DATA = $(install_sh) -c -m 644$/;"	m
+install_sh_PROGRAM	Makefile	/^install_sh_PROGRAM = $(install_sh) -c$/;"	m
+install_sh_PROGRAM	src/Makefile	/^install_sh_PROGRAM = $(install_sh) -c$/;"	m
+install_sh_PROGRAM	src/i386/Makefile	/^install_sh_PROGRAM = $(install_sh) -c$/;"	m
+install_sh_SCRIPT	Makefile	/^install_sh_SCRIPT = $(install_sh) -c$/;"	m
+install_sh_SCRIPT	src/Makefile	/^install_sh_SCRIPT = $(install_sh) -c$/;"	m
+install_sh_SCRIPT	src/i386/Makefile	/^install_sh_SCRIPT = $(install_sh) -c$/;"	m
+instruction_codes	src/i386/instruction.c	/^	char instruction_codes[15];$/;"	m	struct:_private_instruction_t	file:
+instruction_construct	src/i386/instruction.c	/^void instruction_construct( instruction_t * p_inst )$/;"	f
+instruction_decode	src/i386/instruction.c	/^void instruction_decode( instruction_t * p_inst )$/;"	f
+instruction_decode_ftype	src/i386/instruction.c	/^typedef void (*instruction_decode_ftype)( instruction_t * p_inst );$/;"	t	file:
+instruction_destruct	src/i386/instruction.c	/^void instruction_destruct( instruction_t * p_inst )$/;"	f
+instruction_len	src/i386/instruction.c	/^	char instruction_len;$/;"	m	struct:_private_instruction_t	file:
+instruction_oper_ftype	src/i386/instruction.c	/^typedef int (*instruction_oper_ftype)( instruction_t * p_inst );$/;"	t	file:
+instruction_run	src/i386/instruction.c	/^void instruction_run( instruction_t * p_inst )$/;"	f
+instruction_t	src/i386/instruction.h	/^} instruction_t;$/;"	t	typeref:struct:__anon8
+interupt_check	src/i386/interupt.c	/^void interupt_check()$/;"	f
+is_in_interupt_mode	src/i386/interupt.c	/^int is_in_interupt_mode = 0;$/;"	v
+legacy_prefix	src/i386/instruction.c	/^	char legacy_prefix;$/;"	m	struct:_private_instruction_t	file:
+libdir	Makefile	/^libdir = ${exec_prefix}\/lib$/;"	m
+libdir	src/Makefile	/^libdir = ${exec_prefix}\/lib$/;"	m
+libdir	src/i386/Makefile	/^libdir = ${exec_prefix}\/lib$/;"	m
+libexecdir	Makefile	/^libexecdir = ${exec_prefix}\/libexec$/;"	m
+libexecdir	src/Makefile	/^libexecdir = ${exec_prefix}\/libexec$/;"	m
+libexecdir	src/i386/Makefile	/^libexecdir = ${exec_prefix}\/libexec$/;"	m
+libi386_a_AR	src/i386/Makefile	/^libi386_a_AR = $(AR) $(ARFLAGS)$/;"	m
+libi386_a_LIBADD	src/i386/Makefile	/^libi386_a_LIBADD =$/;"	m
+libi386_a_OBJECTS	src/i386/Makefile	/^libi386_a_OBJECTS = $(am_libi386_a_OBJECTS)$/;"	m
+libi386_a_SOURCES	src/i386/Makefile	/^libi386_a_SOURCES = i386_arch.h i386_arch.c i386_emu.h i386_emu.c interupt.c interupt.h instruction.c instruction.h i386_utility.h i386_utility.c$/;"	m
+load_image	src/i386/i386_utility.c	/^int load_image( const char * image_path, char * p_memory, int image_address )$/;"	f
+localedir	Makefile	/^localedir = ${datarootdir}\/locale$/;"	m
+localedir	src/Makefile	/^localedir = ${datarootdir}\/locale$/;"	m
+localedir	src/i386/Makefile	/^localedir = ${datarootdir}\/locale$/;"	m
+localstatedir	Makefile	/^localstatedir = ${prefix}\/var$/;"	m
+localstatedir	src/Makefile	/^localstatedir = ${prefix}\/var$/;"	m
+localstatedir	src/i386/Makefile	/^localstatedir = ${prefix}\/var$/;"	m
+m	src/i386/instruction.c	/^		} m;$/;"	m	union:_private_instruction_t::__anon2	typeref:struct:_private_instruction_t::__anon2::__anon3	file:
+main	src/main.c	/^int main( int argc, char * argv[] )$/;"	f
+make_dummy_depfile	depcomp	/^make_dummy_depfile ()$/;"	f
+mandir	Makefile	/^mandir = ${datarootdir}\/man$/;"	m
+mandir	src/Makefile	/^mandir = ${datarootdir}\/man$/;"	m
+mandir	src/i386/Makefile	/^mandir = ${datarootdir}\/man$/;"	m
+mkdir_p	Makefile	/^mkdir_p = $(MKDIR_P)$/;"	m
+mkdir_p	src/Makefile	/^mkdir_p = $(MKDIR_P)$/;"	m
+mkdir_p	src/i386/Makefile	/^mkdir_p = $(MKDIR_P)$/;"	m
+mkinstalldirs	Makefile	/^mkinstalldirs = $(install_sh) -d$/;"	m
+mkinstalldirs	src/Makefile	/^mkinstalldirs = $(install_sh) -d$/;"	m
+mkinstalldirs	src/i386/Makefile	/^mkinstalldirs = $(install_sh) -d$/;"	m
+mod	src/i386/instruction.c	/^			unsigned mod:2;$/;"	m	struct:_private_instruction_t::__anon2::__anon3	file:
+modrm	src/i386/instruction.c	/^	} modrm;$/;"	m	struct:_private_instruction_t	typeref:union:_private_instruction_t::__anon2	file:
+move_op	src/i386/instruction.c	/^int move_op( instruction_t * p_inst )$/;"	f
+noinst_LIBRARIES	src/i386/Makefile	/^noinst_LIBRARIES = libi386.a$/;"	m
+octets	src/i386/instruction.c	/^		unsigned char octets[4];$/;"	m	union:_private_instruction_t::__anon1	file:
+octets	src/i386/instruction.c	/^		unsigned char octets[8];$/;"	m	union:_private_instruction_t::__anon6	file:
+octets	src/i386/instruction.c	/^		unsigned char octets[8];$/;"	m	union:_private_instruction_t::__anon7	file:
+oldincludedir	Makefile	/^oldincludedir = \/usr\/include$/;"	m
+oldincludedir	src/Makefile	/^oldincludedir = \/usr\/include$/;"	m
+oldincludedir	src/i386/Makefile	/^oldincludedir = \/usr\/include$/;"	m
+op_array_1byte	src/i386/instruction.c	/^instruction_oper_ftype op_array_1byte[256] = {$/;"	v
+op_array_2bytes	src/i386/instruction.c	/^instruction_oper_ftype op_array_2bytes[256] = {$/;"	v
+op_code	src/i386/instruction.c	/^	} op_code;$/;"	m	struct:_private_instruction_t	typeref:union:_private_instruction_t::__anon1	file:
+op_code_len	src/i386/instruction.c	/^	int op_code_len;$/;"	m	struct:_private_instruction_t	file:
+parity_table	src/i386/i386_arch.c	/^const unsigned char parity_table[256] = {$/;"	v
+pdfdir	Makefile	/^pdfdir = ${docdir}$/;"	m
+pdfdir	src/Makefile	/^pdfdir = ${docdir}$/;"	m
+pdfdir	src/i386/Makefile	/^pdfdir = ${docdir}$/;"	m
+phy_memory	src/i386/i386_arch.c	/^unsigned char phy_memory[MEMORY_SIZE] = { 0 };$/;"	v
+pkgdatadir	Makefile	/^pkgdatadir = $(datadir)\/antvm$/;"	m
+pkgdatadir	src/Makefile	/^pkgdatadir = $(datadir)\/antvm$/;"	m
+pkgdatadir	src/i386/Makefile	/^pkgdatadir = $(datadir)\/antvm$/;"	m
+pkgincludedir	Makefile	/^pkgincludedir = $(includedir)\/antvm$/;"	m
+pkgincludedir	src/Makefile	/^pkgincludedir = $(includedir)\/antvm$/;"	m
+pkgincludedir	src/i386/Makefile	/^pkgincludedir = $(includedir)\/antvm$/;"	m
+pkglibdir	Makefile	/^pkglibdir = $(libdir)\/antvm$/;"	m
+pkglibdir	src/Makefile	/^pkglibdir = $(libdir)\/antvm$/;"	m
+pkglibdir	src/i386/Makefile	/^pkglibdir = $(libdir)\/antvm$/;"	m
+pkglibexecdir	Makefile	/^pkglibexecdir = $(libexecdir)\/antvm$/;"	m
+pkglibexecdir	src/Makefile	/^pkglibexecdir = $(libexecdir)\/antvm$/;"	m
+pkglibexecdir	src/i386/Makefile	/^pkglibexecdir = $(libexecdir)\/antvm$/;"	m
+prefix	Makefile	/^prefix = \/usr\/local$/;"	m
+prefix	src/Makefile	/^prefix = \/usr\/local$/;"	m
+prefix	src/i386/Makefile	/^prefix = \/usr\/local$/;"	m
+priv	src/i386/instruction.h	/^	struct _private_instruction_t * priv;$/;"	m	struct:__anon8	typeref:struct:__anon8::_private_instruction_t
+private_instruction_t	src/i386/instruction.c	/^} private_instruction_t;$/;"	t	typeref:struct:_private_instruction_t	file:
+process_next_instruction	src/i386/i386_emu.c	/^void process_next_instruction()$/;"	f
+program_details	missing	/^program_details ()$/;"	f
+program_transform_name	Makefile	/^program_transform_name = s,x,x,$/;"	m
+program_transform_name	src/Makefile	/^program_transform_name = s,x,x,$/;"	m
+program_transform_name	src/i386/Makefile	/^program_transform_name = s,x,x,$/;"	m
+prototypes	configure	/^   function prototypes and stuff, but not '\\xHH' hex character constants.$/;"	f
+psdir	Makefile	/^psdir = ${docdir}$/;"	m
+psdir	src/Makefile	/^psdir = ${docdir}$/;"	m
+psdir	src/i386/Makefile	/^psdir = ${docdir}$/;"	m
+push	src/i386/instruction.c	/^void push( int value )$/;"	f
+push_op	src/i386/instruction.c	/^int push_op( instruction_t * p_inst )$/;"	f
+reg	src/i386/instruction.c	/^			unsigned reg:3;$/;"	m	struct:_private_instruction_t::__anon2::__anon3	file:
+registers	src/i386/i386_arch.c	/^unsigned int registers[TOTAL_REGS] = { 0 };$/;"	v
+registers_desc	src/i386/i386_arch.c	/^const char * registers_desc[TOTAL_REGS] = $/;"	v
+reset	src/i386/i386_emu.c	/^void reset()$/;"	f
+restore_registers	src/i386/i386_arch.c	/^unsigned int restore_registers[TOTAL_REGS] = { 0 };$/;"	v
+rex_prefix	src/i386/instruction.c	/^	char rex_prefix;$/;"	m	struct:_private_instruction_t	file:
+rm	src/i386/instruction.c	/^			unsigned rm:3;$/;"	m	struct:_private_instruction_t::__anon2::__anon3	file:
+s	src/i386/instruction.c	/^		} s;$/;"	m	union:_private_instruction_t::__anon4	typeref:struct:_private_instruction_t::__anon4::__anon5	file:
+sbindir	Makefile	/^sbindir = ${exec_prefix}\/sbin$/;"	m
+sbindir	src/Makefile	/^sbindir = ${exec_prefix}\/sbin$/;"	m
+sbindir	src/i386/Makefile	/^sbindir = ${exec_prefix}\/sbin$/;"	m
+scale	src/i386/instruction.c	/^			unsigned scale:2;$/;"	m	struct:_private_instruction_t::__anon4::__anon5	file:
+set_base_from	depcomp	/^set_base_from ()$/;"	f
+set_dir_from	depcomp	/^set_dir_from ()$/;"	f
+set_efl	src/i386/i386_arch.h	39;"	d
+sharedstatedir	Makefile	/^sharedstatedir = ${prefix}\/com$/;"	m
+sharedstatedir	src/Makefile	/^sharedstatedir = ${prefix}\/com$/;"	m
+sharedstatedir	src/i386/Makefile	/^sharedstatedir = ${prefix}\/com$/;"	m
+show_version	src/main.c	/^void show_version()$/;"	f
+sib	src/i386/instruction.c	/^	} sib;$/;"	m	struct:_private_instruction_t	typeref:union:_private_instruction_t::__anon4	file:
+srcdir	Makefile	/^srcdir = .$/;"	m
+srcdir	src/Makefile	/^srcdir = .$/;"	m
+srcdir	src/i386/Makefile	/^srcdir = .$/;"	m
+sub_op	src/i386/instruction.c	/^int sub_op( instruction_t * p_inst )$/;"	f
+subdir	Makefile	/^subdir = .$/;"	m
+subdir	src/Makefile	/^subdir = src$/;"	m
+subdir	src/i386/Makefile	/^subdir = src\/i386$/;"	m
+sysconfdir	Makefile	/^sysconfdir = ${prefix}\/etc$/;"	m
+sysconfdir	src/Makefile	/^sysconfdir = ${prefix}\/etc$/;"	m
+sysconfdir	src/i386/Makefile	/^sysconfdir = ${prefix}\/etc$/;"	m
+tardir	Makefile	/^	tardir=$(distdir) && $(am__tar) | BZIP2=$${BZIP2--9} bzip2 -c >$(distdir).tar.bz2$/;"	m
+tardir	Makefile	/^	tardir=$(distdir) && $(am__tar) | GZIP=$(GZIP_ENV) gzip -c >$(distdir).tar.gz$/;"	m
+tardir	Makefile	/^	tardir=$(distdir) && $(am__tar) | XZ_OPT=$${XZ_OPT--e} xz -c >$(distdir).tar.xz$/;"	m
+tardir	Makefile	/^	tardir=$(distdir) && $(am__tar) | compress -c >$(distdir).tar.Z$/;"	m
+tardir	Makefile	/^	tardir=$(distdir) && $(am__tar) | lzip -c $${LZIP_OPT--9} >$(distdir).tar.lz$/;"	m
+target_alias	Makefile	/^target_alias = $/;"	m
+target_alias	src/Makefile	/^target_alias = $/;"	m
+target_alias	src/i386/Makefile	/^target_alias = $/;"	m
+top_build_prefix	Makefile	/^top_build_prefix = $/;"	m
+top_build_prefix	src/Makefile	/^top_build_prefix = ..\/$/;"	m
+top_build_prefix	src/i386/Makefile	/^top_build_prefix = ..\/..\/$/;"	m
+top_builddir	Makefile	/^top_builddir = .$/;"	m
+top_builddir	src/Makefile	/^top_builddir = ..$/;"	m
+top_builddir	src/i386/Makefile	/^top_builddir = ..\/..$/;"	m
+top_distdir	Makefile	/^top_distdir = $(distdir)$/;"	m
+top_srcdir	Makefile	/^top_srcdir = .$/;"	m
+top_srcdir	src/Makefile	/^top_srcdir = ..$/;"	m
+top_srcdir	src/i386/Makefile	/^top_srcdir = ..\/..$/;"	m
+transform	Makefile	/^transform = $(program_transform_name)$/;"	m
+transform	src/Makefile	/^transform = $(program_transform_name)$/;"	m
+transform	src/i386/Makefile	/^transform = $(program_transform_name)$/;"	m
+usage	src/main.c	/^void usage( const char * name )$/;"	f
+value	src/i386/instruction.c	/^		char value;$/;"	m	union:_private_instruction_t::__anon2	file:
+value	src/i386/instruction.c	/^		char value;$/;"	m	union:_private_instruction_t::__anon4	file:
+value	src/i386/instruction.c	/^		int value;$/;"	m	union:_private_instruction_t::__anon1	file:
+value	src/i386/instruction.c	/^		int value;$/;"	m	union:_private_instruction_t::__anon6	file:
+value	src/i386/instruction.c	/^		int value;$/;"	m	union:_private_instruction_t::__anon7	file:

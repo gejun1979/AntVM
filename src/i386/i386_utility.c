@@ -7,7 +7,7 @@ void dump_instruction( int index, unsigned char * instruction, int len )
 {
 	int i = 0;
 
-	printf( "instruction: %d\n", index );
+	printf( "%d. ", index );
 	for ( ; i < len; ++i ) {
 		printf( "0x%02x ", instruction[i] );
 	}
@@ -20,7 +20,7 @@ void dump_registers()
 
 	printf("register:\n");
 	for ( ; i < TOTAL_REGS; ++i ) {
-		printf( "%s = 0x%08x\n", registers_desc[i], registers[i] );
+		printf( "%s=%08x\n", registers_desc[i], registers[i] );
 	}
 	printf("\n");
 }
@@ -58,7 +58,6 @@ unsigned char fetch_char( unsigned char * p_memory, int pos )
 		exit( 1 );
 	}
 
-//	printf( "fetch_char: 0x%02x\n", p_memory[ pos ] );
 	return p_memory[ pos ];
 }
 

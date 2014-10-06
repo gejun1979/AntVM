@@ -64,6 +64,11 @@ int move_op( instruction_t * p_inst );
 int push_op( instruction_t * p_inst );
 int grp1_op( instruction_t * p_inst );
 int inst_2b_op( instruction_t * p_inst );
+int test_op( instruction_t * p_inst );
+int jcc_op( instruction_t * p_inst );
+int jmp_op( instruction_t * p_inst );
+int add_op( instruction_t * p_inst );
+int cmp_op( instruction_t * p_inst );
 
 typedef int (*instruction_oper_ftype)( instruction_t * p_inst );
 
@@ -79,7 +84,7 @@ instruction_oper_ftype op_array_2bytes[256] = {
 0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,
 0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,
 0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,
-0,		0,		0,		0,		0,		0,		move_op,0,		0,		0,		0,		0,		0,		0,		0,		0,
+0,		0,		0,		0,		0,		0,		move_op,0,		0,		0,		0,		0,		0,		0,		move_op,0,
 0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,
 0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,
 0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,
@@ -94,14 +99,14 @@ instruction_oper_ftype op_array_1byte[256] = {
 0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,
 push_op,push_op,push_op,push_op,push_op,push_op,push_op,push_op,0,		0,		0,		0,		0,		0,		0,		0,
 0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,
+0,		0,		0,		0,		jcc_op,	0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,
+0,		0,		0,		grp1_op,test_op,0,		0,		0,		0,		move_op,0,		move_op,0,		0,		0,		0,
 0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,
-0,		0,		0,		grp1_op,0,		0,		0,		0,		0,		move_op,0,		move_op,0,		0,		0,		0,
 0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,
-0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,
-0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		move_op,0,		0,		0,
+0,		0,		0,		0,		0,		0,		0,		0,		move_op,move_op,move_op,move_op,move_op,move_op,move_op,move_op,
 0,		0,		0,		0,		0,		0,		0,		move_op,0,		0,		0,		0,		0,		0,		0,		0,
 0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,
-0,		0,		0,		0,		0,		0,		0,		0,		call_op,0,		0,		0,		0,		0,		0,		0,
+0,		0,		0,		0,		0,		0,		0,		0,		call_op,0,		0,		jmp_op,	0,		0,		0,		0,
 0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,		0,
 };
 
@@ -110,7 +115,7 @@ push_op,push_op,push_op,push_op,push_op,push_op,push_op,push_op,0,		0,		0,		0,		
 /***************************************/
 
 instruction_oper_ftype grp1_op_array[8] = {
-0,		0,		0,		0,		0,	sub_op,		0,		0
+add_op,	0,		0,		0,		0,	sub_op,		0,		cmp_op
 };
 
 /***************************************/
@@ -133,6 +138,7 @@ instruction_oper_ftype grp1_op_array[8] = {
 /***************************************/
 
 void d1o( instruction_t * p_inst );
+void d2od8( instruction_t * p_inst );
 void d2od32( instruction_t * p_inst );
 void d2oi32( instruction_t * p_inst );
 void d2om( instruction_t * p_inst );
@@ -155,7 +161,7 @@ instruction_decode_ftype decode_array_2bytes[256] = {
 0,		0,		0,		0,		0,		0,		0,		0,			0,		0,		0,		0,		0,		0,		0,		0,
 0,		0,		0,		0,		0,		0,		0,		0,			0,		0,		0,		0,		0,		0,		0,		0,
 0,		0,		0,		0,		0,		0,		0,		0,			0,		0,		0,		0,		0,		0,		0,		0,
-0,		0,		0,		0,		0,		0,		d2om,	0,			0,		0,		0,		0,		0,		0,		0,		0,
+0,		0,		0,		0,		0,		0,		d2om,	0,			0,		0,		0,		0,		0,		0,		d2om,	0,
 0,		0,		0,		0,		0,		0,		0,		0,			0,		0,		0,		0,		0,		0,		0,		0,
 0,		0,		0,		0,		0,		0,		0,		0,			0,		0,		0,		0,		0,		0,		0,		0,
 0,		0,		0,		0,		0,		0,		0,		0,			0,		0,		0,		0,		0,		0,		0,		0,
@@ -170,14 +176,14 @@ instruction_decode_ftype decode_array_1byte[256] = {
 0,		0,		0,		0,		0,		0,		0,		0,			0,		0,		0,		0,		0,		0,		0,		0,
 d1o,	d1o,	d1o,	d1o,	d1o,	d1o,	d1o,	d1o,		0,		0,		0,		0,		0,		0,		0,		0,
 0,		0,		0,		0,		0,		0,		0,		0,			0,		0,		0,		0,		0,		0,		0,		0,
+0,		0,		0,		0,		d2od8,	0,		0,		0,			0,		0,		0,		0,		0,		0,		0,		0,
+0,		0,		0,		d3omi8,	d2om,	0,		0,		0,			0,		d2om,	0,		d3omd8,	0,		0,		0,		0,
 0,		0,		0,		0,		0,		0,		0,		0,			0,		0,		0,		0,		0,		0,		0,		0,
-0,		0,		0,		d3omi8,	0,		0,		0,		0,			0,		d2om,	0,		d3omd8,	0,		0,		0,		0,
 0,		0,		0,		0,		0,		0,		0,		0,			0,		0,		0,		0,		0,		0,		0,		0,
-0,		0,		0,		0,		0,		0,		0,		0,			0,		0,		0,		0,		0,		0,		0,		0,
-0,		0,		0,		0,		0,		0,		0,		0,			0,		0,		0,		0,		d2oi32,	0,		0,		0,
+0,		0,		0,		0,		0,		0,		0,		0,			d2oi32,	d2oi32,	d2oi32,	d2oi32,	d2oi32,	d2oi32,	d2oi32,	d2oi32,
 0,		0,		0,		0,		0,		0,		0,		d3omsi32,	0,		0,		0,		0,		0,		0,		0,		0,
 0,		0,		0,		0,		0,		0,		0,		0,			0,		0,		0,		0,		0,		0,		0,		0,
-0,		0,		0,		0,		0,		0,		0,		0,			d2od32,	0,		0,		0,		0,		0,		0,		0,
+0,		0,		0,		0,		0,		0,		0,		0,			d2od32,	0,		0,		d2od8,	0,		0,		0,		0,
 0,		0,		0,		0,		0,		0,		0,		0,			0,		0,		0,		0,		0,		0,		0,		0,
 };
 
@@ -210,7 +216,8 @@ int call_op( instruction_t * p_inst )
 int move_op( instruction_t * p_inst )
 {
 	private_instruction_t * p = p_inst->priv;
-	unsigned char op_code = p->op_code.octets[ p->op_code_len - 1 ];
+	unsigned char op_code = p->op_code.octets[0];
+	unsigned char op_code1 = 0;
 
 	switch ( op_code )
 	{
@@ -227,17 +234,63 @@ int move_op( instruction_t * p_inst )
 			break;
 		}
 	case 0x89:
-	case 0x8b:
-	case 0xb6:
 		{
 			if ( p->modrm.m.mod == 0x3 ) {
 				registers[ p->modrm.m.rm + 1 ] = registers[ p->modrm.m.reg + 1 ];
 			} else {
+				printf("Fatal error. Unsupported operation\n");
+				exit( 1 );
+			}
+			break;
+		}
+	case 0x8b:
+		{
+			if ( p->modrm.m.mod != 0x3 ) {
 				unsigned int src_offset = 0;
 				
 				src_offset = registers[ p->modrm.m.rm + 1 ] + p->displacement.value;
 				memcpy( &registers[ p->modrm.m.reg + 1 ], phy_memory + src_offset, 4 );
+			} else {
+				printf("Fatal error. Unsupported operation\n");
+				exit( 1 );
 			}
+			break;
+		}
+	case 0x0f:
+		{
+			op_code1 = p->op_code.octets[1];
+
+			switch ( op_code1 )
+			{
+			case 0xb6:
+				{
+					if ( p->modrm.m.mod != 0x3 ) {
+						unsigned int src_offset = registers[ p->modrm.m.rm + 1 ];
+						unsigned int dst = 0;
+
+						memcpy( &dst, phy_memory + src_offset, 1 );
+						registers[ p->modrm.m.reg + 1 ] = dst;
+					} else {
+						printf("Fatal error. Unsupported operation\n");
+						exit( 1 );
+					}
+					break;
+				}
+			case 0xbe:
+				{
+					if ( p->modrm.m.mod == 0x3 ) {
+						char src = registers[ p->modrm.m.rm + 1 ];
+						registers[ p->modrm.m.reg + 1 ] = src;
+					} else {
+						printf("Fatal error. Unsupported operation\n");
+						exit( 1 );
+					}
+					break;
+				}
+			default:
+				break;
+			}
+			
 			break;
 		}
 	case 0xc7:
@@ -320,7 +373,7 @@ int sub_op( instruction_t * p_inst )
 	res = src1 - src2;
 	registers[p->modrm.m.rm + 1] = res;
 
-    cf = src1 < src2;
+    cf = (unsigned int)src1 < (unsigned int)src2;
     pf = parity_table[(unsigned char)res];
     af = (res ^ src1 ^ src2) & EFL_AF;
     zf = (res == 0) * EFL_ZF;
@@ -329,6 +382,8 @@ int sub_op( instruction_t * p_inst )
 
     registers[EFL] &= ~( EFL_CF | EFL_PF | EFL_AF | EFL_ZF | EFL_SF | EFL_OF );
     registers[EFL] |= ( cf | pf | af | zf | sf | of );
+
+	return 0;
 }
 
 int inst_2b_op( instruction_t * p_inst )
@@ -342,6 +397,8 @@ int inst_2b_op( instruction_t * p_inst )
 		printf( "Fatal error, can't find instruction call back function\n" );
 		exit( 1 );
 	}
+
+	return 0;
 }
 
 int grp1_op( instruction_t * p_inst )
@@ -363,6 +420,149 @@ int grp1_op( instruction_t * p_inst )
 	default:
 		return -1;
 	}
+
+	return 0;
+}
+
+int test_op( instruction_t * p_inst )
+{
+	private_instruction_t * p = p_inst->priv;
+	unsigned int src1 = 0;
+	unsigned int src2 = 0;
+	unsigned int tmp = 0;
+	int of = 0;
+    int cf = 0;
+	int sf = 0;
+	int zf = 0;
+	int pf = 0;
+	unsigned char op_code = p->op_code.octets[ 0 ];
+
+	if ( p->modrm.m.mod == 0x3 ) {
+		src1 = registers[ p->modrm.m.reg + 1 ];
+		src2 = registers[ p->modrm.m.rm + 1 ];
+		tmp = src1 & src2;
+	} else {
+		printf("Fatal error. Unsupported operation\n");
+		exit( 1 );
+	}
+
+    cf = 0;
+    pf = parity_table[(unsigned char)tmp];
+    zf = (tmp == 0) * EFL_ZF;
+	sf = tmp >> ( op_code == 0x84 ? 0 : 24 ) & EFL_SF;
+    of = 0;
+
+    registers[EFL] &= ~( EFL_CF | EFL_PF | EFL_ZF | EFL_SF | EFL_OF );
+    registers[EFL] |= ( cf | pf | zf | sf | of );
+
+	return 0;
+}
+
+int jcc_op( instruction_t * p_inst )
+{
+	private_instruction_t * p = p_inst->priv;
+	unsigned char op_code = p->op_code.octets[0];
+	
+	if ( op_code == 0x74 ) {
+		if ( registers[EFL] & EFL_ZF ) {
+			registers[EIP] += p->displacement.value;
+		}
+	} else if ( op_code == 0x75 ) {
+		if ( !(registers[EFL] & EFL_ZF) ) {
+			registers[EIP] += p->displacement.value;
+		}
+	} else {
+		printf("Fatal error. Unsupported operation\n");
+		exit( 1 );
+	}
+
+	return 0;
+}
+
+int jmp_op( instruction_t * p_inst )
+{
+	private_instruction_t * p = p_inst->priv;
+	unsigned char op_code = p->op_code.octets[0];
+
+	if ( op_code == 0xeb ) {
+		registers[EIP] += p->displacement.value;
+	} else {
+		printf("Fatal error. Unsupported operation\n");
+		exit( 1 );
+	}
+
+	return 0;
+}
+
+int add_op( instruction_t * p_inst )
+{
+	private_instruction_t * p = p_inst->priv;
+	int src1 = 0;
+	int src2 = 0;
+	int res = 0;
+    int cf = 0;
+	int pf = 0;
+	int af = 0;
+	int zf = 0;
+	int sf = 0;
+	int of = 0;
+
+	if ( p->modrm.m.mod == 0x3 ) {
+		src1 = registers[p->modrm.m.rm + 1];
+		src2 = p->imm.octets[0];
+	} else {
+		printf("Fatal error. Unsupported now\n");
+		exit( 1 );
+	}
+
+	res = src1 + src2;
+	registers[p->modrm.m.rm + 1] = res;
+
+    cf = (unsigned int)res < (unsigned int)src2 | (unsigned int)res < (unsigned int)src1;
+    pf = parity_table[(unsigned char)res];
+    af = (res ^ src1 ^ src2) & EFL_AF;
+    zf = (res == 0) * EFL_ZF;
+    sf = res >> 24 & EFL_SF;
+    of = ( (~(src1 ^ src2)) & (src1 ^ res) ) >> 20 & EFL_OF;
+
+    registers[EFL] &= ~( EFL_CF | EFL_PF | EFL_AF | EFL_ZF | EFL_SF | EFL_OF );
+    registers[EFL] |= ( cf | pf | af | zf | sf | of );
+
+	return 0;
+}
+
+int cmp_op( instruction_t * p_inst )
+{
+	private_instruction_t * p = p_inst->priv;
+	int src1 = 0;
+	int src2 = 0;
+	int res = 0;
+    int cf = 0;
+	int pf = 0;
+	int af = 0;
+	int zf = 0;
+	int sf = 0;
+	int of = 0;
+
+	if ( p->modrm.m.mod == 0x3 ) {
+		src1 = registers[p->modrm.m.rm + 1];
+		src2 = p->imm.octets[0];
+	} else {
+		printf("Fatal error. Unsupported now\n");
+		exit( 1 );
+	}
+
+	res = src1 - src2;
+
+    cf = (unsigned int)src1 < (unsigned int)src2;
+    pf = parity_table[(unsigned char)res];
+    af = (res ^ src1 ^ src2) & EFL_AF;
+    zf = (res == 0) * EFL_ZF;
+    sf = res >> 24 & EFL_SF;
+    of = ((src1 ^ src2) & (src1 ^ res)) >> 20 & EFL_OF;
+
+    registers[EFL] &= ~( EFL_CF | EFL_PF | EFL_AF | EFL_ZF | EFL_SF | EFL_OF );
+    registers[EFL] |= ( cf | pf | af | zf | sf | of );
 
 	return 0;
 }
@@ -459,6 +659,12 @@ void d2od32( instruction_t * p_inst )
 {
 	_decode_op( p_inst );
 	_decode_d32( p_inst );
+}
+
+void d2od8( instruction_t * p_inst )
+{
+	_decode_op( p_inst );
+	_decode_d8( p_inst );
 }
 
 void d2oi32( instruction_t * p_inst )
