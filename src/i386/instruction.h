@@ -1,6 +1,10 @@
 #ifndef _EMULATOR_INSTRUCTION_H_
 #define _EMULATOR_INSTRUCTION_H_
 
+/*********************************/
+/* Instruction class declaration */
+/*********************************/
+
 typedef struct {
 	struct _private_instruction_t * priv;
 } instruction_t;

@@ -5,7 +5,6 @@
 #define		BIOS_BASE_ADDRESS	0x10000
 #define		KERNEL_BASE_ADDRESS	0x00100000
 #define		ROOTFS_BASE_ADDRESS	0x00400000
-
 #define	EIP		0
 #define	EAX		1
 #define	ECX		2
@@ -17,7 +16,6 @@
 #define	EDI		8
 #define	EFL		9
 #define TOTAL_REGS	10
-
 #define EFL_CF	0
 #define EFL_PF	0x2
 #define EFL_AF	0x10
@@ -30,13 +28,18 @@
 #define EFL_RF	0x10000
 
 extern const unsigned char parity_table[256];
-
 extern unsigned char phy_memory[MEMORY_SIZE];
-extern unsigned int registers[TOTAL_REGS];
-extern unsigned int restore_registers[TOTAL_REGS];
+extern int registers[TOTAL_REGS];
+extern int restore_registers[TOTAL_REGS];
 extern const char * registers_desc[TOTAL_REGS];
 
-#define set_efl( flag ) ( registers[EFL] = registers[EFL] | 1 << flag )
-#define clr_efl( flag ) ( registers[EFL] = registers[EFL] & (~ 1 << flag) )
+#define set_efl( flag ) (registers[EFL] = registers[EFL] | flag)
+#define clr_efl( flag ) (registers[EFL] = registers[EFL] & (~flag))
+#define set_efl_cc( condition, flag ) \
+	if (condition) {\
+		set_efl( flag );\
+	} else {\
+		clr_efl( flag );\
+	}
 
 #endif
