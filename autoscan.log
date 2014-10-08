@@ -1,7 +1,0 @@
-autoscan: warning: missing AC_CHECK_FUNCS([memset]) wanted by: 
-	src/i386/i386_emu.c:11
-	src/i386/instruction.c:333
-autoscan: warning: missing AC_CHECK_HEADERS([malloc.h]) wanted by: 
-	src/i386/instruction.c:4
-autoscan: warning: missing AC_FUNC_MALLOC wanted by: 
-	src/i386/instruction.c:332
