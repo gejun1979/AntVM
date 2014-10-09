@@ -10,7 +10,7 @@ typedef struct {
 } instruction_t;
 
 void instruction_construct( instruction_t * p_inst );
-void instruction_load( instruction_t * p_inst );
+void instruction_decode( instruction_t * p_inst );
 void instruction_run( instruction_t * p_inst );
 void instruction_destruct( instruction_t * p_inst );
 

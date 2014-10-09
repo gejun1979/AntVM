@@ -3,10 +3,10 @@
 
 int load_image( const char * image_path, char * p_memory, int image_address );
 
-unsigned char fetch_char( unsigned char * p_memory, int pos );
-unsigned int fetch_int( unsigned char * p_memory, int pos );
+unsigned char fetch_char( char * p_memory, int pos );
+unsigned int fetch_int( char * p_memory, int pos );
 
-void dump_instruction( int index, unsigned char * instruction, int len );
+void dump_instruction( int index, char * instruction, int len );
 void dump_registers();
 
 #endif

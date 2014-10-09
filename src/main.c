@@ -28,7 +28,7 @@ void show_version()
 
 int main( int argc, char * argv[] )
 {
-	int	c;
+	int c;
 	int res = 0;
 	char bios_path[PATH_MAX] = {0};
 	char rootfs_path[PATH_MAX] = {0};

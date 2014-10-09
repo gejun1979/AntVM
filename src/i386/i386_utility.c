@@ -3,13 +3,13 @@
 #include "i386_utility.h"
 #include "i386_arch.h"
 
-void dump_instruction( int index, unsigned char * instruction, int len )
+void dump_instruction( int index, char * instruction, int len )
 {
 	int i = 0;
 
 	printf( "%d. ", index );
 	for ( ; i < len; ++i ) {
-		printf( "0x%02x ", instruction[i] );
+		printf( "0x%02x ", (unsigned char)instruction[i] );
 	}
 	printf("\n");
 }
@@ -51,7 +51,7 @@ int load_image( const char * image_path, char * p_memory, int image_address )
 	return 0;
 }
 
-unsigned char fetch_char( unsigned char * p_memory, int pos )
+unsigned char fetch_char( char * p_memory, int pos )
 {
 	if ( pos >= MEMORY_SIZE ) {
 		printf( "Fatal error, memory overflow\n" );
@@ -61,7 +61,7 @@ unsigned char fetch_char( unsigned char * p_memory, int pos )
 	return p_memory[ pos ];
 }
 
-unsigned int fetch_int( unsigned char * p_memory, int pos )
+unsigned int fetch_int( char * p_memory, int pos )
 {
 	unsigned char value_octet[4] = { 0 };
 

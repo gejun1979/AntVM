@@ -65,7 +65,7 @@ typedef struct _private_instruction_t {
 	int imm_len;
 
 	char instruction_codes[15];
-	char instruction_len;
+	int instruction_len;
 } private_instruction_t;
 
 /********************************************/
@@ -431,7 +431,7 @@ int add_op( private_instruction_t * p )
 		res = src1 + src2;
 		registers[p->modrm.m.rm + 1] = res;
 
-		set_efl_cc( (unsigned int)res < (unsigned int)src2 | (unsigned int)res < (unsigned int)src1, EFL_CF );
+		set_efl_cc( ((unsigned int)res < (unsigned int)src2) | ((unsigned int)res < (unsigned int)src1), EFL_CF );
 		set_efl_cc( parity_table[(unsigned char)res], EFL_PF );
 		set_efl_cc( (res ^ src1 ^ src2) & EFL_AF, EFL_AF );
 		set_efl_cc( (res == 0) * EFL_ZF, EFL_ZF );

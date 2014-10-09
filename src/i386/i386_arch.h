@@ -1,5 +1,5 @@
-#ifndef _EMULATOR_I386_H_
-#define _EMULATOR_I386_H_
+#ifndef _ARCH_I386_H_
+#define _ARCH_I386_H_
 
 #define		MEMORY_SIZE			(16*1024*1024)
 #define		BIOS_BASE_ADDRESS	0x10000
@@ -28,7 +28,7 @@
 #define EFL_RF	0x10000
 
 extern const unsigned char parity_table[256];
-extern unsigned char phy_memory[MEMORY_SIZE];
+extern char phy_memory[MEMORY_SIZE];
 extern int registers[TOTAL_REGS];
 extern int restore_registers[TOTAL_REGS];
 extern const char * registers_desc[TOTAL_REGS];
