@@ -12,18 +12,18 @@ int g_debug_mode = 0;
 
 void usage( const char * name )
 {
-	printf( "Usage: %s <-b bios> <-f rootfs> <-k linuxkernel> [-d]\n", name );
-	printf( "-b		bios image\n");
-	printf( "-f		rootfs image\n");
-	printf( "-k		linux kernel image\n");
-	printf( "-d		enable verbose log\n");
-	printf( "-v		show version\n");
-	printf( "-h		this help page\n");
+	fprintf( stderr, "Usage: %s <-b bios> <-f rootfs> <-k linuxkernel> [-d]\n", name );
+	fprintf( stderr, "-b		bios image\n");
+	fprintf( stderr, "-f		rootfs image\n");
+	fprintf( stderr, "-k		linux kernel image\n");
+	fprintf( stderr, "-d		enable verbose log\n");
+	fprintf( stderr, "-v		show version\n");
+	fprintf( stderr, "-h		this help page\n");
 }
 
 void show_version()
 {
-	printf( "version:%s\n", VERSION );
+	fprintf( stderr, "version:%s\n", VERSION );
 }
 
 int main( int argc, char * argv[] )
@@ -61,36 +61,36 @@ int main( int argc, char * argv[] )
 	}
 
 	if ( optind < argc ) {
-		printf("Error: unknown argument");
+		fprintf(stderr, "Error: unknown argument");
 		for ( ; optind < argc; ++optind ) {
-			printf( ", %s", argv[optind] );
+			fprintf( stderr, ", %s", argv[optind] );
 		}
-		printf("\n");
+		fprintf(stderr, "\n");
 		usage( argv[0] );
 		return EXIT_FAILURE;
 	}
 
 	if ( strlen( bios_path ) == 0 ) {
-		printf( "Error: bios image path can't be empty.\n" );
+		fprintf( stderr, "Error: bios image path can't be empty.\n" );
 		usage( argv[0] );
 		return EXIT_FAILURE;
 	}
 
 	if ( strlen( rootfs_path ) == 0 ) {
-		printf( "Error: rootfs image path can't be empty.\n" );
+		fprintf( stderr, "Error: rootfs image path can't be empty.\n" );
 		usage( argv[0] );
 		return EXIT_FAILURE;
 	}
 
 	if ( strlen( kernel_path ) == 0 ) {
-		printf( "Error: linux kernel image path can't be empty.\n" );
+		fprintf( stderr, "Error: linux kernel image path can't be empty.\n" );
 		usage( argv[0] );
 		return EXIT_FAILURE;
 	}
 	
 	res = emulator_i386( bios_path, rootfs_path, kernel_path );
 	if ( res ) {
-		printf( "i386 emulater failed with %d\n", res );
+		fprintf( stderr, "i386 emulater failed with %d\n", res );
 		return EXIT_FAILURE;
 	}
 

@@ -7,22 +7,22 @@ void dump_instruction( int index, char * instruction, int len )
 {
 	int i = 0;
 
-	printf( "%d. ", index );
+	fprintf( stderr, "%d. ", index );
 	for ( ; i < len; ++i ) {
-		printf( "0x%02x ", (unsigned char)instruction[i] );
+		fprintf( stderr, "0x%02x ", (unsigned char)instruction[i] );
 	}
-	printf("\n");
+	fprintf(stderr, "\n");
 }
 
 void dump_registers()
 {
 	int i = 0;
 
-	printf("register:\n");
+	fprintf(stderr, "register:\n");
 	for ( ; i < TOTAL_REGS; ++i ) {
-		printf( "%s=%08x\n", registers_desc[i], registers[i] );
+		fprintf( stderr, "%s=%08x\n", registers_desc[i], registers[i] );
 	}
-	printf("\n");
+	fprintf(stderr, "\n");
 }
 
 int load_image( const char * image_path, char * p_memory, int image_address )
@@ -38,13 +38,13 @@ int load_image( const char * image_path, char * p_memory, int image_address )
 		if ( fread( (p_memory + image_address), 1, size, p_file ) != size ) {
 			fclose( p_file );
 
-			printf( "Failed to load image %s", image_path );
+			fprintf( stderr, "Failed to load image %s", image_path );
 			exit( 1 );
 		}
 
 		fclose( p_file );
 	} else {
-		printf( "Failed to open image %s", image_path );
+		fprintf( stderr, "Failed to open image %s", image_path );
 		exit( 1 );
 	}
 
@@ -54,7 +54,7 @@ int load_image( const char * image_path, char * p_memory, int image_address )
 unsigned char fetch_char( char * p_memory, int pos )
 {
 	if ( pos >= MEMORY_SIZE ) {
-		printf( "Fatal error, memory overflow\n" );
+		fprintf( stderr, "Fatal error, memory overflow\n" );
 		exit( 1 );
 	}
 

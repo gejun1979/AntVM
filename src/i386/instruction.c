@@ -221,7 +221,7 @@ void push( int value )
 		return;
 	}
 
-	printf("Fatal error, memory overflow\n");
+	fprintf(stderr, "Fatal error, memory overflow\n");
 	exit(1);
 }
 
@@ -248,7 +248,7 @@ int mov_Ev_Gv( private_instruction_t * p )
 		return 0;
 	}
 
-	printf("Fatal error. Invalid instruction\n");
+	fprintf(stderr, "Fatal error. Invalid instruction\n");
 	exit( 1 );
 }
 
@@ -262,7 +262,7 @@ int mov_Gv_Ev( private_instruction_t * p )
 		return 0;
 	}
 
-	printf("Fatal error. Invalid instruction\n");
+	fprintf(stderr, "Fatal error. Invalid instruction\n");
 	exit( 1 );
 }
 
@@ -285,7 +285,7 @@ int grp11_mov_Ev_Iz( private_instruction_t * p )
 		}
 	}
 
-	printf("Fatal error. Invalid instruction\n");
+	fprintf(stderr, "Fatal error. Invalid instruction\n");
 	exit( 1 );
 }
 
@@ -300,7 +300,7 @@ int movzx_Gv_Eb( private_instruction_t * p )
 		return 0;
 	}
 
-	printf("Fatal error. Invalid instruction\n");
+	fprintf(stderr, "Fatal error. Invalid instruction\n");
 	exit( 1 );
 }
 
@@ -312,7 +312,7 @@ int movsx_Gv_Eb( private_instruction_t * p )
 		return 0;
 	}
 
-	printf("Fatal error. Invalid instruction\n");
+	fprintf(stderr, "Fatal error. Invalid instruction\n");
 	exit( 1 );
 }
 
@@ -344,7 +344,7 @@ int sub_op( private_instruction_t * p )
 		return 0;
 	}
 
-	printf("Fatal error. Unsupported now\n");
+	fprintf(stderr, "Fatal error. Unsupported now\n");
 	exit( 1 );
 }
 
@@ -357,7 +357,7 @@ int inst_2b_op( private_instruction_t * p )
 		return 0;
 	}
 	
-	printf( "Fatal error, can't find instruction call back function\n" );
+	fprintf( stderr, "Fatal error, can't find instruction call back function\n" );
 	exit( 1 );
 }
 
@@ -390,7 +390,7 @@ int test_op( private_instruction_t * p )
 		return 0;
 	}
 	
-	printf("Fatal error. Unsupported operation\n");
+	fprintf(stderr, "Fatal error. Unsupported operation\n");
 	exit( 1 );
 }
 
@@ -441,7 +441,7 @@ int add_op( private_instruction_t * p )
 		return 0;
 	}
 	
-	printf("Fatal error. Unsupported now\n");
+	fprintf(stderr, "Fatal error. Unsupported now\n");
 	exit( 1 );
 }
 
@@ -466,7 +466,7 @@ int cmp_op( private_instruction_t * p )
 		return 0;
 	}
 	
-	printf("Fatal error. Unsupported now\n");
+	fprintf(stderr, "Fatal error. Unsupported now\n");
 	exit( 1 );
 }
 
@@ -606,7 +606,7 @@ void d_inst2( private_instruction_t * p )
 	if ( p_decode_f ) {
 		p_decode_f( p );
 	} else {
-		printf( "Fatal error, unknown instruction\n" );
+		fprintf( stderr, "Fatal error, unknown instruction\n" );
 		exit( 1 );
 	}
 }
@@ -634,7 +634,7 @@ void instruction_decode( instruction_t * p_inst )
 	if ( p_decode_f ) {
 		p_decode_f( p_inst->priv );
 	} else {
-		printf( "Fatal error, unknown instruction\n" );
+		fprintf( stderr, "Fatal error, unknown instruction\n" );
 		exit( 1 );
 	}
 }
@@ -648,7 +648,7 @@ void instruction_run( instruction_t * p_inst )
 	if ( p_op ) {
 		p_op( p );
 	} else {
-		printf( "Fatal error, can't find instruction call back function\n" );
+		fprintf( stderr, "Fatal error, can't find instruction call back function\n" );
 		exit( 1 );
 	}
 

@@ -72,7 +72,7 @@ int port_read( int port )
 		return pa->read_action( port );
 	}
 
-	printf( "Fatal error, invalid port %d\n", port );
+	fprintf( stderr, "Fatal error, invalid port %d\n", port );
 	exit(1);
 }
 
@@ -83,6 +83,6 @@ void port_write( int port, int value )
 		return pa->write_action( port, value );
 	}
 
-	printf( "Fatal error, invalid port %d\n", port );
+	fprintf( stderr, "Fatal error, invalid port %d\n", port );
 	exit(1);
 }
