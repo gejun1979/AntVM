@@ -90,6 +90,7 @@ int grp11_mov_Ev_Iz( private_instruction_t * p );
 int push_op( private_instruction_t * p );
 int grp1_op( private_instruction_t * p );
 int inst_2b_op( private_instruction_t * p );
+int out_op( private_instruction_t * p );
 
 typedef int (*instruction_oper_ftype)( private_instruction_t * p );
 
@@ -127,7 +128,7 @@ push_op,push_op,push_op,push_op,push_op,push_op,push_op,push_op,		0,			0,			0,		
 0,		0,		0,		0,		0,		0,		0,		0,				mov_rx_Iv,	mov_rx_Iv,	mov_rx_Iv,	mov_rx_Iv,	mov_rx_Iv,	mov_rx_Iv,	mov_rx_Iv,	mov_rx_Iv,
 0,		0,		0,		0,		0,		0,		0,		grp11_mov_Ev_Iz,0,			0,			0,			0,			0,			0,			0,			0,
 0,		0,		0,		0,		0,		0,		0,		0,				0,			0,			0,			0,			0,			0,			0,			0,
-0,		0,		0,		0,		0,		0,		0,		0,				call_op,	0,			0,			jb,			0,			0,			0,			0,
+0,		0,		0,		0,		0,		0,		0,		0,				call_op,	0,			0,			jb,			0,			0,			out_op,			0,
 0,		0,		0,		0,		0,		0,		0,		0,				0,			0,			0,			0,			0,			0,			0,			0,
 };
 
@@ -359,6 +360,12 @@ int inst_2b_op( private_instruction_t * p )
 	
 	fprintf( stderr, "Fatal error, can't find instruction call back function\n" );
 	exit( 1 );
+}
+
+int out_op( private_instruction_t * p )
+{
+        fprintf( stderr, "out isn't implemented yet\n" );
+        exit( 1 );
 }
 
 int grp1_op( private_instruction_t * p )
@@ -607,6 +614,7 @@ void d_inst2( private_instruction_t * p )
 		p_decode_f( p );
 	} else {
 		fprintf( stderr, "Fatal error, unknown instruction\n" );
+		dump_instruction( -1, p->instruction_codes, p->instruction_len );
 		exit( 1 );
 	}
 }
@@ -634,7 +642,7 @@ void instruction_decode( instruction_t * p_inst )
 	if ( p_decode_f ) {
 		p_decode_f( p_inst->priv );
 	} else {
-		fprintf( stderr, "Fatal error, unknown instruction\n" );
+		fprintf( stderr, "Fatal error, unknown instruction, opcode = 0x%02x\n", instruction_octet );
 		exit( 1 );
 	}
 }

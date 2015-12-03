@@ -80,7 +80,8 @@ void port_write( int port, int value )
 {
 	port_action * pa = scan_port_map( port );
 	if ( pa && port < pa->port_high_bound && port >= pa->port_low_bound ) {
-		return pa->write_action( port, value );
+		pa->write_action( port, value );
+		return;
 	}
 
 	fprintf( stderr, "Fatal error, invalid port %d\n", port );

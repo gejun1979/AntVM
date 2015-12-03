@@ -3,6 +3,8 @@
 #include "i386_utility.h"
 #include "i386_arch.h"
 
+#pragma warning (disable : 4996)
+
 void dump_instruction( int index, char * instruction, int len )
 {
 	int i = 0;

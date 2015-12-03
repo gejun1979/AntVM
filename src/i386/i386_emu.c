@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <memory.h>
 #include "i386_utility.h"
 #include "i386_arch.h"
@@ -7,6 +8,10 @@
 #include "instruction.h"
 #include "i386_port_action_map.h"
 #include "devices/serial.h"
+
+#ifdef _WIN32
+#pragma warning (disable : 4996)
+#endif
 
 void reset()
 {
