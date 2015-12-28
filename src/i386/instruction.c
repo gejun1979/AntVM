@@ -4,6 +4,7 @@
 #include <malloc.h>
 #include "i386_utility.h"
 #include "i386_arch.h"
+#include "i386_port_action_map.h"
 #include "instruction.h"
 
 /*****************************************************/
@@ -80,6 +81,7 @@ int je( private_instruction_t * p );
 int jne( private_instruction_t * p );
 int jb( private_instruction_t * p );
 int call_op( private_instruction_t * p );
+int ret_op( private_instruction_t * p );
 int mov_op( private_instruction_t * p );
 int mov_rx_Iv( private_instruction_t * p );
 int mov_Gv_Ev( private_instruction_t * p );
@@ -88,6 +90,7 @@ int movsx_Gv_Eb( private_instruction_t * p );
 int movzx_Gv_Eb( private_instruction_t * p );
 int grp11_mov_Ev_Iz( private_instruction_t * p );
 int push_op( private_instruction_t * p );
+int pop_op( private_instruction_t * p );
 int grp1_op( private_instruction_t * p );
 int inst_2b_op( private_instruction_t * p );
 int out_op( private_instruction_t * p );
@@ -119,14 +122,14 @@ instruction_oper_ftype op_array_1byte[256] = {
 0,		0,		0,		0,		0,		0,		0,		0,				0,			0,			0,			0,			0,			0,			0,			0,
 0,		0,		0,		0,		0,		0,		0,		0,				0,			0,			0,			0,			0,			0,			0,			0,
 0,		0,		0,		0,		0,		0,		0,		0,				0,			0,			0,			0,			0,			0,			0,			0,
-push_op,push_op,push_op,push_op,push_op,push_op,push_op,push_op,		0,			0,			0,			0,			0,			0,			0,			0,
+push_op,push_op,push_op,push_op,push_op,push_op,push_op,push_op,pop_op,pop_op,pop_op,pop_op,pop_op,pop_op,pop_op,pop_op,
 0,		0,		0,		0,		0,		0,		0,		0,				0,			0,			0,			0,			0,			0,			0,			0,
 0,		0,		0,		0,		je,		jne,	0,		0,				0,			0,			0,			0,			0,			0,			0,			0,
 0,		0,		0,		grp1_op,test_op,0,		0,		0,				0,			mov_Ev_Gv,	0,			mov_Gv_Ev,	0,			0,			0,			0,
 0,		0,		0,		0,		0,		0,		0,		0,				0,			0,			0,			0,			0,			0,			0,			0,
 0,		0,		0,		0,		0,		0,		0,		0,				0,			0,			0,			0,			0,			0,			0,			0,
 0,		0,		0,		0,		0,		0,		0,		0,				mov_rx_Iv,	mov_rx_Iv,	mov_rx_Iv,	mov_rx_Iv,	mov_rx_Iv,	mov_rx_Iv,	mov_rx_Iv,	mov_rx_Iv,
-0,		0,		0,		0,		0,		0,		0,		grp11_mov_Ev_Iz,0,			0,			0,			0,			0,			0,			0,			0,
+0,		0,		0,		ret_op,		0,		0,		0,		grp11_mov_Ev_Iz,0,			0,			0,			0,			0,			0,			0,			0,
 0,		0,		0,		0,		0,		0,		0,		0,				0,			0,			0,			0,			0,			0,			0,			0,
 0,		0,		0,		0,		0,		0,		0,		0,				call_op,	0,			0,			jb,			0,			0,			out_op,			0,
 0,		0,		0,		0,		0,		0,		0,		0,				0,			0,			0,			0,			0,			0,			0,			0,
@@ -165,8 +168,8 @@ void d2od32( private_instruction_t * p );
 void d2oi32( private_instruction_t * p );
 void d2om( private_instruction_t * p );
 void d3omi8( private_instruction_t * p );
-void d3omd8( private_instruction_t * p );
-void d3omsi32( private_instruction_t * p );
+void d3omd( private_instruction_t * p );
+void d5omsdi32( private_instruction_t * p );
 void d_inst2( private_instruction_t * p ); //decode 2 bytes instruction
 
 typedef void (*instruction_decode_ftype)( private_instruction_t * p );
@@ -196,22 +199,59 @@ instruction_decode_ftype decode_array_1byte[256] = {
 0,		0,		0,		0,		0,		0,		0,		0,			0,		0,		0,		0,		0,		0,		0,		0,
 0,		0,		0,		0,		0,		0,		0,		0,			0,		0,		0,		0,		0,		0,		0,		0,
 0,		0,		0,		0,		0,		0,		0,		0,			0,		0,		0,		0,		0,		0,		0,		0,
-d1o,	d1o,	d1o,	d1o,	d1o,	d1o,	d1o,	d1o,		0,		0,		0,		0,		0,		0,		0,		0,
+d1o,	d1o,	d1o,	d1o,	d1o,	d1o,	d1o,	d1o,	d1o,	d1o,	d1o,	d1o,	d1o,	d1o,	d1o,	d1o,
 0,		0,		0,		0,		0,		0,		0,		0,			0,		0,		0,		0,		0,		0,		0,		0,
 0,		0,		0,		0,		d2od8,	d2od8,	0,		0,			0,		0,		0,		0,		0,		0,		0,		0,
-0,		0,		0,		d3omi8,	d2om,	0,		0,		0,			0,		d2om,	0,		d3omd8,	0,		0,		0,		0,
+0,		0,		0,		d3omi8,	d2om,	0,		0,		0,			0,		d2om,	0,		d3omd,	0,		0,		0,		0,
 0,		0,		0,		0,		0,		0,		0,		0,			0,		0,		0,		0,		0,		0,		0,		0,
 0,		0,		0,		0,		0,		0,		0,		0,			0,		0,		0,		0,		0,		0,		0,		0,
 0,		0,		0,		0,		0,		0,		0,		0,			d2oi32,	d2oi32,	d2oi32,	d2oi32,	d2oi32,	d2oi32,	d2oi32,	d2oi32,
-0,		0,		0,		0,		0,		0,		0,		d3omsi32,	0,		0,		0,		0,		0,		0,		0,		0,
+0,		0,		0,		d1o,		0,		0,		0,		d5omsdi32,	0,		0,		0,		0,		0,		0,		0,		0,
 0,		0,		0,		0,		0,		0,		0,		0,			0,		0,		0,		0,		0,		0,		0,		0,
-0,		0,		0,		0,		0,		0,		0,		0,			d2od32,	0,		0,		d2od8,	0,		0,		0,		0,
+0,		0,		0,		0,		0,		0,		0,		0,			d2od32,	0,		0,		d2od8,	0,		0,		d1o,		0,
 0,		0,		0,		0,		0,		0,		0,		0,			0,		0,		0,		0,		0,		0,		0,		0,
 };
 
 /*******************************************************/
 /* Part4 Instruction operation function implementation */
 /*******************************************************/
+
+unsigned int calculate_base_offset( private_instruction_t * p )
+{
+ unsigned int base = 0;
+ 
+ if ( p->modrm.m.mod == 3 ) {
+  fprintf(stderr, "Fatal error. Invalid mod value in %s\n", __FUNCTION__ );
+  dump_instruction( -1, p->instruction_codes, p->instruction_len );
+  exit( 1 );
+ }
+ 
+ if ( base != 0x5 ) {
+  base = registers[p->sib.s.index + 1];
+ } else {
+  if ( p->modrm.m.mod == 0 ) {
+   base = p->displacement.value;
+  } else {
+   base = registers[p->sib.s.index + 1] + p->displacement.value;
+  }
+ }
+ 
+ return base;
+}
+
+unsigned int calculate_sib_offset( private_instruction_t * p )
+{
+ unsigned int base = calculate_base_offset( p );
+ unsigned int sib_offset = 0;
+
+ if ( p->sib.s.index == 4 ) {
+  sib_offset = base;
+ } else {
+  sib_offset = base + registers[p->sib.s.index + 1] * ( 1 << p->sib.s.scale );
+ }
+ 
+ return sib_offset;
+}
 
 void push( int value )
 {
@@ -226,12 +266,25 @@ void push( int value )
 	exit(1);
 }
 
+void pop( int * p_value )
+{
+	*p_value = *((int *) (phy_memory + registers[ESP]));
+	registers[ESP] += 4;
+}
+
 int call_op( private_instruction_t * p )
 {
-	push( registers[EIP] );
+	push( registers[EIP] + p->instruction_len );
 	registers[EIP] += p->displacement.value;
 
 	return 0;
+}
+
+int ret_op( private_instruction_t * p )
+{
+ pop( &registers[EIP] );
+
+ return 0;
 }
 
 int mov_rx_Iv( private_instruction_t * p )
@@ -270,23 +323,20 @@ int mov_Gv_Ev( private_instruction_t * p )
 int grp11_mov_Ev_Iz( private_instruction_t * p )
 {
 	if ( p->modrm.m.reg == 0 ) {
-		if ( p->modrm.m.mod == 0 ) {
-			unsigned int src = p->imm.value;
-			unsigned int dst_offset = 0;
+		// sib addressing mode
+		if ( p->modrm.m.rm == 0x4 ) {
+			  unsigned int src = p->imm.value;
+					unsigned int dst_offset = calculate_sib_offset( p );
 
-			if ( p->modrm.m.rm == 0x4 ) {
-				if ( p->sib.s.scale == 0 && p->sib.s.index == 4 ) {
-					if ( p->sib.s.base != 5 ) {
-						dst_offset = registers[p->sib.s.base + 1];
-						memcpy( phy_memory + dst_offset, &src, 4 );
-						return 0;
-					}
-				}
-			}
+					memcpy( phy_memory + dst_offset, &src, 4 );
+
+					return 0;
 		}
 	}
 
-	fprintf(stderr, "Fatal error. Invalid instruction\n");
+	fprintf(stderr, "Fatal error. Invalid instruction. %s\n", __FUNCTION__ );
+ dump_instruction( -1, p->instruction_codes, p->instruction_len );
+
 	exit( 1 );
 }
 
@@ -323,6 +373,12 @@ int push_op( private_instruction_t * p )
 	return 0;
 }
 
+int pop_op( private_instruction_t * p )
+{
+ pop( &registers[ EAX + p->op_code.octets[0] - 0x58 ] );
+ return 0;
+}
+
 int sub_op( private_instruction_t * p )
 {
 	int src1 = 0;
@@ -349,6 +405,12 @@ int sub_op( private_instruction_t * p )
 	exit( 1 );
 }
 
+int out_op( private_instruction_t * p )
+{
+	port_write( registers[EDX], registers[EAX] & 0xff );
+ return 0;
+}
+
 int inst_2b_op( private_instruction_t * p )
 {
 	instruction_oper_ftype p_op = op_array_2bytes[ p->op_code.octets[1] ];
@@ -360,12 +422,6 @@ int inst_2b_op( private_instruction_t * p )
 	
 	fprintf( stderr, "Fatal error, can't find instruction call back function\n" );
 	exit( 1 );
-}
-
-int out_op( private_instruction_t * p )
-{
-        fprintf( stderr, "out isn't implemented yet\n" );
-        exit( 1 );
 }
 
 int grp1_op( private_instruction_t * p )
@@ -512,6 +568,25 @@ void _decode_d8( private_instruction_t * p )
 	__decode_dis( p, 1 );
 }
 
+// _decode_d depends on modrm parameter, only the instruction has modrm
+// it can call _decode_d
+void _decode_d( private_instruction_t * p )
+{
+	if ( p->modrm.value != 0 ) {
+		if( p->modrm.m.mod == 1 ) {
+			_decode_d8( p );
+			return;
+		} else if ( p->modrm.m.mod == 2 ) {
+			_decode_d32( p );
+			return;
+		}
+	}
+
+ fprintf( stderr, "Fatal error, unknown mod value in %s\n", __FUNCTION__ );
+ dump_instruction( -1, p->instruction_codes, p->instruction_len );
+ exit( 1 );
+}
+
 void _decode_imm( private_instruction_t * p, int len )
 {
 	int i = 0;
@@ -585,18 +660,19 @@ void d3omi8( private_instruction_t * p )
 	_decode_i8( p );
 }
 
-void d3omd8( private_instruction_t * p )
+void d3omd( private_instruction_t * p )
 {
 	_decode_op( p );
 	_decode_m( p );
-	_decode_d8( p );
+	_decode_d( p );
 }
 
-void d3omsi32( private_instruction_t * p )
+void d5omsdi32( private_instruction_t * p )
 {
 	_decode_op( p );
 	_decode_m( p );
 	_decode_s( p );
+	_decode_d( p );
 	_decode_i32( p );
 }
 
@@ -660,7 +736,9 @@ void instruction_run( instruction_t * p_inst )
 		exit( 1 );
 	}
 
-	registers[EIP] += p->instruction_len;
+	if ( p_op != ret_op ) {
+ 	registers[EIP] += p->instruction_len;
+	}
 
 	dump_instruction( ++instruction_counter, p->instruction_codes, p->instruction_len );
 	dump_registers();

@@ -73,6 +73,10 @@ void send_char(char value)
 
 void recieve_char(char value)
 {
+#ifdef _WIN32
+#else
+    fprintf( stdout, "%c", value );
+#endif
 }
 
 int serial_port_read( int port )

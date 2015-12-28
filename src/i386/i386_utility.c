@@ -3,7 +3,9 @@
 #include "i386_utility.h"
 #include "i386_arch.h"
 
+#ifdef _WIN32
 #pragma warning (disable : 4996)
+#endif
 
 void dump_instruction( int index, char * instruction, int len )
 {
