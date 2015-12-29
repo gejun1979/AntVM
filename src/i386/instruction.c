@@ -153,6 +153,7 @@ add_op,	0,		0,		0,		0,	sub_op,		0,		cmp_op
 /* 2. o: operation code                */
 /*    d: displacement                  */
 /*    i: immediate                     */
+/*    s: sib                           */
 /*    m: modrm                         */
 /* For example,                        */
 /* d1o    = decode 1 element, element  */
@@ -274,7 +275,9 @@ void pop( int * p_value )
 
 int call_op( private_instruction_t * p )
 {
-	push( registers[EIP] + p->instruction_len );
+ registers[EIP] += p->instruction_len;
+
+	push( registers[EIP] );
 	registers[EIP] += p->displacement.value;
 
 	return 0;
@@ -292,6 +295,8 @@ int mov_rx_Iv( private_instruction_t * p )
 	unsigned char op_code = p->op_code.octets[0];
 
 	registers[ EAX + op_code - 0xb8 ] = p->imm.value;
+ registers[EIP] += p->instruction_len;
+
 	return 0;
 }
 
@@ -299,6 +304,8 @@ int mov_Ev_Gv( private_instruction_t * p )
 {
 	if ( p->modrm.m.mod == 0x3 ) {
 		registers[ p->modrm.m.rm + 1 ] = registers[ p->modrm.m.reg + 1 ];
+  registers[EIP] += p->instruction_len;
+
 		return 0;
 	}
 
@@ -313,6 +320,9 @@ int mov_Gv_Ev( private_instruction_t * p )
 
 		src_offset = registers[ p->modrm.m.rm + 1 ] + p->displacement.value;
 		memcpy( &registers[ p->modrm.m.reg + 1 ], phy_memory + src_offset, 4 );
+
+  registers[EIP] += p->instruction_len;
+
 		return 0;
 	}
 
@@ -329,6 +339,8 @@ int grp11_mov_Ev_Iz( private_instruction_t * p )
 					unsigned int dst_offset = calculate_sib_offset( p );
 
 					memcpy( phy_memory + dst_offset, &src, 4 );
+
+				 registers[EIP] += p->instruction_len;
 
 					return 0;
 		}
@@ -348,6 +360,8 @@ int movzx_Gv_Eb( private_instruction_t * p )
 
 		memcpy( &dst, phy_memory + src_offset, 1 );
 		registers[ p->modrm.m.reg + 1 ] = dst;
+  registers[EIP] += p->instruction_len;
+
 		return 0;
 	}
 
@@ -360,6 +374,8 @@ int movsx_Gv_Eb( private_instruction_t * p )
 	if ( p->modrm.m.mod == 0x3 ) {
 		char src = registers[ p->modrm.m.rm + 1 ];
 		registers[ p->modrm.m.reg + 1 ] = src;
+  registers[EIP] += p->instruction_len;
+
 		return 0;
 	}
 
@@ -370,12 +386,16 @@ int movsx_Gv_Eb( private_instruction_t * p )
 int push_op( private_instruction_t * p )
 {
 	push( registers[ EAX + p->op_code.octets[0] - 0x50 ] );
+ registers[EIP] += p->instruction_len;
+
 	return 0;
 }
 
 int pop_op( private_instruction_t * p )
 {
  pop( &registers[ EAX + p->op_code.octets[0] - 0x58 ] );
+ registers[EIP] += p->instruction_len;
+
  return 0;
 }
 
@@ -398,6 +418,8 @@ int sub_op( private_instruction_t * p )
 		set_efl_cc( res >> 24 & EFL_SF, EFL_SF );
 		set_efl_cc( ((src1 ^ src2) & (src1 ^ res)) >> 20 & EFL_OF, EFL_OF );
 
+  registers[EIP] += p->instruction_len;
+
 		return 0;
 	}
 
@@ -408,6 +430,8 @@ int sub_op( private_instruction_t * p )
 int out_op( private_instruction_t * p )
 {
 	port_write( registers[EDX], registers[EAX] & 0xff );
+ registers[EIP] += p->instruction_len;
+
  return 0;
 }
 
@@ -450,6 +474,8 @@ int test_op( private_instruction_t * p )
 		set_efl_cc( res & EFL_SF, EFL_SF );
 		set_efl_cc( 0, EFL_OF );
 
+  registers[EIP] += p->instruction_len;
+
 		return 0;
 	}
 	
@@ -459,6 +485,8 @@ int test_op( private_instruction_t * p )
 
 int _jcc_op( int cc, private_instruction_t * p )
 {
+ registers[EIP] += p->instruction_len;
+
 	if ( cc ) {
 		registers[EIP] += (char)p->displacement.octets[0];
 	}
@@ -478,6 +506,7 @@ int jne( private_instruction_t * p )
 
 int jb( private_instruction_t * p )
 {
+ registers[EIP] += p->instruction_len;
 	registers[EIP] += (char)p->displacement.octets[0];
 	return 0;
 }
@@ -500,6 +529,8 @@ int add_op( private_instruction_t * p )
 		set_efl_cc( (res == 0) * EFL_ZF, EFL_ZF );
 		set_efl_cc( res >> 24 & EFL_SF, EFL_SF );
 		set_efl_cc( ( (~(src1 ^ src2)) & (src1 ^ res) ) >> 20 & EFL_OF, EFL_OF );
+
+  registers[EIP] += p->instruction_len;
 
 		return 0;
 	}
@@ -525,6 +556,8 @@ int cmp_op( private_instruction_t * p )
 		set_efl_cc( (res == 0) * EFL_ZF, EFL_ZF );
 		set_efl_cc( res >> 24 & EFL_SF, EFL_SF );
 		set_efl_cc( ((src1 ^ src2) & (src1 ^ res)) >> 20 & EFL_OF, EFL_OF );
+
+	 registers[EIP] += p->instruction_len;
 
 		return 0;
 	}
@@ -734,10 +767,6 @@ void instruction_run( instruction_t * p_inst )
 	} else {
 		fprintf( stderr, "Fatal error, can't find instruction call back function\n" );
 		exit( 1 );
-	}
-
-	if ( p_op != ret_op ) {
- 	registers[EIP] += p->instruction_len;
 	}
 
 	dump_instruction( ++instruction_counter, p->instruction_codes, p->instruction_len );
