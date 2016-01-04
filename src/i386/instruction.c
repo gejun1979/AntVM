@@ -222,7 +222,7 @@ unsigned int calculate_base_offset( private_instruction_t * p )
  unsigned int base = 0;
  
  if ( p->modrm.m.mod == 3 ) {
-  fprintf(stderr, "Fatal error. Invalid mod value in %s\n", __FUNCTION__ );
+  ant_log(error, "Fatal error. Invalid mod value in %s\n", __FUNCTION__ );
   dump_instruction( -1, p->instruction_codes, p->instruction_len );
   exit( 1 );
  }
@@ -263,7 +263,7 @@ void push( int value )
 		return;
 	}
 
-	fprintf(stderr, "Fatal error, memory overflow\n");
+	ant_log(error, "Fatal error, memory overflow\n");
 	exit(1);
 }
 
@@ -309,7 +309,7 @@ int mov_Ev_Gv( private_instruction_t * p )
 		return 0;
 	}
 
-	fprintf(stderr, "Fatal error. Invalid instruction\n");
+	ant_log(error, "Fatal error. Invalid instruction\n");
 	exit( 1 );
 }
 
@@ -326,7 +326,7 @@ int mov_Gv_Ev( private_instruction_t * p )
 		return 0;
 	}
 
-	fprintf(stderr, "Fatal error. Invalid instruction\n");
+	ant_log(error, "Fatal error. Invalid instruction\n");
 	exit( 1 );
 }
 
@@ -346,7 +346,7 @@ int grp11_mov_Ev_Iz( private_instruction_t * p )
 		}
 	}
 
-	fprintf(stderr, "Fatal error. Invalid instruction. %s\n", __FUNCTION__ );
+	ant_log(error, "Fatal error. Invalid instruction. %s\n", __FUNCTION__ );
  dump_instruction( -1, p->instruction_codes, p->instruction_len );
 
 	exit( 1 );
@@ -365,7 +365,7 @@ int movzx_Gv_Eb( private_instruction_t * p )
 		return 0;
 	}
 
-	fprintf(stderr, "Fatal error. Invalid instruction\n");
+	ant_log(error, "Fatal error. Invalid instruction\n");
 	exit( 1 );
 }
 
@@ -379,7 +379,7 @@ int movsx_Gv_Eb( private_instruction_t * p )
 		return 0;
 	}
 
-	fprintf(stderr, "Fatal error. Invalid instruction\n");
+	ant_log(error, "Fatal error. Invalid instruction\n");
 	exit( 1 );
 }
 
@@ -423,7 +423,7 @@ int sub_op( private_instruction_t * p )
 		return 0;
 	}
 
-	fprintf(stderr, "Fatal error. Unsupported now\n");
+	ant_log(error, "Fatal error. Unsupported now\n");
 	exit( 1 );
 }
 
@@ -444,7 +444,7 @@ int inst_2b_op( private_instruction_t * p )
 		return 0;
 	}
 	
-	fprintf( stderr, "Fatal error, can't find instruction call back function\n" );
+	ant_log( error, "Fatal error, can't find instruction call back function\n" );
 	exit( 1 );
 }
 
@@ -479,7 +479,7 @@ int test_op( private_instruction_t * p )
 		return 0;
 	}
 	
-	fprintf(stderr, "Fatal error. Unsupported operation\n");
+	ant_log(error, "Fatal error. Unsupported operation\n");
 	exit( 1 );
 }
 
@@ -535,7 +535,7 @@ int add_op( private_instruction_t * p )
 		return 0;
 	}
 	
-	fprintf(stderr, "Fatal error. Unsupported now\n");
+	ant_log(error, "Fatal error. Unsupported now\n");
 	exit( 1 );
 }
 
@@ -562,7 +562,7 @@ int cmp_op( private_instruction_t * p )
 		return 0;
 	}
 	
-	fprintf(stderr, "Fatal error. Unsupported now\n");
+	ant_log(error, "Fatal error. Unsupported now\n");
 	exit( 1 );
 }
 
@@ -606,16 +606,20 @@ void _decode_d8( private_instruction_t * p )
 void _decode_d( private_instruction_t * p )
 {
 	if ( p->modrm.value != 0 ) {
-		if( p->modrm.m.mod == 1 ) {
-			_decode_d8( p );
-			return;
-		} else if ( p->modrm.m.mod == 2 ) {
-			_decode_d32( p );
-			return;
-		}
+		if ( p->modrm.m.rm == 0x4 ) {
+			if ( p->modrm.m.mod == 0 ) {
+				return;
+			} else if( p->modrm.m.mod == 1 ) {
+				_decode_d8( p );
+				return;
+			} else if ( p->modrm.m.mod == 2 ) {
+				_decode_d32( p );
+				return;
+			}
+  }
 	}
 
- fprintf( stderr, "Fatal error, unknown mod value in %s\n", __FUNCTION__ );
+ ant_log( error, "Fatal error, unknown mod value in %s\n", __FUNCTION__ );
  dump_instruction( -1, p->instruction_codes, p->instruction_len );
  exit( 1 );
 }
@@ -705,7 +709,11 @@ void d5omsdi32( private_instruction_t * p )
 	_decode_op( p );
 	_decode_m( p );
 	_decode_s( p );
-	_decode_d( p );
+
+ if ( p->modrm.m.rm == 0x4 ) {
+	 _decode_d( p );
+	}
+
 	_decode_i32( p );
 }
 
@@ -722,7 +730,7 @@ void d_inst2( private_instruction_t * p )
 	if ( p_decode_f ) {
 		p_decode_f( p );
 	} else {
-		fprintf( stderr, "Fatal error, unknown instruction\n" );
+		ant_log( error, "Fatal error, unknown instruction\n" );
 		dump_instruction( -1, p->instruction_codes, p->instruction_len );
 		exit( 1 );
 	}
@@ -751,7 +759,7 @@ void instruction_decode( instruction_t * p_inst )
 	if ( p_decode_f ) {
 		p_decode_f( p_inst->priv );
 	} else {
-		fprintf( stderr, "Fatal error, unknown instruction, opcode = 0x%02x\n", instruction_octet );
+		ant_log( error, "Fatal error, unknown instruction, opcode = 0x%02x\n", instruction_octet );
 		exit( 1 );
 	}
 }
@@ -765,7 +773,7 @@ void instruction_run( instruction_t * p_inst )
 	if ( p_op ) {
 		p_op( p );
 	} else {
-		fprintf( stderr, "Fatal error, can't find instruction call back function\n" );
+		ant_log( error, "Fatal error, can't find instruction call back function\n" );
 		exit( 1 );
 	}
 

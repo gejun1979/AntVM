@@ -3,6 +3,7 @@
 #include <memory.h>
 #include "serial.h"
 #include "../i386_port_action_map.h"
+#include "../i386_utility.h"
 
 #define RBR 0
 #define THR 0
@@ -75,7 +76,7 @@ void recieve_char(char value)
 {
 #ifdef _WIN32
 #else
-    fprintf( stdout, "%c", value );
+    ant_log( log, "%c", value );
 #endif
 }
 
@@ -124,7 +125,7 @@ int serial_port_read( int port )
         value = serial_reg.spr;
         break;
     default:
-		fprintf( stderr, "Unknown port 0x%08x\n", port );
+		ant_log( error, "Unknown port 0x%08x\n", port );
 		exit(1);
     }
 
@@ -178,7 +179,7 @@ void serial_port_write( int port, int value )
         serial_reg.spr = value;
         break;
     default:
-		fprintf( stderr, "Unknown port 0x%08x\n", port );
+		ant_log( error, "Unknown port 0x%08x\n", port );
 		exit(1);
     }
 }

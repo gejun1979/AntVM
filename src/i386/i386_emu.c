@@ -52,19 +52,19 @@ int emulator_i386( const char * bios_path, const char * kernel_path, const char 
 
 	res = load_image( bios_path, phy_memory, BIOS_BASE_ADDRESS );
 	if ( res ) {
-		fprintf( stderr, "i386 emulater failed to load bios %d\n", res );
+		ant_log( error, "i386 emulater failed to load bios %d\n", res );
 		return -1;
 	}
 
 	res = load_image( kernel_path, phy_memory, KERNEL_BASE_ADDRESS );
 	if ( res ) {
-		fprintf( stderr, "i386 emulater failed to load kernel %d\n", res );
+		ant_log( error, "i386 emulater failed to load kernel %d\n", res );
 		return -1;
 	}
 
 	res = load_image( rootfs_path, phy_memory, ROOTFS_BASE_ADDRESS );
 	if ( res ) {
-		fprintf( stderr, "i386 emulater failed to load rootfs %d\n", res );
+		ant_log( error, "i386 emulater failed to load rootfs %d\n", res );
 		return -1;
 	}
 

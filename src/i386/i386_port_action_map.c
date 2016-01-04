@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <memory.h>
 #include "i386_port_action_map.h"
+#include "i386_utility.h"
 
 #define MAX_PORT_ACTION_MAP_NUMBER 128
 
@@ -72,7 +73,7 @@ int port_read( int port )
 		return pa->read_action( port );
 	}
 
-	fprintf( stderr, "Fatal error, invalid port %d\n", port );
+	ant_log( error, "Fatal error, invalid port %d\n", port );
 	exit(1);
 }
 
@@ -84,6 +85,6 @@ void port_write( int port, int value )
 		return;
 	}
 
-	fprintf( stderr, "Fatal error, invalid port %d\n", port );
+	ant_log( error, "Fatal error, invalid port %d\n", port );
 	exit(1);
 }
