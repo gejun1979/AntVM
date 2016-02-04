@@ -15,20 +15,15 @@
 
 void reset()
 {
-	char * cmd_line = "console=ttyS0 root=/dev/ram0 rw init=/sbin/init notsc=1";
+    char * cmd_line = "console=ttyS0 root=/dev/ram0 rw init=/sbin/init notsc=1";
 
-	memset( registers, '\0', sizeof(registers) );
-	registers[EIP] = BIOS_BASE_ADDRESS;
-	registers[EAX] = 0x01000000;
-	registers[EBX] = 0x00200000;
-	registers[ECX] = 0x0000F800;
-	registers[EFL] = 0x00000002;
+    init_registers();
 
-	strcpy( phy_memory + registers[ECX], cmd_line );
+    strcpy( phy_memory + get_register_value(ECX), cmd_line );
 
-	init_port_action_map();
+    init_port_action_map();
 
-	init_serial();
+    init_serial();
 }
 
 void cleanup()

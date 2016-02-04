@@ -33,7 +33,7 @@ void dump_registers()
 
 	ant_log(debug, "register:\n");
 	for ( ; i < TOTAL_REGS; ++i ) {
-		ant_log( debug, "%s=%08x\n", registers_desc[i], registers[i] );
+		ant_log( debug, "%s=%08x\n", get_register_desc(i), get_register_value(i) );
 	}
 	ant_log(debug, "\n");
 }
