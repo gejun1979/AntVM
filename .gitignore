@@ -13,3 +13,14 @@ src/AntWin/.vs/AntWin/v15/.suo
 *.exe
 *.pdb
 *.ilk
+*.IAB
+*.IAD
+*.IMB
+*.IMD
+*.PO
+*.PFI
+*.PR
+*.PRI
+*.PS
+*.SearchResults
+*.WK3

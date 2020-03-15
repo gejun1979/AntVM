@@ -110,7 +110,7 @@ void set_register_value( unsigned int index, unsigned int value )
 
 const char * registers_desc[TOTAL_REGS] =
 {
-"eip", "eax", "ecx", "edx", "ebx", "esp", "ebp", "esi", "edi", "efl"
+"EIP", "EAX", "ECX", "EDX", "EBX", "ESP", "EBP", "ESI", "EDI", "EFL"
 };
 
 const char * get_register_desc( unsigned int index )

@@ -27,13 +27,16 @@ void dump_instruction( int index, char * instruction, int len )
 
 void dump_registers()
 {
-	int i = 0;
-
-	ant_log(debug, "register:\n");
-	for ( ; i < TOTAL_REGS; ++i ) {
-		ant_log( debug, "%s=%08x\n", get_register_desc(i), get_register_value(i) );
-	}
-	ant_log(debug, "\n");
+	ant_log(debug, "%s=%08X ", get_register_desc(EIP), get_register_value(EIP));
+	ant_log(debug, "%s=%08X ", get_register_desc(EAX), get_register_value(EAX));
+	ant_log(debug, "%s=%08X ", get_register_desc(ECX), get_register_value(ECX));
+	ant_log(debug, "%s=%08X ", get_register_desc(EDX), get_register_value(EDX));
+	ant_log(debug, "%s=%08X\n", get_register_desc(EBX), get_register_value(EBX));
+	ant_log(debug, "%s=%08X ", get_register_desc(EFL), get_register_value(EFL));
+	ant_log(debug, "%s=%08X ", get_register_desc(ESP), get_register_value(ESP));
+	ant_log(debug, "%s=%08X ", get_register_desc(EBP), get_register_value(EBP));
+	ant_log(debug, "%s=%08X ", get_register_desc(ESI), get_register_value(ESI));
+	ant_log(debug, "%s=%08X\n", get_register_desc(EDI), get_register_value(EDI));
 }
 
 int load_image( const char * image_path, char * p_memory, int image_address )
