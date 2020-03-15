@@ -217,9 +217,10 @@ function number16_to_string(number) {
 
 var instruction_limit = 500;
 var instruction_counter = 0;
+var instruction_op = 0;
 CPU_X86.prototype.dump_short = function() {
 	if (instruction_counter < instruction_limit) {
-		console.log(instruction_counter);
+		console.log(instruction_counter + ". " + number8_to_string(instruction_op));
 		console.log("EIP=" + number32_to_string(this.eip) 
 		+ " EAX=" + number32_to_string(this.regs[0]) 
 		+ " ECX=" + number32_to_string(this.regs[1]) 
@@ -5221,6 +5222,7 @@ CPU_X86.prototype.exec_internal = function(ua, va) {
 		od();
 
         CurrentByteOfCodeSeg |= (Da = Ra) & 0x0100;
+		instruction_op = CurrentByteOfCodeSeg;
 
         Start: for (;;) {
 		
