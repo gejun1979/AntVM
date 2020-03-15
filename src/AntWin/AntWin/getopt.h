@@ -38,23 +38,6 @@ EXPRESSLY ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
 #ifndef __GETOPT_H_
 #define __GETOPT_H_
 
-#ifdef _GETOPT_API
-#undef _GETOPT_API
-#endif
-
-#if defined(EXPORTS_GETOPT) && defined(STATIC_GETOPT)
-#error "The preprocessor definitions of EXPORTS_GETOPT and STATIC_GETOPT can only be used individually"
-#elif defined(STATIC_GETOPT)
-#pragma message("Warning static builds of getopt violate the Lesser GNU Public License")
-#define _GETOPT_API
-#elif defined(EXPORTS_GETOPT)
-#pragma message("Exporting getopt library")
-#define _GETOPT_API __declspec(dllexport)
-#else
-#pragma message("Importing getopt library")
-#define _GETOPT_API __declspec(dllimport)
-#endif
-
 // Change behavior for C\C++
 #ifdef __cplusplus
 #define _BEGIN_EXTERN_C extern "C" {
@@ -83,9 +66,9 @@ EXPRESSLY ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
 
 _BEGIN_EXTERN_C
 
-extern _GETOPT_API int optind;
-extern _GETOPT_API int opterr;
-extern _GETOPT_API int optopt;
+extern int optind;
+extern int opterr;
+extern int optopt;
 
 // Ansi
 struct option_a
@@ -95,10 +78,10 @@ struct option_a
 	int *flag;
 	int val;
 };
-extern _GETOPT_API char *optarg_a;
-extern _GETOPT_API int getopt_a(int argc, char *const *argv, const char *optstring) _GETOPT_THROW;
-extern _GETOPT_API int getopt_long_a(int argc, char *const *argv, const char *options, const struct option_a *long_options, int *opt_index) _GETOPT_THROW;
-extern _GETOPT_API int getopt_long_only_a(int argc, char *const *argv, const char *options, const struct option_a *long_options, int *opt_index) _GETOPT_THROW;
+extern char *optarg_a;
+extern int getopt_a(int argc, char *const *argv, const char *optstring) _GETOPT_THROW;
+extern int getopt_long_a(int argc, char *const *argv, const char *options, const struct option_a *long_options, int *opt_index) _GETOPT_THROW;
+extern int getopt_long_only_a(int argc, char *const *argv, const char *options, const struct option_a *long_options, int *opt_index) _GETOPT_THROW;
 
 // Unicode
 struct option_w
@@ -108,17 +91,16 @@ struct option_w
 	int *flag;
 	int val;
 };
-extern _GETOPT_API wchar_t *optarg_w;
-extern _GETOPT_API int getopt_w(int argc, wchar_t *const *argv, const wchar_t *optstring) _GETOPT_THROW;
-extern _GETOPT_API int getopt_long_w(int argc, wchar_t *const *argv, const wchar_t *options, const struct option_w *long_options, int *opt_index) _GETOPT_THROW;
-extern _GETOPT_API int getopt_long_only_w(int argc, wchar_t *const *argv, const wchar_t *options, const struct option_w *long_options, int *opt_index) _GETOPT_THROW;
+extern wchar_t *optarg_w;
+extern int getopt_w(int argc, wchar_t *const *argv, const wchar_t *optstring) _GETOPT_THROW;
+extern int getopt_long_w(int argc, wchar_t *const *argv, const wchar_t *options, const struct option_w *long_options, int *opt_index) _GETOPT_THROW;
+extern int getopt_long_only_w(int argc, wchar_t *const *argv, const wchar_t *options, const struct option_w *long_options, int *opt_index) _GETOPT_THROW;
 
 _END_EXTERN_C
 
 #undef _BEGIN_EXTERN_C
 #undef _END_EXTERN_C
 #undef _GETOPT_THROW
-#undef _GETOPT_API
 
 #ifdef _UNICODE
 #define getopt getopt_w
