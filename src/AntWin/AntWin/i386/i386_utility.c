@@ -38,7 +38,7 @@ void dump_registers()
 
 int load_image( const char * image_path, char * p_memory, int image_address )
 {
-	FILE * p_file = fopen( image_path, "r" );
+	FILE * p_file = fopen( image_path, "rb" );
 	if ( p_file ) {
 		int size = 0;
 
@@ -46,17 +46,18 @@ int load_image( const char * image_path, char * p_memory, int image_address )
 		size = ftell( p_file );
 		fseek( p_file, 0L, SEEK_SET );
 
-		if ( fread( (p_memory + image_address), 1, size, p_file ) != size ) {
+		size_t readBytes = fread((p_memory + image_address), 1, size, p_file);
+		if ( readBytes != size ) {
 			fclose( p_file );
 
 			ant_log( error, "Failed to load image %s", image_path );
-			exit( 1 );
+			return -1;
 		}
 
 		fclose( p_file );
 	} else {
 		ant_log( error, "Failed to open image %s", image_path );
-		exit( 1 );
+		return -1;
 	}
 
 	return 0;

@@ -1,0 +1,15 @@
+
+*.db
+*.ipch
+*.opendb
+*.txt
+src/AntWin/.vs/AntWin/v15/.suo
+*.log
+*.obj
+*.lastbuildstate
+*.tlog
+*.user
+*.idb
+*.exe
+*.pdb
+*.ilk
