@@ -74,7 +74,9 @@ int port_read( int port )
 	}
 
 	ant_log( error, "Fatal error, invalid port %d\n", port );
-	exit(1);
+	exception_exit(1);
+
+	return 0;
 }
 
 void port_write( int port, int value )
@@ -86,5 +88,5 @@ void port_write( int port, int value )
 	}
 
 	ant_log( error, "Fatal error, invalid port %d\n", port );
-	exit(1);
+	exception_exit(1);
 }

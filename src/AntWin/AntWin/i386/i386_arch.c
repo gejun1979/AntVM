@@ -63,7 +63,8 @@ unsigned int get_register_value( unsigned int index )
   return registers[EFL].u32;
  default:
   ant_log(error, "Unknown register %d in %s\n", index, __FUNCTION__ );
-  exit( 1 );
+
+  exception_exit( 1 );
  }
  
  return 0;

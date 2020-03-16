@@ -74,10 +74,7 @@ void send_char(char value)
 
 void recieve_char(char value)
 {
-#ifdef _WIN32
-#else
-    ant_log( log, "%c", value );
-#endif
+    printf( "%c", value );
 }
 
 int serial_port_read( int port )
@@ -126,7 +123,7 @@ int serial_port_read( int port )
         break;
     default:
 		ant_log( error, "Unknown port 0x%08x\n", port );
-		exit(1);
+		exception_exit(1);
     }
 
     return value;
@@ -180,7 +177,7 @@ void serial_port_write( int port, int value )
         break;
     default:
 		ant_log( error, "Unknown port 0x%08x\n", port );
-		exit(1);
+		exception_exit(1);
     }
 }
 

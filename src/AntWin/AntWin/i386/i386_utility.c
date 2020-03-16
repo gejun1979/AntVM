@@ -70,7 +70,7 @@ unsigned char fetch_char( char * p_memory, int pos )
 {
 	if ( pos >= MEMORY_SIZE ) {
 		ant_log( error, "Fatal error, memory overflow\n" );
-		exit( 1 );
+		exception_exit( 1 );
 	}
 
 	return p_memory[ pos ];
@@ -98,3 +98,8 @@ void ant_log_uninit()
 	fclose( log_fd );
 }
 
+void exception_exit(int ret)
+{
+	getchar();
+	exit(ret);
+}

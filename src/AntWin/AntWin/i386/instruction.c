@@ -322,7 +322,7 @@ void push( int value )
     }
 
     ant_log(error, "Fatal error, memory overflow\n");
-    exit(1);
+    exception_exit(1);
 }
 
 void pop( int * p_value )
@@ -444,7 +444,9 @@ int inst_2b_op( operand_wrapper_t * ops, int num, int instruction_len )
     }
 
     ant_log( error, "Fatal error, can't find instruction call back function\n" );
-    exit( 1 );
+    exception_exit( 1 );
+
+	return 0;
 }
 
 int grp1_op( operand_wrapper_t * ops, int num, int instruction_len )
@@ -459,7 +461,9 @@ int grp1_op( operand_wrapper_t * ops, int num, int instruction_len )
     }
 
     ant_log( error, "Fatal error, unknown command, %s\n", __FUNCTION__ );
-    exit( 1 );
+    exception_exit( 1 );
+
+	return 0;
 }
 
 int test_op( operand_wrapper_t * ops, int num, int instruction_len )
@@ -602,7 +606,7 @@ void _decode_d( private_instruction_t * p )
 
         ant_log( error, "Fatal error, unknown mod value in %s\n", __FUNCTION__ );
         dump_instruction( -1, p->instruction_codes, p->instruction_len );
-        exit( 1 );
+        exception_exit( 1 );
 }
 
 void _decode_imm( private_instruction_t * p, int len )
@@ -709,7 +713,7 @@ unsigned int calculate_base_offset( private_instruction_t * p )
     if ( p->modrm.m.mod == 3 ) {
         ant_log(error, "Fatal error. Invalid mod value in %s\n", __FUNCTION__ );
         dump_instruction( -1, p->instruction_codes, p->instruction_len );
-        exit( 1 );
+        exception_exit( 1 );
     }
 
     if ( p->sib.s.base != 0x5 ) {
@@ -746,7 +750,7 @@ inline unsigned int calculate_parameter_from_M( private_instruction_t * p )
     if ( p->modrm.m.mod == 0x3 ) {
         ant_log(error, "Fatal error. Invalid mod value in %s\n", __FUNCTION__ );
         dump_instruction( -1, p->instruction_codes, p->instruction_len );
-        exit( 1 );
+        exception_exit( 1 );
     } else {
         if ( p->modrm.m.mod == 0x2 || p->modrm.m.mod == 0x1 ) {
             if ( p->modrm.m.rm != 4 ) {
@@ -987,7 +991,7 @@ void inst2_d( private_instruction_t * p )
 
     ant_log( error, "Fatal error, unknown instruction\n" );
     dump_instruction( -1, p->instruction_codes, p->instruction_len );
-    exit( 1 );
+    exception_exit( 1 );
 }
 
 /*************************************************/
@@ -1014,7 +1018,7 @@ void instruction_decode( instruction_t * p_inst )
         p_decode_f( p_inst->priv );
     } else {
         ant_log( error, "Fatal error, unknown instruction, opcode = 0x%02x\n", instruction_octet );
-        exit( 1 );
+        exception_exit( 1 );
     }
 }
 
@@ -1031,7 +1035,7 @@ void instruction_run( instruction_t * p_inst )
         }
     } else {
         ant_log( error, "Fatal error, can't find instruction call back function\n" );
-        exit( 1 );
+        exception_exit( 1 );
     }
 
     dump_instruction( ++instruction_counter, p->instruction_codes, p->instruction_len );

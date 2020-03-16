@@ -13,6 +13,7 @@ void dump_instruction( int index, char * instruction, int len );
 void dump_registers();
 
 typedef enum {
+	disable = 5,
 	error = 4,
 	warning = 3,
 	log = 2,
@@ -30,5 +31,7 @@ void ant_log_uninit();
 		fprintf( stdout, __VA_ARGS__ ); \
  if ( level >= file_log_level ) \
   fprintf( log_fd, __VA_ARGS__ );
+
+void exception_exit(int ret);
 
 #endif
