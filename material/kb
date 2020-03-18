@@ -1,0 +1,5 @@
+1. #dump bin
+objdump -D -b binary -mi386 ./linuxstart.bin > linuxstartbindisem
+
+2.
+https://stackoverflow.com/questions/2553517/what-is-register-eiz

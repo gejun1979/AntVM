@@ -1,2 +1,0 @@
-#dump bin
-objdump -D -b binary -mi386 ./linuxstart.bin > linuxstartbindisem
