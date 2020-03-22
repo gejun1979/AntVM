@@ -235,25 +235,24 @@ instruction_oper_ftype grp1_op_array[8] = {
 /* For example,                        */
 /* d1o    = decode 1 element, element  */
 /* is operation code                   */
-/* d_Ev_Ib = decode 3 elements,        */
+/* d4omsi8 = decode 3 elements,        */
 /* elements are operation code, modrm  */
 /* and byte immediate                  */
 /***************************************/
 
 void mov_RI_d( private_instruction_t * p );
-void d_Ev_Gv( private_instruction_t * p );
-void d_Gv_Ev( private_instruction_t * p );
 void g11_mov_d( private_instruction_t * p );
 void movzx_d( private_instruction_t * p );
 void movsx_d( private_instruction_t * p );
 void simple_d( private_instruction_t * p );
 void inst2_d( private_instruction_t * p );
-void grp1_d( private_instruction_t * p );
 void jb_d( private_instruction_t * p );
-void d_Eb_Gb( private_instruction_t * p );
-void d_Ev_Gv( private_instruction_t * p );
-void call_d( private_instruction_t * p );
+void call_d(private_instruction_t * p);
+void d_Ev_Gv(private_instruction_t * p);
+void d_Eb_Gb(private_instruction_t * p);
+void d_Gv_Ev(private_instruction_t * p);
 void d_Gv_M( private_instruction_t * p );
+void d_Ev_Ib(private_instruction_t * p);
 
 typedef void (*decode_ftype)( private_instruction_t * p );
 
@@ -287,11 +286,11 @@ decode_ftype decode_array_1byte[256] = {
 /*05*/simple_d,simple_d,simple_d,simple_d,simple_d,simple_d,simple_d, simple_d, simple_d, simple_d, simple_d, simple_d, simple_d, simple_d, simple_d, simple_d,
 /*06*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*07*/0,       0,       0,       0,       jb_d,    jb_d,    0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
-/*08*/d_Eb_Gb, 0,       0,       grp1_d,  d_Eb_Gb, d_Ev_Gv,0,        0,        d_Eb_Gb,  d_Ev_Gv,  0,        d_Gv_Ev,  0,        d_Gv_M,   0,        0,
+/*08*/d_Eb_Gb, 0,       0,       d_Ev_Ib,  d_Eb_Gb, d_Ev_Gv,0,        0,        d_Eb_Gb,  d_Ev_Gv,  0,        d_Gv_Ev,  0,        d_Gv_M,   0,        0,
 /*09*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*0A*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*0B*/0,       0,       0,       0,       0,       0,       0,        0,        mov_RI_d, mov_RI_d, mov_RI_d, mov_RI_d, mov_RI_d, mov_RI_d, mov_RI_d, mov_RI_d,
-/*0C*/0,       0,       0,       simple_d,0,       0,       0,        g11_mov_d,0,        0,        0,        0,        0,        0,        0,        0,
+/*0C*/0,       d_Ev_Ib, 0,       simple_d,0,       0,       0,        g11_mov_d,0,        0,        0,        0,        0,        0,        0,        0,
 /*0D*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*0E*/0,       0,       0,       0,       0,       0,       0,        0,        call_d,   0,        0,        jb_d,     0,        0,        simple_d, 0,
 /*0F*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
@@ -719,35 +718,41 @@ void d3oms( private_instruction_t * p )
 	}
 }
 
-void d3omi8( private_instruction_t * p )
+void d4omsi8( private_instruction_t * p )
 {
     _decode_op( p );
     _decode_m( p );
-    _decode_i8( p );
-}
 
-void d3omd( private_instruction_t * p )
-{
-    _decode_op( p );
-    _decode_m( p );
-    _decode_d( p );
-}
-
-void d5omsdi32( private_instruction_t * p )
-{
-    _decode_op( p );
-    _decode_m( p );
-    _decode_s( p );
-    _decode_d( p );
-    _decode_i32( p );
+	if (p->modrm.m.rm == 0x4 && p->modrm.m.mod != 0x3) {
+		_decode_s(p);
+	}
+	
+	_decode_i8( p );
 }
 
 void d4omsd( private_instruction_t * p )
 {
     _decode_op( p );
     _decode_m( p );
-    _decode_s( p );
-    _decode_d( p );
+
+	if (p->modrm.m.rm == 0x4 && p->modrm.m.mod != 0x3) {
+		_decode_s(p);
+	}
+	
+	_decode_d( p );
+}
+
+void d5omsdi32( private_instruction_t * p )
+{
+    _decode_op( p );
+    _decode_m( p );
+
+	if (p->modrm.m.rm == 0x4 && p->modrm.m.mod != 0x3) {
+		_decode_s(p);
+	}
+
+	_decode_d( p );
+    _decode_i32( p );
 }
 
 inline unsigned int calculate_parameter_from_Iz( private_instruction_t * p )
@@ -932,9 +937,9 @@ void cal_para_Gv_M( private_instruction_t * p )
     operand_wrapper_init( &p->parameters[1], imm, operand_32, calculate_parameter_from_M(p) );
 }
 
-void grp1_d( private_instruction_t * p )
+void d_Ev_Ib( private_instruction_t * p )
 {
-    d3omi8( p );
+    d4omsi8( p );
     cal_para_Ev_Ib( p );
 }
 
@@ -946,13 +951,13 @@ void d_Eb_Gb(private_instruction_t * p)
 
 void d_Gv_Ev( private_instruction_t * p )
 {
-    d3omd( p );
+    d4omsd( p );
     cal_para_Gv_Ev( p );
 }
 
 void movzx_d( private_instruction_t * p )
 {
-    d3omd( p );
+    d4omsd( p );
     cal_para_Gv_Eb( p );
 }
 
@@ -982,10 +987,10 @@ void mov_RI_d( private_instruction_t * p )
 	 cal_para_RX_Iv(p);
 }
 
-void d_Ev_Gv( private_instruction_t * p )
+void d_Ev_Gv(private_instruction_t * p)
 {
-    d3oms(p);
-    cal_para_Ev_Gv(p);
+	d3oms(p);
+	cal_para_Ev_Gv(p);
 }
 
 void movsx_d( private_instruction_t * p )

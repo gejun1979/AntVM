@@ -215,11 +215,11 @@ function number16_to_string(number) {
     return to_hex_string(number, 4);
 }
 
-var instruction_limit = 500;
+//var instruction_limit = 500;
 var instruction_counter = 0;
 var instruction_op = 0;
 CPU_X86.prototype.dump_short = function() {
-	if (instruction_counter < instruction_limit) {
+	if (instruction_counter < 26500 && instruction_counter > 26000) {
 		console.log(instruction_counter + ". " + number8_to_string(instruction_op));
 		console.log("EIP=" + number32_to_string(this.eip) 
 		+ " EAX=" + number32_to_string(this.regs[0]) 
@@ -231,9 +231,9 @@ CPU_X86.prototype.dump_short = function() {
 		+ " EBP=" + number32_to_string(this.regs[5]) 
 		+ " ESI=" + number32_to_string(this.regs[6]) 
 		+ " EDI=" + number32_to_string(this.regs[7]));
-
-		instruction_counter = instruction_counter + 1;
 	}
+
+	instruction_counter = instruction_counter + 1;
 };
 
 //SRC and OP can be used to calculate carry
