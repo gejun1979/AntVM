@@ -167,7 +167,6 @@ int pop_op( operand_wrapper_t * ops, int num, int instruction_len );
 int grp1_op( operand_wrapper_t * ops, int num, int instruction_len );
 int inst_2b_op( operand_wrapper_t * ops, int num, int instruction_len );
 int out_op( operand_wrapper_t * ops, int num, int instruction_len );
-int lea_op(operand_wrapper_t * ops, int num, int instruction_len);
 
 typedef int (*instruction_oper_ftype)( operand_wrapper_t * ops, int num, int instruction_len );
 
@@ -201,7 +200,7 @@ instruction_oper_ftype op_array_1byte[256] = {
 /*05*/push_op, push_op, push_op, push_op, push_op, push_op, push_op,  push_op,  pop_op,   pop_op,   pop_op,   pop_op,   pop_op,   pop_op,   pop_op,   pop_op,
 /*06*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*07*/0,       0,       0,       0,       je_op,   jne_op,  0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
-/*08*/0,       0,       0,       grp1_op, test_op, test_op, 0,        0,        0,        mov_op,   0,        mov_op,   0,        lea_op,   0,        0,
+/*08*/0,       0,       0,       grp1_op, test_op, test_op, 0,        0,        0,        mov_op,   0,        mov_op,   0,        0,        0,        0,
 /*09*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*0A*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*0B*/0,       0,       0,       0,       0,       0,       0,        0,        mov_RI_op,mov_RI_op,mov_RI_op,mov_RI_op,mov_RI_op,mov_RI_op,mov_RI_op,mov_RI_op,
@@ -536,25 +535,18 @@ int add_op( operand_wrapper_t * ops, int num, int instruction_len )
     return 0;
 }
 
-int cmp_op(operand_wrapper_t * ops, int num, int instruction_len)
+int cmp_op( operand_wrapper_t * ops, int num, int instruction_len )
 {
-	unsigned int res = U32(ops[0]) - U32(ops[1]);
+    unsigned int res = U32(ops[0]) - U32(ops[1]);
 
-	set_efl_cc(U32(ops[0]) < U32(ops[1]), EFL_CF);
-	set_efl_cc(parity_table[res & 0xff], EFL_PF);
-	set_efl_cc(((res & 0xff) ^ U8(ops[0]) ^ U8(ops[1])) & EFL_AF, EFL_AF);
-	set_efl_cc((res == 0) * EFL_ZF, EFL_ZF);
-	set_efl_cc(res >> 24 & EFL_SF, EFL_SF);
-	set_efl_cc(((U32(ops[0]) ^ U32(ops[1])) & (U32(ops[0]) ^ res)) >> 20 & EFL_OF, EFL_OF);
+    set_efl_cc( U32(ops[0]) < U32(ops[1]), EFL_CF );
+    set_efl_cc( parity_table[res & 0xff], EFL_PF );
+    set_efl_cc( ( (res & 0xff) ^ U8(ops[0]) ^ U8(ops[1]) ) & EFL_AF, EFL_AF );
+    set_efl_cc( (res == 0) * EFL_ZF, EFL_ZF );
+    set_efl_cc( res >> 24 & EFL_SF, EFL_SF );
+    set_efl_cc( ((U32(ops[0]) ^ U32(ops[1])) & (U32(ops[0]) ^ res)) >> 20 & EFL_OF, EFL_OF );
 
-	return 0;
-}
-
-int lea_op(operand_wrapper_t * ops, int num, int instruction_len)
-{
-	operand_wrapper_set_value(&ops[0], operand_wrapper_get_value(&ops[1]));
-
-	return 0;
+    return 0;
 }
 
 /****************************************************/
@@ -714,30 +706,41 @@ inline unsigned int calculate_parameter_from_Iz( private_instruction_t * p )
     return p->imm.value;
 }
 
-unsigned int calculate_sib_offset(private_instruction_t * p)
+unsigned int calculate_base_offset( private_instruction_t * p )
 {
-	unsigned int sib_offset = 0;
+    unsigned int base = 0;
 
-	if (p->modrm.m.mod == 0 && p->sib.s.base == 5) {
-		sib_offset = p->displacement.value + get_register_value(p->sib.s.index + 1) * (1 << p->sib.s.scale);
-	}
-	else if (p->modrm.m.mod == 0) {
-		sib_offset = get_register_value(p->sib.s.base + 1) + get_register_value(p->sib.s.index + 1) * (1 << p->sib.s.scale);
-	}
-	else if (p->modrm.m.mod == 1) {
-		sib_offset = (unsigned char)(p->displacement.value) + (unsigned char)(get_register_value(p->sib.s.base + 1)) + get_register_value(p->sib.s.index + 1) * (1 << p->sib.s.scale);
-	}
-	else if (p->modrm.m.mod == 2) {
-		sib_offset = p->displacement.value + get_register_value(p->sib.s.base + 1) + get_register_value(p->sib.s.index + 1) * (1 << p->sib.s.scale);
-	}
-	else {
-		//sib mode only has above 4 patterns
-		ant_log(error, "Fatal error. Invalid instruction\n");
-		dump_instruction(-1, p->instruction_codes, p->instruction_len);
-		exception_exit(1);
-	}
+    if ( p->modrm.m.mod == 3 ) {
+        ant_log(error, "Fatal error. Invalid mod value in %s\n", __FUNCTION__ );
+        dump_instruction( -1, p->instruction_codes, p->instruction_len );
+        exception_exit( 1 );
+    }
 
-	return sib_offset;
+    if ( p->sib.s.base != 0x5 ) {
+        base = get_register_value(p->sib.s.index + 1);
+    } else {
+        if ( p->modrm.m.mod == 0 ) {
+            base = p->displacement.value;
+        } else {
+            base = get_register_value(p->sib.s.index + 1) + p->displacement.value;
+        }
+    }
+
+    return base;
+}
+
+unsigned int calculate_sib_offset( private_instruction_t * p )
+{
+    unsigned int base = calculate_base_offset( p );
+    unsigned int sib_offset = 0;
+
+    if ( p->sib.s.index == 4 ) {
+        sib_offset = base;
+    } else {
+        sib_offset = base + get_register_value(p->sib.s.index + 1) * ( 1 << p->sib.s.scale );
+    }
+
+    return sib_offset;
 }
 
 inline unsigned int calculate_parameter_from_M( private_instruction_t * p )
@@ -750,15 +753,15 @@ inline unsigned int calculate_parameter_from_M( private_instruction_t * p )
         exception_exit( 1 );
     } else {
         if ( p->modrm.m.mod == 0x2 || p->modrm.m.mod == 0x1 ) {
-            if ( p->modrm.m.rm == 4 ) { //sib mode
-				src_offset = calculate_sib_offset(p);
-			} else {
-				src_offset = get_register_value(p->modrm.m.rm + 1) + p->displacement.value;
+            if ( p->modrm.m.rm != 4 ) {
+                src_offset = get_register_value(  p->modrm.m.rm + 1 ) + p->displacement.value;
+            } else {
+                src_offset = calculate_sib_offset(p) + p->displacement.value;
             }
         } else {
             if ( p->modrm.m.rm == 5 ) {
                 src_offset = p->displacement.value;
-            } else if ( p->modrm.m.rm == 4 ) { //sib mode
+            } else if ( p->modrm.m.rm == 4 ) {
                 src_offset = calculate_sib_offset(p);
             } else {
                 src_offset = get_register_value( p->modrm.m.rm + 1 );
@@ -876,7 +879,8 @@ void cal_para_Ev_Iz( private_instruction_t * p )
 void cal_para_Gv_M( private_instruction_t * p )
 {
     p->parameters_num = 2;
-	operand_wrapper_init( &p->parameters[0], reg, operand_32, calculate_index_from_Gv(p) );
+	//test
+//	operand_wrapper_init( &p->parameters[0], reg, operand_32, calculate_parameter_from_Gv(p) );
     operand_wrapper_init( &p->parameters[1], imm, operand_32, calculate_parameter_from_M(p) );
 }
 
