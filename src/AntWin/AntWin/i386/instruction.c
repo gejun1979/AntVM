@@ -167,6 +167,7 @@ int pop_op( operand_wrapper_t * ops, int num, int instruction_len );
 int grp1_op( operand_wrapper_t * ops, int num, int instruction_len );
 int inst_2b_op( operand_wrapper_t * ops, int num, int instruction_len );
 int out_op( operand_wrapper_t * ops, int num, int instruction_len );
+int lea_op(operand_wrapper_t * ops, int num, int instruction_len);
 
 typedef int (*instruction_oper_ftype)( operand_wrapper_t * ops, int num, int instruction_len );
 
@@ -195,12 +196,12 @@ instruction_oper_ftype op_array_1byte[256] = {
 /*00*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        inst_2b_op,
 /*01*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*02*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
-/*03*/0,       xor_EG_op,0,      0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
+/*03*/0,       xor_EG_op,0,      0,       0,       0,       0,        0,        cmp_op,   cmp_op,   0,        0,        0,        0,        0,        0,
 /*04*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*05*/push_op, push_op, push_op, push_op, push_op, push_op, push_op,  push_op,  pop_op,   pop_op,   pop_op,   pop_op,   pop_op,   pop_op,   pop_op,   pop_op,
 /*06*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*07*/0,       0,       0,       0,       je_op,   jne_op,  0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
-/*08*/0,       0,       0,       grp1_op, test_op, test_op, 0,        0,        0,        mov_op,   0,        mov_op,   0,        0,        0,        0,
+/*08*/0,       0,       0,       grp1_op, test_op, test_op, 0,        0,        mov_op,   mov_op,   0,        mov_op,   0,        lea_op,   0,        0,
 /*09*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*0A*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*0B*/0,       0,       0,       0,       0,       0,       0,        0,        mov_RI_op,mov_RI_op,mov_RI_op,mov_RI_op,mov_RI_op,mov_RI_op,mov_RI_op,mov_RI_op,
@@ -240,8 +241,8 @@ instruction_oper_ftype grp1_op_array[8] = {
 /***************************************/
 
 void mov_RI_d( private_instruction_t * p );
-void mov_EG_d( private_instruction_t * p );
-void mov_GE_d( private_instruction_t * p );
+void d_Ev_Gv( private_instruction_t * p );
+void d_Gv_Ev( private_instruction_t * p );
 void g11_mov_d( private_instruction_t * p );
 void movzx_d( private_instruction_t * p );
 void movsx_d( private_instruction_t * p );
@@ -249,11 +250,10 @@ void simple_d( private_instruction_t * p );
 void inst2_d( private_instruction_t * p );
 void grp1_d( private_instruction_t * p );
 void jb_d( private_instruction_t * p );
-void testb_d( private_instruction_t * p );
-void testdw_d( private_instruction_t * p );
+void d_Eb_Gb( private_instruction_t * p );
+void d_Ev_Gv( private_instruction_t * p );
 void call_d( private_instruction_t * p );
-void xor_EG_d( private_instruction_t * p );
-void lea_GM_d( private_instruction_t * p );
+void d_Gv_M( private_instruction_t * p );
 
 typedef void (*decode_ftype)( private_instruction_t * p );
 
@@ -279,15 +279,15 @@ decode_ftype decode_array_2bytes[256] = {
 
 decode_ftype decode_array_1byte[256] = {
     /*00       01       02       03       04       05       06        07        08        09        0A        0B        0C        0D        0E        0F*/
-/*00*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        inst2_d,
-/*01*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
-/*02*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
-/*03*/0,       xor_EG_d,0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
+/*00*/d_Eb_Gb, d_Ev_Gv, 0,       0,       0,       0,       0,        0,        d_Eb_Gb,  d_Ev_Gv,  0,        0,        0,        0,        0,        inst2_d,
+/*01*/d_Eb_Gb, d_Ev_Gv, 0,       0,       0,       0,       0,        0,        d_Eb_Gb,  d_Ev_Gv,  0,        0,        0,        0,        0,        0,
+/*02*/d_Eb_Gb, d_Ev_Gv, 0,       0,       0,       0,       0,        0,        d_Eb_Gb,  d_Ev_Gv,  0,        0,        0,        0,        0,        0,
+/*03*/d_Eb_Gb, d_Ev_Gv, 0,       0,       0,       0,       0,        0,        d_Eb_Gb,  d_Ev_Gv,  0,        0,        0,        0,        0,        0,
 /*04*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*05*/simple_d,simple_d,simple_d,simple_d,simple_d,simple_d,simple_d, simple_d, simple_d, simple_d, simple_d, simple_d, simple_d, simple_d, simple_d, simple_d,
 /*06*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*07*/0,       0,       0,       0,       jb_d,    jb_d,    0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
-/*08*/0,       0,       0,       grp1_d,  testb_d, testdw_d,0,        0,        0,        mov_EG_d, 0,        mov_GE_d, 0,        lea_GM_d, 0,        0,
+/*08*/d_Eb_Gb, 0,       0,       grp1_d,  d_Eb_Gb, d_Ev_Gv,0,        0,        d_Eb_Gb,  d_Ev_Gv,  0,        d_Gv_Ev,  0,        d_Gv_M,   0,        0,
 /*09*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*0A*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*0B*/0,       0,       0,       0,       0,       0,       0,        0,        mov_RI_d, mov_RI_d, mov_RI_d, mov_RI_d, mov_RI_d, mov_RI_d, mov_RI_d, mov_RI_d,
@@ -535,23 +535,68 @@ int add_op( operand_wrapper_t * ops, int num, int instruction_len )
     return 0;
 }
 
-int cmp_op( operand_wrapper_t * ops, int num, int instruction_len )
+int cmp_op(operand_wrapper_t * ops, int num, int instruction_len)
 {
-    unsigned int res = U32(ops[0]) - U32(ops[1]);
+	unsigned int res = U32(ops[0]) - U32(ops[1]);
 
-    set_efl_cc( U32(ops[0]) < U32(ops[1]), EFL_CF );
-    set_efl_cc( parity_table[res & 0xff], EFL_PF );
-    set_efl_cc( ( (res & 0xff) ^ U8(ops[0]) ^ U8(ops[1]) ) & EFL_AF, EFL_AF );
-    set_efl_cc( (res == 0) * EFL_ZF, EFL_ZF );
-    set_efl_cc( res >> 24 & EFL_SF, EFL_SF );
-    set_efl_cc( ((U32(ops[0]) ^ U32(ops[1])) & (U32(ops[0]) ^ res)) >> 20 & EFL_OF, EFL_OF );
+	set_efl_cc(U32(ops[0]) < U32(ops[1]), EFL_CF);
+	set_efl_cc(parity_table[res & 0xff], EFL_PF);
+	set_efl_cc(((res & 0xff) ^ U8(ops[0]) ^ U8(ops[1])) & EFL_AF, EFL_AF);
+	set_efl_cc((res == 0) * EFL_ZF, EFL_ZF);
+	set_efl_cc(res >> 24 & EFL_SF, EFL_SF);
+	set_efl_cc(((U32(ops[0]) ^ U32(ops[1])) & (U32(ops[0]) ^ res)) >> 20 & EFL_OF, EFL_OF);
 
-    return 0;
+	return 0;
+}
+
+int lea_op(operand_wrapper_t * ops, int num, int instruction_len)
+{
+	operand_wrapper_set_value(&ops[0], operand_wrapper_get_value(&ops[1]));
+
+	return 0;
 }
 
 /****************************************************/
 /* Part5 Instruction decode function implementation */
 /****************************************************/
+
+//ref: https://www-user.tu-chemnitz.de/~heha/viewchm.php/hs/x86.chm/x86.htm
+/*************************************************/
+/* MOD R/M Addressing Mode                       */
+/* === === ================================      */
+/*  00 000 [ eax ]                               */
+/*  01 000 [ eax + disp8 ]               (1)     */
+/*  10 000 [ eax + disp32 ]                      */
+/*  11 000 register  ( al / ax / eax )   (2)     */
+/*  00 001 [ ecx ]                               */
+/*  01 001 [ ecx + disp8 ]                       */
+/*  10 001 [ ecx + disp32 ]                      */
+/*  11 001 register  ( cl / cx / ecx )           */
+/*  00 010 [ edx ]                               */
+/*  01 010 [ edx + disp8 ]                       */
+/*  10 010 [ edx + disp32 ]                      */
+/*  11 010 register  ( dl / dx / edx )           */
+/*  00 011 [ ebx ]                               */
+/*  01 011 [ ebx + disp8 ]                       */
+/*  10 011 [ ebx + disp32 ]                      */
+/*  11 011 register  ( bl / bx / ebx )           */
+/*  00 100 SIB  Mode                     (3)     */
+/*  01 100 SIB  +  disp8  Mode                   */
+/*  10 100 SIB  +  disp32  Mode                  */
+/*  11 100 register  ( ah / sp / esp )           */
+/*  00 101 32-bit Displacement-Only Mode (4)     */
+/*  01 101 [ ebp + disp8 ]                       */
+/*  10 101 [ ebp + disp32 ]                      */
+/*  11 101 register  ( ch / bp / ebp )           */
+/*  00 110 [ esi ]                               */
+/*  01 110 [ esi + disp8 ]                       */
+/*  10 110 [ esi + disp32 ]                      */
+/*  11 110 register  ( dh / si / esi )           */
+/*  00 111 [ edi ]                               */
+/*  01 111 [ edi + disp8 ]                       */
+/*  10 111 [ edi + disp32 ]                      */
+/*  11 111 register  ( bh / di / edi )           */
+/*************************************************/
 
 void _decode_op( private_instruction_t * p )
 {
@@ -664,10 +709,14 @@ void d2oi32( private_instruction_t * p )
     _decode_i32( p );
 }
 
-void d2om( private_instruction_t * p )
+void d3oms( private_instruction_t * p )
 {
     _decode_op( p );
     _decode_m( p );
+
+	if (p->modrm.m.rm == 0x4 && p->modrm.m.mod != 0x3) {
+		_decode_s(p);
+	}
 }
 
 void d3omi8( private_instruction_t * p )
@@ -717,12 +766,12 @@ unsigned int calculate_base_offset( private_instruction_t * p )
     }
 
     if ( p->sib.s.base != 0x5 ) {
-        base = get_register_value(p->sib.s.index + 1);
+        base = get_register_value(p->sib.s.base + 1);
     } else {
         if ( p->modrm.m.mod == 0 ) {
-            base = p->displacement.value;
+            base = 0;
         } else {
-            base = get_register_value(p->sib.s.index + 1) + p->displacement.value;
+            base = get_register_value(p->sib.s.base + 1);
         }
     }
 
@@ -753,16 +802,16 @@ inline unsigned int calculate_parameter_from_M( private_instruction_t * p )
         exception_exit( 1 );
     } else {
         if ( p->modrm.m.mod == 0x2 || p->modrm.m.mod == 0x1 ) {
-            if ( p->modrm.m.rm != 4 ) {
-                src_offset = get_register_value(  p->modrm.m.rm + 1 ) + p->displacement.value;
-            } else {
-                src_offset = calculate_sib_offset(p) + p->displacement.value;
+            if ( p->modrm.m.rm == 4 ) { //sib mode
+				src_offset = calculate_sib_offset(p) + p->displacement.value;
+			} else {
+				src_offset = get_register_value(p->modrm.m.rm + 1) + p->displacement.value;
             }
         } else {
             if ( p->modrm.m.rm == 5 ) {
                 src_offset = p->displacement.value;
-            } else if ( p->modrm.m.rm == 4 ) {
-                src_offset = calculate_sib_offset(p);
+            } else if ( p->modrm.m.rm == 4 ) { //sib mode
+                src_offset = calculate_sib_offset(p) + p->displacement.value;
             } else {
                 src_offset = get_register_value( p->modrm.m.rm + 1 );
             }
@@ -879,21 +928,8 @@ void cal_para_Ev_Iz( private_instruction_t * p )
 void cal_para_Gv_M( private_instruction_t * p )
 {
     p->parameters_num = 2;
-	//test
-//	operand_wrapper_init( &p->parameters[0], reg, operand_32, calculate_parameter_from_Gv(p) );
+	operand_wrapper_init( &p->parameters[0], reg, operand_32, calculate_index_from_Gv(p) );
     operand_wrapper_init( &p->parameters[1], imm, operand_32, calculate_parameter_from_M(p) );
-}
-
-void testb_d( private_instruction_t * p )
-{
-    d2om( p );
-    cal_para_Eb_Gb( p );
-}
-
-void testdw_d( private_instruction_t * p )
-{
-    d2om( p );
-    cal_para_Ev_Gv( p );
 }
 
 void grp1_d( private_instruction_t * p )
@@ -902,13 +938,13 @@ void grp1_d( private_instruction_t * p )
     cal_para_Ev_Ib( p );
 }
 
-void xor_EG_d( private_instruction_t * p )
+void d_Eb_Gb(private_instruction_t * p)
 {
-    d2om(p);
-	   cal_para_Ev_Gv(p);
+	d3oms(p);
+	cal_para_Eb_Gb(p);
 }
 
-void mov_GE_d( private_instruction_t * p )
+void d_Gv_Ev( private_instruction_t * p )
 {
     d3omd( p );
     cal_para_Gv_Ev( p );
@@ -946,15 +982,15 @@ void mov_RI_d( private_instruction_t * p )
 	 cal_para_RX_Iv(p);
 }
 
-void mov_EG_d( private_instruction_t * p )
+void d_Ev_Gv( private_instruction_t * p )
 {
-    d2om(p);
+    d3oms(p);
     cal_para_Ev_Gv(p);
 }
 
 void movsx_d( private_instruction_t * p )
 {
-    d2om( p );
+    d3oms( p );
     cal_para_Gv_Eb( p );
 }
 
@@ -964,7 +1000,7 @@ void g11_mov_d( private_instruction_t * p )
     cal_para_Ev_Iz( p );
 }
 
-void lea_GM_d( private_instruction_t * p )
+void d_Gv_M( private_instruction_t * p )
 {
     d4omsd( p );
     cal_para_Gv_M( p );
