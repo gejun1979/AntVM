@@ -94,6 +94,9 @@ unsigned int operand_wrapper_get_value( operand_wrapper_t * p_wrapper )
 #define U32( para ) ( operand_wrapper_get_value(&para) )
 #define I32( para ) ( (int)operand_wrapper_get_value(&para) )
 
+#define MSB( para, oprand_size ) ( para & (1 << ((int)8*oprand_size - 1)) )
+#define LSB( para ) ( para & 1 )
+
 typedef struct _private_instruction_t {
     char legacy_prefix;
     char rex_prefix;
@@ -461,6 +464,50 @@ int grp1_op( operand_wrapper_t * ops, int num, int instruction_len )
 
     ant_log( error, "Fatal error, unknown command, %s\n", __FUNCTION__ );
     exception_exit( 1 );
+
+	return 0;
+}
+
+int rol_op( operand_wrapper_t * ops, int num, int instruction_len )
+{
+	if (num != 2) {
+		ant_log(error, "Fatal error, invalid op num, %d\n", num);
+		return -1;
+	}
+
+	int TemporaryCount = 0;
+	switch(ops[1].size) {
+		case operand_8:
+			TemporaryCount = operand_wrapper_get_value(&ops[1]) % 8;
+			break;
+		case operand_16:
+			TemporaryCount = operand_wrapper_get_value(&ops[1]) % 16;
+			break;
+		case operand_32:
+			TemporaryCount = operand_wrapper_get_value(&ops[1]) % 32;
+			break;
+		default:
+			ant_log(error, "Fatal error, invalid op size, %d\n", (int)ops[1].size);
+			return -1;
+	}
+
+	int TemporaryCF = 0;
+	int Count = operand_wrapper_get_value(&ops[0]);
+	int Destination = Count;
+	while(TemporaryCount != 0) {
+		TemporaryCF = MSB(Destination, ops[0].size);
+		Destination = (Destination << 1) + TemporaryCF;
+		TemporaryCount = TemporaryCount - 1;
+	}
+	
+	int CF = LSB(Destination);
+	int OF = 0;
+	if (Count == 1) {
+		OF = MSB(Destination, ops[1].size) ^ CF;
+	}
+
+	set_efl_cc(CF, EFL_CF);
+	set_efl_cc(OF, EFL_OF);
 
 	return 0;
 }
