@@ -97,6 +97,10 @@ unsigned int operand_wrapper_get_value( operand_wrapper_t * p_wrapper )
 #define MSB( para, oprand_size ) ( para & (1 << ((int)8*oprand_size - 1)) )
 #define LSB( para ) ( para & 1 )
 
+#define SALORSHL 0
+#define SAR 1
+#define SHR 2
+
 typedef struct _private_instruction_t {
     char legacy_prefix;
     char rex_prefix;
@@ -151,28 +155,29 @@ typedef struct _private_instruction_t {
 /* Part2 Instruction operation function map */
 /********************************************/
 
-int add_op( operand_wrapper_t * ops, int num, int instruction_len );
-int sub_op( operand_wrapper_t * ops, int num, int instruction_len );
-int cmp_op( operand_wrapper_t * ops, int num, int instruction_len );
-int test_op( operand_wrapper_t * ops, int num, int instruction_len );
-int je_op( operand_wrapper_t * ops, int num, int instruction_len );
-int jne_op( operand_wrapper_t * ops, int num, int instruction_len );
-int jb_op( operand_wrapper_t * ops, int num, int instruction_len );
-int call_op( operand_wrapper_t * ops, int num, int instruction_len );
-int ret_op( operand_wrapper_t * ops, int num, int instruction_len );
-int mov_RI_op( operand_wrapper_t * ops, int num, int instruction_len );
-int mov_op( operand_wrapper_t * ops, int num, int instruction_len );
-int xor_EG_op( operand_wrapper_t * ops, int num, int instruction_len );
-int movsx_op( operand_wrapper_t * ops, int num, int instruction_len );
-int movzx_op( operand_wrapper_t * ops, int num, int instruction_len );
-int push_op( operand_wrapper_t * ops, int num, int instruction_len );
-int pop_op( operand_wrapper_t * ops, int num, int instruction_len );
-int grp1_op( operand_wrapper_t * ops, int num, int instruction_len );
-int inst_2b_op( operand_wrapper_t * ops, int num, int instruction_len );
-int out_op( operand_wrapper_t * ops, int num, int instruction_len );
-int lea_op(operand_wrapper_t * ops, int num, int instruction_len);
+int add_op( private_instruction_t * p_inst, int num, int instruction_len );
+int sub_op( private_instruction_t * p_inst, int num, int instruction_len );
+int cmp_op( private_instruction_t * p_inst, int num, int instruction_len );
+int test_op( private_instruction_t * p_inst, int num, int instruction_len );
+int je_op( private_instruction_t * p_inst, int num, int instruction_len );
+int jne_op( private_instruction_t * p_inst, int num, int instruction_len );
+int jb_op( private_instruction_t * p_inst, int num, int instruction_len );
+int call_op( private_instruction_t * p_inst, int num, int instruction_len );
+int ret_op( private_instruction_t * p_inst, int num, int instruction_len );
+int mov_RI_op( private_instruction_t * p_inst, int num, int instruction_len );
+int mov_op( private_instruction_t * p_inst, int num, int instruction_len );
+int xor_EG_op( private_instruction_t * p_inst, int num, int instruction_len );
+int movsx_op( private_instruction_t * p_inst, int num, int instruction_len );
+int movzx_op( private_instruction_t * p_inst, int num, int instruction_len );
+int push_op( private_instruction_t * p_inst, int num, int instruction_len );
+int pop_op( private_instruction_t * p_inst, int num, int instruction_len );
+int grp1_op( private_instruction_t * p_inst, int num, int instruction_len );
+int inst_2b_op( private_instruction_t * p_inst, int num, int instruction_len );
+int out_op( private_instruction_t * p_inst, int num, int instruction_len );
+int lea_op( private_instruction_t * p_inst, int num, int instruction_len);
+int sh_im_op( private_instruction_t * p_inst, int num, int instruction_len );
 
-typedef int (*instruction_oper_ftype)( operand_wrapper_t * ops, int num, int instruction_len );
+typedef int (*instruction_oper_ftype)( private_instruction_t * p_inst, int num, int instruction_len );
 
 instruction_oper_ftype op_array_2bytes[256] = {
     /*00       01       02       03       04       05       06        07        08        09        0A        0B        0C        0D        0E        0F*/
@@ -208,7 +213,7 @@ instruction_oper_ftype op_array_1byte[256] = {
 /*09*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*0A*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*0B*/0,       0,       0,       0,       0,       0,       0,        0,        mov_RI_op,mov_RI_op,mov_RI_op,mov_RI_op,mov_RI_op,mov_RI_op,mov_RI_op,mov_RI_op,
-/*0C*/0,       0,       0,       ret_op,  0,       0,       0,        mov_op,   0,        0,        0,        0,        0,        0,        0,        0,
+/*0C*/sh_im_op,sh_im_op,0,       ret_op,  0,       0,       0,        mov_op,   0,        0,        0,        0,        0,        0,        0,        0,
 /*0D*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*0E*/0,       0,       0,       0,       0,       0,       0,        0,        call_op,  0,        0,        jb_op,    0,        0,        out_op,   0,
 /*0F*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
@@ -289,7 +294,7 @@ decode_ftype decode_array_1byte[256] = {
 /*05*/simple_d,simple_d,simple_d,simple_d,simple_d,simple_d,simple_d, simple_d, simple_d, simple_d, simple_d, simple_d, simple_d, simple_d, simple_d, simple_d,
 /*06*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*07*/0,       0,       0,       0,       jb_d,    jb_d,    0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
-/*08*/d_Eb_Gb, 0,       0,       d_Ev_Ib,  d_Eb_Gb, d_Ev_Gv,0,        0,        d_Eb_Gb,  d_Ev_Gv,  0,        d_Gv_Ev,  0,        d_Gv_M,   0,        0,
+/*08*/d_Eb_Gb, 0,       0,       d_Ev_Ib, d_Eb_Gb, d_Ev_Gv, 0,        0,        d_Eb_Gb,  d_Ev_Gv,  0,        d_Gv_Ev,  0,        d_Gv_M,   0,        0,
 /*09*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*0A*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*0B*/0,       0,       0,       0,       0,       0,       0,        0,        mov_RI_d, mov_RI_d, mov_RI_d, mov_RI_d, mov_RI_d, mov_RI_d, mov_RI_d, mov_RI_d,
@@ -333,7 +338,7 @@ void pop( int * p_value )
 	set_register_value( ESP, get_register_value(ESP) + 4 );
 }
 
-int call_op( operand_wrapper_t * ops, int num, int instruction_len )
+int call_op( private_instruction_t * p_inst, int num, int instruction_len )
 {
 	int value = get_register_value( EIP );
 
@@ -341,14 +346,14 @@ int call_op( operand_wrapper_t * ops, int num, int instruction_len )
 
     push( value );
 
-    value += U32(ops[0]);
+    value += U32(p_inst->parameters[0]);
 
 	set_register_value( EIP, value );
 
     return 0;
 }
 
-int ret_op( operand_wrapper_t * ops, int num, int instruction_len )
+int ret_op( private_instruction_t * p_inst, int num, int instruction_len )
 {
     int offset = 0;
 
@@ -358,90 +363,90 @@ int ret_op( operand_wrapper_t * ops, int num, int instruction_len )
     return 0;
 }
 
-int mov_RI_op( operand_wrapper_t * ops, int num, int instruction_len )
+int mov_RI_op( private_instruction_t * p_inst, int num, int instruction_len )
 {
-    set_register_value( EAX + U8(ops[0]) - 0xb8, U32(ops[1]) );
+    set_register_value( EAX + U8(p_inst->parameters[0]) - 0xb8, U32(p_inst->parameters[1]) );
 
     return 0;
 }
 
-int xor_EG_op( operand_wrapper_t * ops, int num, int instruction_len )
+int xor_EG_op( private_instruction_t * p_inst, int num, int instruction_len )
 {
-    unsigned int res = U32(ops[0]) ^ U32(ops[1]);
-    operand_wrapper_set_value( &ops[0], res );
+    unsigned int res = U32(p_inst->parameters[0]) ^ U32(p_inst->parameters[1]);
+    operand_wrapper_set_value( &p_inst->parameters[0], res );
 
     return 0;
 }
 
-int mov_op( operand_wrapper_t * ops, int num, int instruction_len )
+int mov_op( private_instruction_t * p_inst, int num, int instruction_len )
 {
-    operand_wrapper_set_value( &ops[0], U32(ops[1]) );
+    operand_wrapper_set_value( &p_inst->parameters[0], U32(p_inst->parameters[1]) );
 
     return 0;
 }
 
-int movzx_op( operand_wrapper_t * ops, int num, int instruction_len )
+int movzx_op( private_instruction_t * p_inst, int num, int instruction_len )
 {
-    unsigned int res = U8(ops[1]);
-    operand_wrapper_set_value( &ops[0], res );
+    unsigned int res = U8(p_inst->parameters[1]);
+    operand_wrapper_set_value( &p_inst->parameters[0], res );
 
     return 0;
 }
 
-int movsx_op( operand_wrapper_t * ops, int num, int instruction_len )
+int movsx_op( private_instruction_t * p_inst, int num, int instruction_len )
 {
-    int res = (char) U8(ops[1]);
-    operand_wrapper_set_value( &ops[0], res );
+    int res = (char) U8(p_inst->parameters[1]);
+    operand_wrapper_set_value( &p_inst->parameters[0], res );
 
     return 0;
 }
 
-int push_op( operand_wrapper_t * ops, int num, int instruction_len )
+int push_op( private_instruction_t * p_inst, int num, int instruction_len )
 {
-    push( get_register_value( EAX + U8(ops[0]) - 0x50 ) );
+    push( get_register_value( EAX + U8(p_inst->parameters[0]) - 0x50 ) );
 
     return 0;
 }
 
-int pop_op( operand_wrapper_t * ops, int num, int instruction_len )
+int pop_op( private_instruction_t * p_inst, int num, int instruction_len )
 {
 	int value = 0;
 
     pop( &value );
 
-	set_register_value( EAX + U8(ops[0]) - 0x58, value );
+	set_register_value( EAX + U8(p_inst->parameters[0]) - 0x58, value );
 
     return 0;
 }
 
-int sub_op( operand_wrapper_t * ops, int num, int instruction_len )
+int sub_op( private_instruction_t * p_inst, int num, int instruction_len )
 {
-    unsigned int res = U32(ops[0]) - U32(ops[1]);
-    operand_wrapper_set_value( &ops[0], res );
+    unsigned int res = U32(p_inst->parameters[0]) - U32(p_inst->parameters[1]);
+    operand_wrapper_set_value( &p_inst->parameters[0], res );
 
-    set_efl_cc( U32(ops[0]) < U32(ops[1]), EFL_CF );
+    set_efl_cc( U32(p_inst->parameters[0]) < U32(p_inst->parameters[1]), EFL_CF );
     set_efl_cc( parity_table[res&0xff], EFL_PF );
-    set_efl_cc( (res ^ U32(ops[0]) ^ U32(ops[1])) & EFL_AF, EFL_AF );
+    set_efl_cc( (res ^ U32(p_inst->parameters[0]) ^ U32(p_inst->parameters[1])) & EFL_AF, EFL_AF );
     set_efl_cc( (res == 0), EFL_ZF );
     set_efl_cc( res >> 24 & EFL_SF, EFL_SF );
-    set_efl_cc( ((U32(ops[0]) ^ U32(ops[1])) & (U32(ops[0]) ^ res)) >> 20 & EFL_OF, EFL_OF );
+    set_efl_cc( ((U32(p_inst->parameters[0]) ^ U32(p_inst->parameters[1])) & (U32(p_inst->parameters[0]) ^ res)) >> 20 & EFL_OF, EFL_OF );
 
     return 0;
 }
 
-int out_op( operand_wrapper_t * ops, int num, int instruction_len )
+int out_op( private_instruction_t * p_inst, int num, int instruction_len )
 {
     port_write( get_register_value(EDX) & 0xffff, get_register_value(EAX) & 0xff );
 
     return 0;
 }
 
-int inst_2b_op( operand_wrapper_t * ops, int num, int instruction_len )
+int inst_2b_op( private_instruction_t * p_inst, int num, int instruction_len )
 {
-    instruction_oper_ftype p_op = op_array_2bytes[ U8(ops[ num - 1 ]) ];
+    instruction_oper_ftype p_op = op_array_2bytes[ U8(p_inst->parameters[ num - 1 ]) ];
 
     if ( p_op ) {
-        p_op( ops, num - 1, instruction_len );
+        p_op( p_inst, num - 1, instruction_len );
         return 0;
     }
 
@@ -451,15 +456,13 @@ int inst_2b_op( operand_wrapper_t * ops, int num, int instruction_len )
 	return 0;
 }
 
-int grp1_op( operand_wrapper_t * ops, int num, int instruction_len )
+int grp1_op( private_instruction_t * p_inst, int num, int instruction_len )
 {
-    if ( 3 == num ) {
-        instruction_oper_ftype p_op = grp1_op_array[U32(ops[2])];
+    instruction_oper_ftype p_op = grp1_op_array[p_inst->modrm.m.reg];
 
-        if ( p_op ) {
-            p_op( ops, 2, instruction_len );
-            return 0;
-        }
+    if ( p_op ) {
+        p_op( p_inst, 2, instruction_len );
+        return 0;
     }
 
     ant_log( error, "Fatal error, unknown command, %s\n", __FUNCTION__ );
@@ -468,7 +471,94 @@ int grp1_op( operand_wrapper_t * ops, int num, int instruction_len )
 	return 0;
 }
 
-int rol_op( operand_wrapper_t * ops, int num, int instruction_len )
+//test
+int _shift_op( operand_size size, int count, int destination, int instruction )
+{
+	int CF = 0;
+	int OF = 0;
+	int temporaryCount = count & 0x1F;
+	int temporaryDestination = destination;
+
+	while(temporaryCount != 0) {
+		if(instruction == SALORSHL) {
+			CF = MSB(destination, size);
+			destination = destination << 1;
+		}
+		else {
+			//instruction is SAR or SHR
+			CF = LSB(destination);
+			if(instruction == SAR) {
+				//Signed divide, rounding toward negative infinity
+				destination = destination / 2;
+			}
+			else {
+				//Instruction is SHR
+				destination = destination / 2; //Unsigned divide
+			} 
+		}
+
+		temporaryCount = temporaryCount - 1;
+		set_efl_cc(CF, EFL_CF);
+	}
+
+	//Determine overflow
+	if((count & 0x1F) == 1) {
+		if(instruction == SALORSHL)
+			OF = MSB(destination, size) ^ CF;
+		else if(instruction == SAR) 
+			OF = 0;
+		else 
+			OF = MSB(temporaryDestination, size);
+
+		set_efl_cc(OF, EFL_OF);
+	}
+	/*
+	else {
+		OF = Undefined;
+	}*/
+
+	return destination;
+}
+
+int sh_im_op( private_instruction_t * p_inst, int num, int instruction_len )
+{
+	int instruction = 0;
+    if (p_inst->modrm.m.reg == 0x5 ) {
+		instruction = SHR;
+	}
+	else if (p_inst->modrm.m.reg == 0x7) {
+		instruction = SAR;
+	}
+	else {
+		instruction = SALORSHL;
+	}
+
+	int count = 0;
+	switch(p_inst->parameters[1].size) {
+		case operand_8:
+			count = operand_wrapper_get_value(&p_inst->parameters[1]) % 8;
+			break;
+		case operand_16:
+			count = operand_wrapper_get_value(&p_inst->parameters[1]) % 16;
+			break;
+		case operand_32:
+			count = operand_wrapper_get_value(&p_inst->parameters[1]) % 32;
+			break;
+		default:
+			ant_log(error, "Fatal error, invalid op size, %d\n", (int)p_inst->parameters[1].size);
+			return -1;
+	}
+
+	int destination = operand_wrapper_get_value(&p_inst->parameters[0]);
+	
+	destination = _shift_op( p_inst->parameters[0].size, count, destination, instruction );
+	
+	operand_wrapper_set_value(&p_inst->parameters[0], destination);
+
+	return 0;
+}
+
+int rol_op( private_instruction_t * p_inst, int num, int instruction_len )
 {
 	if (num != 2) {
 		ant_log(error, "Fatal error, invalid op num, %d\n", num);
@@ -476,50 +566,50 @@ int rol_op( operand_wrapper_t * ops, int num, int instruction_len )
 	}
 
 	int Count = 0;
-	switch(ops[1].size) {
+	switch(p_inst->parameters[1].size) {
 		case operand_8:
-			Count = operand_wrapper_get_value(&ops[1]) % 8;
+			Count = operand_wrapper_get_value(&p_inst->parameters[1]) % 8;
 			break;
 		case operand_16:
-			Count = operand_wrapper_get_value(&ops[1]) % 16;
+			Count = operand_wrapper_get_value(&p_inst->parameters[1]) % 16;
 			break;
 		case operand_32:
-			Count = operand_wrapper_get_value(&ops[1]) % 32;
+			Count = operand_wrapper_get_value(&p_inst->parameters[1]) % 32;
 			break;
 		default:
-			ant_log(error, "Fatal error, invalid op size, %d\n", (int)ops[1].size);
+			ant_log(error, "Fatal error, invalid op size, %d\n", (int)p_inst->parameters[1].size);
 			return -1;
 	}
 
-	int Destination = operand_wrapper_get_value(&ops[0]);
+	int Destination = operand_wrapper_get_value(&p_inst->parameters[0]);
 	for (int i = Count; i != 0; --i) {
-		Destination = (Destination << 1) + MSB(Destination, ops[0].size);
+		Destination = (Destination << 1) + MSB(Destination, p_inst->parameters[0].size);
 	}
 	
 	int CF = LSB(Destination);
 	int OF = 0;
 	if (Count == 1) {
-		OF = MSB(Destination, ops[1].size) ^ CF;
+		OF = MSB(Destination, p_inst->parameters[0].size) ^ CF;
 	}
 
 	set_efl_cc(CF, EFL_CF);
 	set_efl_cc(OF, EFL_OF);
-	operand_wrapper_set_value(&ops[1], Destination);
+	operand_wrapper_set_value(&p_inst->parameters[0], Destination);
 
 	return 0;
 }
 
-int test_op( operand_wrapper_t * ops, int num, int instruction_len )
+int test_op( private_instruction_t * p_inst, int num, int instruction_len )
 {
     unsigned int res = 0;
-    unsigned int max_operand_size = max( ops[0].size, ops[1].size );
+    unsigned int max_operand_size = max( p_inst->parameters[0].size, p_inst->parameters[1].size );
 
     if ( max_operand_size == operand_8 ) {
-        res = U8(ops[0]) & U8(ops[1]);
+        res = U8(p_inst->parameters[0]) & U8(p_inst->parameters[1]);
     } else if ( max_operand_size == operand_16 ) {
-        res = U16(ops[0]) & U16(ops[1]);
+        res = U16(p_inst->parameters[0]) & U16(p_inst->parameters[1]);
     } else {
-        res = U32(ops[0]) & U32(ops[1]);
+        res = U32(p_inst->parameters[0]) & U32(p_inst->parameters[1]);
     }
 
     set_efl_cc( 0, EFL_CF );
@@ -548,53 +638,53 @@ int _jcc_op( int cc, operand_wrapper_t * ops, int num )
     return 0;
 }
 
-int je_op( operand_wrapper_t * ops, int num, int instruction_len )
+int je_op( private_instruction_t * p_inst, int num, int instruction_len )
 {
-    return _jcc_op( get_register_value(EFL) & EFL_ZF , ops, num );
+    return _jcc_op( get_register_value(EFL) & EFL_ZF , p_inst->parameters, num );
 }
 
-int jne_op( operand_wrapper_t * ops, int num, int instruction_len )
+int jne_op( private_instruction_t * p_inst, int num, int instruction_len )
 {
-    return _jcc_op( !(get_register_value(EFL) & EFL_ZF) , ops, num );
+    return _jcc_op( !(get_register_value(EFL) & EFL_ZF) , p_inst->parameters, num );
 }
 
-int jb_op( operand_wrapper_t * ops, int num, int instruction_len )
+int jb_op( private_instruction_t * p_inst, int num, int instruction_len )
 {
-    return _jcc_op( 1 , ops, num );
+    return _jcc_op( 1 , p_inst->parameters, num );
 }
 
-int add_op( operand_wrapper_t * ops, int num, int instruction_len )
+int add_op( private_instruction_t * p_inst, int num, int instruction_len )
 {
-    unsigned int res = U32(ops[0]) + U32(ops[1]);
-    operand_wrapper_set_value( &ops[0], res );
+    unsigned int res = U32(p_inst->parameters[0]) + U32(p_inst->parameters[1]);
+    operand_wrapper_set_value( &p_inst->parameters[0], res );
 
-    set_efl_cc( (res < U32(ops[1])) | (res < U32(ops[0])), EFL_CF );
+    set_efl_cc( (res < U32(p_inst->parameters[1])) | (res < U32(p_inst->parameters[0])), EFL_CF );
     set_efl_cc( parity_table[res&0xff], EFL_PF );
-    set_efl_cc( (res ^ U32(ops[0]) ^ U32(ops[1])) & EFL_AF, EFL_AF );
+    set_efl_cc( (res ^ U32(p_inst->parameters[0]) ^ U32(p_inst->parameters[1])) & EFL_AF, EFL_AF );
     set_efl_cc( (res == 0) * EFL_ZF, EFL_ZF );
     set_efl_cc( res >> 24 & EFL_SF, EFL_SF );
-    set_efl_cc( ( (~(U32(ops[0]) ^ U32(ops[1]))) & (U32(ops[0]) ^ res) ) >> 20 & EFL_OF, EFL_OF );
+    set_efl_cc( ( (~(U32(p_inst->parameters[0]) ^ U32(p_inst->parameters[1]))) & (U32(p_inst->parameters[0]) ^ res) ) >> 20 & EFL_OF, EFL_OF );
 
     return 0;
 }
 
-int cmp_op(operand_wrapper_t * ops, int num, int instruction_len)
+int cmp_op( private_instruction_t * p_inst, int num, int instruction_len)
 {
-	unsigned int res = U32(ops[0]) - U32(ops[1]);
+	unsigned int res = U32(p_inst->parameters[0]) - U32(p_inst->parameters[1]);
 
-	set_efl_cc(U32(ops[0]) < U32(ops[1]), EFL_CF);
+	set_efl_cc(U32(p_inst->parameters[0]) < U32(p_inst->parameters[1]), EFL_CF);
 	set_efl_cc(parity_table[res & 0xff], EFL_PF);
-	set_efl_cc(((res & 0xff) ^ U8(ops[0]) ^ U8(ops[1])) & EFL_AF, EFL_AF);
+	set_efl_cc(((res & 0xff) ^ U8(p_inst->parameters[0]) ^ U8(p_inst->parameters[1])) & EFL_AF, EFL_AF);
 	set_efl_cc((res == 0) * EFL_ZF, EFL_ZF);
 	set_efl_cc(res >> 24 & EFL_SF, EFL_SF);
-	set_efl_cc(((U32(ops[0]) ^ U32(ops[1])) & (U32(ops[0]) ^ res)) >> 20 & EFL_OF, EFL_OF);
+	set_efl_cc(((U32(p_inst->parameters[0]) ^ U32(p_inst->parameters[1])) & (U32(p_inst->parameters[0]) ^ res)) >> 20 & EFL_OF, EFL_OF);
 
 	return 0;
 }
 
-int lea_op(operand_wrapper_t * ops, int num, int instruction_len)
+int lea_op(private_instruction_t * p_inst, int num, int instruction_len)
 {
-	operand_wrapper_set_value(&ops[0], operand_wrapper_get_value(&ops[1]));
+	operand_wrapper_set_value(&p_inst->parameters[0], operand_wrapper_get_value(&p_inst->parameters[1]));
 
 	return 0;
 }
@@ -692,9 +782,9 @@ void _decode_d( private_instruction_t * p )
                 }
     }
 
-        ant_log( error, "Fatal error, unknown mod value in %s\n", __FUNCTION__ );
-        dump_instruction( -1, p->instruction_codes, p->instruction_len );
-        exception_exit( 1 );
+    ant_log( error, "Fatal error, unknown mod value in %s\n", __FUNCTION__ );
+    dump_instruction( -1, p->instruction_codes, p->instruction_len );
+    exception_exit( 1 );
 }
 
 void _decode_imm( private_instruction_t * p, int len )
@@ -954,10 +1044,9 @@ void cal_para_Ev_Gv( private_instruction_t * p )
 
 void cal_para_Ev_Ib( private_instruction_t * p )
 {
-    p->parameters_num = 3;
+    p->parameters_num = 2;
     operand_wrapper_init( &p->parameters[0], stype_from_Ev(p), operand_32, calculate_parameter_from_Ev(p) );
     operand_wrapper_init( &p->parameters[1], imm, operand_8, calculate_parameter_from_Ib(p) );
-    operand_wrapper_init( &p->parameters[2], oth, operand_8, p->modrm.m.reg );
 }
 
 void cal_para_Gv_Ev( private_instruction_t * p )
@@ -1083,18 +1172,18 @@ void inst2_d( private_instruction_t * p )
 /* Part6 Instruction class method implementation */
 /*************************************************/
 
-void instruction_construct( instruction_t * p_inst )
+void instruction_construct(instruction_t * p_inst )
 {
     p_inst->priv = ( private_instruction_t * ) malloc( sizeof(private_instruction_t) );
     memset( p_inst->priv, '\0', sizeof( private_instruction_t ) );
 }
 
-void instruction_destruct( instruction_t * p_inst )
+void instruction_destruct(instruction_t * p_inst )
 {
     free( p_inst->priv );
 }
 
-void instruction_decode( instruction_t * p_inst )
+void instruction_decode(instruction_t * p_inst )
 {
     unsigned char instruction_octet = fetch_char( phy_memory, get_register_value(EIP) );
     decode_ftype p_decode_f = decode_array_1byte[ instruction_octet ];
@@ -1114,7 +1203,7 @@ void instruction_run( instruction_t * p_inst )
     instruction_oper_ftype p_op = op_array_1byte[ p->op_code.octets[0] ];
 
     if ( p_op ) {
-        p_op( p->parameters, p->parameters_num, p->instruction_len );
+        p_op( p, p->parameters_num, p->instruction_len );
         if ( !is_skip_ip( p_op ) ) {
 			set_register_value( EIP, get_register_value(EIP) + p->instruction_len );
         }
@@ -1126,4 +1215,3 @@ void instruction_run( instruction_t * p_inst )
     dump_instruction( ++instruction_counter, p->instruction_codes, p->instruction_len );
     dump_registers();
 }
-
