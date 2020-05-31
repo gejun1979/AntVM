@@ -262,21 +262,21 @@ typedef void (*decode_ftype)( private_instruction_t * p );
 decode_ftype decode_array_2bytes[256] = {
     /*00       01       02       03       04       05       06        07        08        09        0A        0B        0C        0D        0E        0F*/
 /*00*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
-/*00*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
-/*00*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
-/*00*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
-/*00*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
-/*00*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
-/*00*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
-/*00*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
-/*00*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
-/*00*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
-/*00*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
-/*00*/0,       0,       0,       0,       0,       0,       movzx_d,  0,        0,        0,        0,        0,        0,        0,        movsx_d,  0,
-/*00*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
-/*00*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
-/*00*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
-/*00*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
+/*01*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
+/*02*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
+/*03*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
+/*04*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
+/*05*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
+/*06*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
+/*07*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
+/*08*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
+/*09*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
+/*0A*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
+/*0B*/0,       0,       0,       0,       0,       0,       movzx_d,  0,        0,        0,        0,        0,        0,        0,        movsx_d,  0,
+/*0C*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
+/*0D*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
+/*0E*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
+/*0F*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 };
 
 decode_ftype decode_array_1byte[256] = {
@@ -475,29 +475,25 @@ int rol_op( operand_wrapper_t * ops, int num, int instruction_len )
 		return -1;
 	}
 
-	int TemporaryCount = 0;
+	int Count = 0;
 	switch(ops[1].size) {
 		case operand_8:
-			TemporaryCount = operand_wrapper_get_value(&ops[1]) % 8;
+			Count = operand_wrapper_get_value(&ops[1]) % 8;
 			break;
 		case operand_16:
-			TemporaryCount = operand_wrapper_get_value(&ops[1]) % 16;
+			Count = operand_wrapper_get_value(&ops[1]) % 16;
 			break;
 		case operand_32:
-			TemporaryCount = operand_wrapper_get_value(&ops[1]) % 32;
+			Count = operand_wrapper_get_value(&ops[1]) % 32;
 			break;
 		default:
 			ant_log(error, "Fatal error, invalid op size, %d\n", (int)ops[1].size);
 			return -1;
 	}
 
-	int TemporaryCF = 0;
-	int Count = operand_wrapper_get_value(&ops[0]);
-	int Destination = Count;
-	while(TemporaryCount != 0) {
-		TemporaryCF = MSB(Destination, ops[0].size);
-		Destination = (Destination << 1) + TemporaryCF;
-		TemporaryCount = TemporaryCount - 1;
+	int Destination = operand_wrapper_get_value(&ops[0]);
+	for (int i = Count; i != 0; --i) {
+		Destination = (Destination << 1) + MSB(Destination, ops[0].size);
 	}
 	
 	int CF = LSB(Destination);
@@ -508,6 +504,7 @@ int rol_op( operand_wrapper_t * ops, int num, int instruction_len )
 
 	set_efl_cc(CF, EFL_CF);
 	set_efl_cc(OF, EFL_OF);
+	operand_wrapper_set_value(&ops[1], Destination);
 
 	return 0;
 }
