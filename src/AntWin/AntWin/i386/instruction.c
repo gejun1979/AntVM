@@ -32,6 +32,7 @@
 #define calculate_parameter_from_Ib (unsigned char)calculate_parameter_from_Iv
 #define calculate_parameter_from_Iz (unsigned int)calculate_parameter_from_Iv
 #define stype_from_Eb stype_from_Ev
+#define d_rAX_Iz d_rAX_Iv
 
 typedef enum _storage_type_t {
     mem = 0,
@@ -165,7 +166,6 @@ int jne_op( private_instruction_t * p_inst, int num, int instruction_len );
 int jb_op( private_instruction_t * p_inst, int num, int instruction_len );
 int call_op( private_instruction_t * p_inst, int num, int instruction_len );
 int ret_op( private_instruction_t * p_inst, int num, int instruction_len );
-int mov_RI_op( private_instruction_t * p_inst, int num, int instruction_len );
 int mov_op( private_instruction_t * p_inst, int num, int instruction_len );
 int xor_EG_op( private_instruction_t * p_inst, int num, int instruction_len );
 int movsx_op( private_instruction_t * p_inst, int num, int instruction_len );
@@ -213,7 +213,7 @@ instruction_oper_ftype op_array_1byte[256] = {
 /*08*/0,       0,       0,       grp1_op, test_op, test_op, 0,        0,        mov_op,   mov_op,   mov_op,   mov_op,   0,        lea_op,   0,        0,
 /*09*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*0A*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
-/*0B*/0,       0,       0,       0,       0,       0,       0,        0,        mov_RI_op,mov_RI_op,mov_RI_op,mov_RI_op,mov_RI_op,mov_RI_op,mov_RI_op,mov_RI_op,
+/*0B*/0,       0,       0,       0,       0,       0,       0,        0,        mov_op,   mov_op,   mov_op,   mov_op,   mov_op,   mov_op,   mov_op,   mov_op,
 /*0C*/sh_im_op,sh_im_op,0,       ret_op,  0,       0,       0,        mov_op,   0,        0,        0,        0,        0,        0,        0,        0,
 /*0D*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*0E*/0,       0,       0,       0,       0,       0,       0,        0,        call_op,  0,        0,        jb_op,    0,        0,        out_op,   0,
@@ -249,7 +249,6 @@ instruction_oper_ftype grp1_op_array[8] = {
 /* and byte immediate                  */
 /***************************************/
 
-void mov_RI_d( private_instruction_t * p );
 void g11_mov_d( private_instruction_t * p );
 void d_Gv_Eb( private_instruction_t * p );
 void movsx_d( private_instruction_t * p );
@@ -263,7 +262,14 @@ void d_Gv_Ev(private_instruction_t * p);
 void d_Gb_Eb(private_instruction_t * p);
 void d_Gv_M( private_instruction_t * p );
 void d_Ev_Ib(private_instruction_t * p);
-void d_rAX_Iz(private_instruction_t * p);
+void d_rAX_Iv(private_instruction_t * p);
+void d_rCX_Iv(private_instruction_t * p);
+void d_rDX_Iv(private_instruction_t * p);
+void d_rBX_Iv(private_instruction_t * p);
+void d_rSP_Iv(private_instruction_t * p);
+void d_rBP_Iv(private_instruction_t * p);
+void d_rSI_Iv(private_instruction_t * p);
+void d_rDI_Iv(private_instruction_t * p);
 
 typedef void (*decode_ftype)( private_instruction_t * p );
 
@@ -300,7 +306,7 @@ decode_ftype decode_array_1byte[256] = {
 /*08*/d_Eb_Gb, 0,       0,       d_Ev_Ib, d_Eb_Gb, d_Ev_Gv, 0,        0,        d_Eb_Gb,  d_Ev_Gv,  d_Gb_Eb,  d_Gv_Ev,  0,        d_Gv_M,   0,        0,
 /*09*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*0A*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
-/*0B*/0,       0,       0,       0,       0,       0,       0,        0,        mov_RI_d, mov_RI_d, mov_RI_d, mov_RI_d, mov_RI_d, mov_RI_d, mov_RI_d, mov_RI_d,
+/*0B*/0,       0,       0,       0,       0,       0,       0,        0,        d_rAX_Iv, d_rCX_Iv, d_rDX_Iv, d_rBX_Iv, d_rSP_Iv, d_rBP_Iv, d_rSI_Iv, d_rDI_Iv,
 /*0C*/0,       d_Ev_Ib, 0,       simple_d,0,       0,       0,        g11_mov_d,0,        0,        0,        0,        0,        0,        0,        0,
 /*0D*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*0E*/0,       0,       0,       0,       0,       0,       0,        0,        call_d,   0,        0,        jb_d,     0,        0,        simple_d, 0,
@@ -362,13 +368,6 @@ int ret_op( private_instruction_t * p_inst, int num, int instruction_len )
 
     pop( &offset );
     set_register_value( EIP, offset );
-
-    return 0;
-}
-
-int mov_RI_op( private_instruction_t * p_inst, int num, int instruction_len )
-{
-    set_register_value( EAX + U8(p_inst->parameters[0]) - 0xb8, U32(p_inst->parameters[1]) );
 
     return 0;
 }
@@ -1019,11 +1018,60 @@ void cal_para_RX_Iv( private_instruction_t * p )
     operand_wrapper_init( &p->parameters[1], imm, operand_32, calculate_parameter_from_Iv(p) );
 }
 
-void cal_para_rAX_Iz( private_instruction_t * p )
+void cal_para_rAX_Iv( private_instruction_t * p )
 {
     p->parameters_num = 2;
     operand_wrapper_init( &p->parameters[0], reg, operand_32, EAX );
-    operand_wrapper_init( &p->parameters[1], imm, operand_32, calculate_parameter_from_Iz(p) );
+    operand_wrapper_init( &p->parameters[1], imm, operand_32, calculate_parameter_from_Iv(p) );
+}
+
+void cal_para_rCX_Iv( private_instruction_t * p )
+{
+    p->parameters_num = 2;
+    operand_wrapper_init( &p->parameters[0], reg, operand_32, ECX );
+    operand_wrapper_init( &p->parameters[1], imm, operand_32, calculate_parameter_from_Iv(p) );
+}
+
+void cal_para_rDX_Iv( private_instruction_t * p )
+{
+    p->parameters_num = 2;
+    operand_wrapper_init( &p->parameters[0], reg, operand_32, EDX );
+    operand_wrapper_init( &p->parameters[1], imm, operand_32, calculate_parameter_from_Iv(p) );
+}
+
+void cal_para_rBX_Iv( private_instruction_t * p )
+{
+    p->parameters_num = 2;
+    operand_wrapper_init( &p->parameters[0], reg, operand_32, EBX );
+    operand_wrapper_init( &p->parameters[1], imm, operand_32, calculate_parameter_from_Iv(p) );
+}
+
+void cal_para_rSP_Iv( private_instruction_t * p )
+{
+    p->parameters_num = 2;
+    operand_wrapper_init( &p->parameters[0], reg, operand_32, ESP );
+    operand_wrapper_init( &p->parameters[1], imm, operand_32, calculate_parameter_from_Iv(p) );
+}
+
+void cal_para_rBP_Iv( private_instruction_t * p )
+{
+    p->parameters_num = 2;
+    operand_wrapper_init( &p->parameters[0], reg, operand_32, EBP );
+    operand_wrapper_init( &p->parameters[1], imm, operand_32, calculate_parameter_from_Iv(p) );
+}
+
+void cal_para_rSI_Iv( private_instruction_t * p )
+{
+    p->parameters_num = 2;
+    operand_wrapper_init( &p->parameters[0], reg, operand_32, ESI );
+    operand_wrapper_init( &p->parameters[1], imm, operand_32, calculate_parameter_from_Iv(p) );
+}
+
+void cal_para_rDI_Iv( private_instruction_t * p )
+{
+    p->parameters_num = 2;
+    operand_wrapper_init( &p->parameters[0], reg, operand_32, EDI );
+    operand_wrapper_init( &p->parameters[1], imm, operand_32, calculate_parameter_from_Iv(p) );
 }
 
 void cal_para_Gv_Eb( private_instruction_t * p )
@@ -1144,10 +1192,52 @@ void mov_RI_d( private_instruction_t * p )
 	 cal_para_RX_Iv(p);
 }
 
-void d_rAX_Iz(private_instruction_t * p)
+void d_rAX_Iv(private_instruction_t * p)
 {
 	d2oi32(p);
-	cal_para_rAX_Iz(p);
+	cal_para_rAX_Iv(p);
+}
+
+void d_rCX_Iv(private_instruction_t * p)
+{
+	d2oi32(p);
+	cal_para_rCX_Iv(p);
+}
+
+void d_rDX_Iv(private_instruction_t * p)
+{
+	d2oi32(p);
+	cal_para_rDX_Iv(p);
+}
+
+void d_rBX_Iv(private_instruction_t * p)
+{
+	d2oi32(p);
+	cal_para_rBX_Iv(p);
+}
+
+void d_rSP_Iv(private_instruction_t * p)
+{
+	d2oi32(p);
+	cal_para_rSP_Iv(p);
+}
+
+void d_rBP_Iv(private_instruction_t * p)
+{
+	d2oi32(p);
+	cal_para_rBP_Iv(p);
+}
+
+void d_rSI_Iv(private_instruction_t * p)
+{
+	d2oi32(p);
+	cal_para_rSI_Iv(p);
+}
+
+void d_rDI_Iv(private_instruction_t * p)
+{
+	d2oi32(p);
+	cal_para_rDI_Iv(p);
 }
 
 void movsx_d( private_instruction_t * p )
