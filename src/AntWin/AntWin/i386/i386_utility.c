@@ -100,6 +100,6 @@ void ant_log_uninit()
 
 void exception_exit(int ret)
 {
-	getchar();
 	exit(ret);
 }
+

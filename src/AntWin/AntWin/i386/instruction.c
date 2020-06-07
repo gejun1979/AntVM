@@ -30,6 +30,7 @@
 #define calculate_index_from_Gb     calculate_index_from_Gv
 #define calculate_parameter_from_Jb (unsigned char)calculate_parameter_from_Jz
 #define calculate_parameter_from_Ib (unsigned char)calculate_parameter_from_Iv
+#define calculate_parameter_from_Iz (unsigned int)calculate_parameter_from_Iv
 #define stype_from_Eb stype_from_Ev
 
 typedef enum _storage_type_t {
@@ -201,15 +202,15 @@ instruction_oper_ftype op_array_2bytes[256] = {
 
 instruction_oper_ftype op_array_1byte[256] = {
     /*00       01       02       03       04       05       06        07        08        09        0A        0B        0C        0D        0E        0F*/
-/*00*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        inst_2b_op,
+/*00*/0,       add_op,  0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        inst_2b_op,
 /*01*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
-/*02*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
+/*02*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        sub_op,   0,        0,
 /*03*/0,       xor_EG_op,0,      0,       0,       0,       0,        0,        cmp_op,   cmp_op,   0,        0,        0,        0,        0,        0,
 /*04*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*05*/push_op, push_op, push_op, push_op, push_op, push_op, push_op,  push_op,  pop_op,   pop_op,   pop_op,   pop_op,   pop_op,   pop_op,   pop_op,   pop_op,
 /*06*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*07*/0,       0,       0,       0,       je_op,   jne_op,  0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
-/*08*/0,       0,       0,       grp1_op, test_op, test_op, 0,        0,        mov_op,   mov_op,   0,        mov_op,   0,        lea_op,   0,        0,
+/*08*/0,       0,       0,       grp1_op, test_op, test_op, 0,        0,        mov_op,   mov_op,   mov_op,   mov_op,   0,        lea_op,   0,        0,
 /*09*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*0A*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*0B*/0,       0,       0,       0,       0,       0,       0,        0,        mov_RI_op,mov_RI_op,mov_RI_op,mov_RI_op,mov_RI_op,mov_RI_op,mov_RI_op,mov_RI_op,
@@ -250,7 +251,7 @@ instruction_oper_ftype grp1_op_array[8] = {
 
 void mov_RI_d( private_instruction_t * p );
 void g11_mov_d( private_instruction_t * p );
-void movzx_d( private_instruction_t * p );
+void d_Gv_Eb( private_instruction_t * p );
 void movsx_d( private_instruction_t * p );
 void simple_d( private_instruction_t * p );
 void inst2_d( private_instruction_t * p );
@@ -259,8 +260,10 @@ void call_d(private_instruction_t * p);
 void d_Ev_Gv(private_instruction_t * p);
 void d_Eb_Gb(private_instruction_t * p);
 void d_Gv_Ev(private_instruction_t * p);
+void d_Gb_Eb(private_instruction_t * p);
 void d_Gv_M( private_instruction_t * p );
 void d_Ev_Ib(private_instruction_t * p);
+void d_rAX_Iz(private_instruction_t * p);
 
 typedef void (*decode_ftype)( private_instruction_t * p );
 
@@ -277,7 +280,7 @@ decode_ftype decode_array_2bytes[256] = {
 /*08*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*09*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*0A*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
-/*0B*/0,       0,       0,       0,       0,       0,       movzx_d,  0,        0,        0,        0,        0,        0,        0,        movsx_d,  0,
+/*0B*/0,       0,       0,       0,       0,       0,       d_Gv_Eb,  0,        0,        0,        0,        0,        0,        0,        movsx_d,  0,
 /*0C*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*0D*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*0E*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
@@ -286,15 +289,15 @@ decode_ftype decode_array_2bytes[256] = {
 
 decode_ftype decode_array_1byte[256] = {
     /*00       01       02       03       04       05       06        07        08        09        0A        0B        0C        0D        0E        0F*/
-/*00*/d_Eb_Gb, d_Ev_Gv, 0,       0,       0,       0,       0,        0,        d_Eb_Gb,  d_Ev_Gv,  0,        0,        0,        0,        0,        inst2_d,
-/*01*/d_Eb_Gb, d_Ev_Gv, 0,       0,       0,       0,       0,        0,        d_Eb_Gb,  d_Ev_Gv,  0,        0,        0,        0,        0,        0,
-/*02*/d_Eb_Gb, d_Ev_Gv, 0,       0,       0,       0,       0,        0,        d_Eb_Gb,  d_Ev_Gv,  0,        0,        0,        0,        0,        0,
-/*03*/d_Eb_Gb, d_Ev_Gv, 0,       0,       0,       0,       0,        0,        d_Eb_Gb,  d_Ev_Gv,  0,        0,        0,        0,        0,        0,
+/*00*/d_Eb_Gb, d_Ev_Gv, 0,       0,       0,       0,       0,        0,        d_Eb_Gb,  d_Ev_Gv,  0,        0,        0,        d_rAX_Iz, 0,        inst2_d,
+/*01*/d_Eb_Gb, d_Ev_Gv, 0,       0,       0,       0,       0,        0,        d_Eb_Gb,  d_Ev_Gv,  0,        0,        0,        d_rAX_Iz, 0,        0,
+/*02*/d_Eb_Gb, d_Ev_Gv, 0,       0,       0,       0,       0,        0,        d_Eb_Gb,  d_Ev_Gv,  0,        0,        0,        d_rAX_Iz, 0,        0,
+/*03*/d_Eb_Gb, d_Ev_Gv, 0,       0,       0,       0,       0,        0,        d_Eb_Gb,  d_Ev_Gv,  0,        0,        0,        d_rAX_Iz, 0,        0,
 /*04*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*05*/simple_d,simple_d,simple_d,simple_d,simple_d,simple_d,simple_d, simple_d, simple_d, simple_d, simple_d, simple_d, simple_d, simple_d, simple_d, simple_d,
 /*06*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*07*/0,       0,       0,       0,       jb_d,    jb_d,    0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
-/*08*/d_Eb_Gb, 0,       0,       d_Ev_Ib, d_Eb_Gb, d_Ev_Gv, 0,        0,        d_Eb_Gb,  d_Ev_Gv,  0,        d_Gv_Ev,  0,        d_Gv_M,   0,        0,
+/*08*/d_Eb_Gb, 0,       0,       d_Ev_Ib, d_Eb_Gb, d_Ev_Gv, 0,        0,        d_Eb_Gb,  d_Ev_Gv,  d_Gb_Eb,  d_Gv_Ev,  0,        d_Gv_M,   0,        0,
 /*09*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*0A*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*0B*/0,       0,       0,       0,       0,       0,       0,        0,        mov_RI_d, mov_RI_d, mov_RI_d, mov_RI_d, mov_RI_d, mov_RI_d, mov_RI_d, mov_RI_d,
@@ -472,7 +475,6 @@ int grp1_op( private_instruction_t * p_inst, int num, int instruction_len )
 	return 0;
 }
 
-//test
 int _shift_op( operand_size size, int count, int destination, int instruction )
 {
 	int CF = 0;
@@ -890,11 +892,6 @@ void d5omsdi32( private_instruction_t * p )
     _decode_i32( p );
 }
 
-inline unsigned int calculate_parameter_from_Iz( private_instruction_t * p )
-{
-    return p->imm.value;
-}
-
 unsigned int calculate_base_offset( private_instruction_t * p )
 {
     unsigned int base = 0;
@@ -1022,10 +1019,24 @@ void cal_para_RX_Iv( private_instruction_t * p )
     operand_wrapper_init( &p->parameters[1], imm, operand_32, calculate_parameter_from_Iv(p) );
 }
 
+void cal_para_rAX_Iz( private_instruction_t * p )
+{
+    p->parameters_num = 2;
+    operand_wrapper_init( &p->parameters[0], reg, operand_32, EAX );
+    operand_wrapper_init( &p->parameters[1], imm, operand_32, calculate_parameter_from_Iz(p) );
+}
+
 void cal_para_Gv_Eb( private_instruction_t * p )
 {
     p->parameters_num = 2;
     operand_wrapper_init( &p->parameters[0], reg, operand_32, calculate_index_from_Gv(p) );
+    operand_wrapper_init( &p->parameters[1], stype_from_Eb(p), operand_8, calculate_parameter_from_Eb(p) );
+}
+
+void cal_para_Gb_Eb( private_instruction_t * p )
+{
+    p->parameters_num = 2;
+    operand_wrapper_init( &p->parameters[0], reg, operand_8, calculate_index_from_Gb(p) );
     operand_wrapper_init( &p->parameters[1], stype_from_Eb(p), operand_8, calculate_parameter_from_Eb(p) );
 }
 
@@ -1083,13 +1094,25 @@ void d_Eb_Gb(private_instruction_t * p)
 	cal_para_Eb_Gb(p);
 }
 
+void d_Ev_Gv(private_instruction_t * p)
+{
+	d3oms(p);
+	cal_para_Ev_Gv(p);
+}
+
+void d_Gb_Eb(private_instruction_t * p)
+{
+    d4omsd( p );
+    cal_para_Gb_Eb( p );
+}
+
 void d_Gv_Ev( private_instruction_t * p )
 {
     d4omsd( p );
     cal_para_Gv_Ev( p );
 }
 
-void movzx_d( private_instruction_t * p )
+void d_Gv_Eb( private_instruction_t * p )
 {
     d4omsd( p );
     cal_para_Gv_Eb( p );
@@ -1121,10 +1144,10 @@ void mov_RI_d( private_instruction_t * p )
 	 cal_para_RX_Iv(p);
 }
 
-void d_Ev_Gv(private_instruction_t * p)
+void d_rAX_Iz(private_instruction_t * p)
 {
-	d3oms(p);
-	cal_para_Ev_Gv(p);
+	d2oi32(p);
+	cal_para_rAX_Iz(p);
 }
 
 void movsx_d( private_instruction_t * p )

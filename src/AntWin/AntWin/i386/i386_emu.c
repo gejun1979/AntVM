@@ -67,7 +67,7 @@ int emulator_i386( const char * bios_path, const char * kernel_path, const char 
 
 	//only for debug purpose
 	int instructionIndex = 0;
-	int instructionStop = 26319;
+	int instructionStop = -1;
 
 	while ( 1 ) {
 		interupt_check();
