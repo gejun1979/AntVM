@@ -451,7 +451,8 @@ int inst_2b_op( private_instruction_t * p_inst, int num, int instruction_len )
     }
 
     ant_log( error, "Fatal error, can't find instruction call back function\n" );
-    exception_exit( 1 );
+	dump_instruction(-1, p_inst->instruction_codes, p_inst->instruction_len);
+	exception_exit( 1 );
 
 	return 0;
 }
@@ -536,13 +537,13 @@ int sh_im_op( private_instruction_t * p_inst, int num, int instruction_len )
 	int count = 0;
 	switch(p_inst->parameters[1].size) {
 		case operand_8:
-			count = operand_wrapper_get_value(&p_inst->parameters[1]) % 8;
+			count = operand_wrapper_get_value(&p_inst->parameters[1]) % 0xFF;
 			break;
 		case operand_16:
-			count = operand_wrapper_get_value(&p_inst->parameters[1]) % 16;
+			count = operand_wrapper_get_value(&p_inst->parameters[1]) % 0xFFFF;
 			break;
 		case operand_32:
-			count = operand_wrapper_get_value(&p_inst->parameters[1]) % 32;
+			count = operand_wrapper_get_value(&p_inst->parameters[1]) % 0xFFFFFFFF;
 			break;
 		default:
 			ant_log(error, "Fatal error, invalid op size, %d\n", (int)p_inst->parameters[1].size);
@@ -568,13 +569,13 @@ int rol_op( private_instruction_t * p_inst, int num, int instruction_len )
 	int Count = 0;
 	switch(p_inst->parameters[1].size) {
 		case operand_8:
-			Count = operand_wrapper_get_value(&p_inst->parameters[1]) % 8;
+			Count = operand_wrapper_get_value(&p_inst->parameters[1]) % 0xFF;
 			break;
 		case operand_16:
-			Count = operand_wrapper_get_value(&p_inst->parameters[1]) % 16;
+			Count = operand_wrapper_get_value(&p_inst->parameters[1]) % 0xFFFF;
 			break;
 		case operand_32:
-			Count = operand_wrapper_get_value(&p_inst->parameters[1]) % 32;
+			Count = operand_wrapper_get_value(&p_inst->parameters[1]) % 0xFFFFFFFF;
 			break;
 		default:
 			ant_log(error, "Fatal error, invalid op size, %d\n", (int)p_inst->parameters[1].size);
@@ -1209,7 +1210,8 @@ void instruction_run( instruction_t * p_inst )
         }
     } else {
         ant_log( error, "Fatal error, can't find instruction call back function\n" );
-        exception_exit( 1 );
+		dump_instruction(++instruction_counter, p->instruction_codes, p->instruction_len);
+		exception_exit( 1 );
     }
 
     dump_instruction( ++instruction_counter, p->instruction_codes, p->instruction_len );
