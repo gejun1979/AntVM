@@ -33,6 +33,10 @@
 #define calculate_parameter_from_Iz (unsigned int)calculate_parameter_from_Iv
 #define stype_from_Eb stype_from_Ev
 #define d_rAX_Iz d_rAX_Iv
+#define cal_para_rAX_Ov cal_para_rAX_Iv
+#define cal_para_Ov_rAX cal_para_Iv_rAX
+#define cal_para_AL_Ob cal_para_AL_Ib
+#define cal_para_Ob_AL cal_para_Ib_AL
 
 typedef enum _storage_type_t {
     mem = 0,
@@ -212,7 +216,7 @@ instruction_oper_ftype op_array_1byte[256] = {
 /*07*/0,       0,       0,       0,       je_op,   jne_op,  0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*08*/0,       0,       0,       grp1_op, test_op, test_op, 0,        0,        mov_op,   mov_op,   mov_op,   mov_op,   0,        lea_op,   0,        0,
 /*09*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
-/*0A*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
+/*0A*/mov_op,  mov_op,  mov_op,  mov_op,  0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*0B*/0,       0,       0,       0,       0,       0,       0,        0,        mov_op,   mov_op,   mov_op,   mov_op,   mov_op,   mov_op,   mov_op,   mov_op,
 /*0C*/sh_im_op,sh_im_op,0,       ret_op,  0,       0,       0,        mov_op,   0,        0,        0,        0,        0,        0,        0,        0,
 /*0D*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
@@ -270,6 +274,10 @@ void d_rSP_Iv(private_instruction_t * p);
 void d_rBP_Iv(private_instruction_t * p);
 void d_rSI_Iv(private_instruction_t * p);
 void d_rDI_Iv(private_instruction_t * p);
+void d_AL_Ob(private_instruction_t * p);
+void d_rAX_Ov(private_instruction_t * p);
+void d_Ob_AL(private_instruction_t * p);
+void d_Ov_rAX(private_instruction_t * p);
 
 typedef void (*decode_ftype)( private_instruction_t * p );
 
@@ -305,7 +313,7 @@ decode_ftype decode_array_1byte[256] = {
 /*07*/0,       0,       0,       0,       jb_d,    jb_d,    0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*08*/d_Eb_Gb, 0,       0,       d_Ev_Ib, d_Eb_Gb, d_Ev_Gv, 0,        0,        d_Eb_Gb,  d_Ev_Gv,  d_Gb_Eb,  d_Gv_Ev,  0,        d_Gv_M,   0,        0,
 /*09*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
-/*0A*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
+/*0A*/d_AL_Ob, d_rAX_Ov,d_Ob_AL, d_Ov_rAX,0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*0B*/0,       0,       0,       0,       0,       0,       0,        0,        d_rAX_Iv, d_rCX_Iv, d_rDX_Iv, d_rBX_Iv, d_rSP_Iv, d_rBP_Iv, d_rSI_Iv, d_rDI_Iv,
 /*0C*/0,       d_Ev_Ib, 0,       simple_d,0,       0,       0,        g11_mov_d,0,        0,        0,        0,        0,        0,        0,        0,
 /*0D*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
@@ -1011,18 +1019,18 @@ void cal_para_Jb( private_instruction_t * p )
     operand_wrapper_init( &p->parameters[0], imm, operand_8, calculate_parameter_from_Jb(p) );
 }
 
-void cal_para_RX_Iv( private_instruction_t * p )
-{
-    p->parameters_num = 2;
-    operand_wrapper_init( &p->parameters[0], oth, operand_8, p->op_code.octets[0] );
-    operand_wrapper_init( &p->parameters[1], imm, operand_32, calculate_parameter_from_Iv(p) );
-}
-
 void cal_para_rAX_Iv( private_instruction_t * p )
 {
     p->parameters_num = 2;
     operand_wrapper_init( &p->parameters[0], reg, operand_32, EAX );
     operand_wrapper_init( &p->parameters[1], imm, operand_32, calculate_parameter_from_Iv(p) );
+}
+
+void cal_para_Iv_rAX( private_instruction_t * p )
+{
+    p->parameters_num = 2;
+    operand_wrapper_init( &p->parameters[0], imm, operand_32, calculate_parameter_from_Iv(p) );
+    operand_wrapper_init( &p->parameters[1], reg, operand_32, EAX );
 }
 
 void cal_para_rCX_Iv( private_instruction_t * p )
@@ -1186,10 +1194,28 @@ void jb_d( private_instruction_t * p )
     cal_para_Jb( p );
 }
 
-void mov_RI_d( private_instruction_t * p )
+void d_AL_Ob(private_instruction_t * p)
 {
-     d2oi32(p);
-	 cal_para_RX_Iv(p);
+	d2oi8(p);
+	cal_para_AL_Ob(p);
+}
+
+void d_Ob_AL(private_instruction_t * p)
+{
+	d2oi8(p);
+	cal_para_Ob_AL(p);
+}
+
+void d_rAX_Ov(private_instruction_t * p)
+{
+	d2oi32(p);
+	cal_para_rAX_Ov(p);
+}
+
+void d_Ov_rAX(private_instruction_t * p)
+{
+	d2oi32(p);
+	cal_para_Ov_rAX(p);
 }
 
 void d_rAX_Iv(private_instruction_t * p)
