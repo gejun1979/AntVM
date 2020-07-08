@@ -62,4 +62,28 @@ extern const unsigned char parity_table[256];
 		clr_efl( flag );\
 	}
 
+/*********************************************/
+/*      UnProgrammed Register definition     */
+/*********************************************/
+
+#define	ES		0
+#define	CS		1
+#define	SS		2
+#define	DS		3
+#define	FS		4
+#define	GS		5
+#define TOTAL_UNPROGRAMMED_REGS	6
+
+typedef union _segment_type_t {
+	int selector;
+	int base;
+	int limit;
+	int flags;
+} segment_type;
+
+void init_unprogrammed_registers();
+segment_type * get_unprogrammed_register_value( unsigned int index );
+void set_unprogrammed_register_value( unsigned int index, segment_type * value );
+const char * get_unprogrammed_register_desc( unsigned int index );
+
 #endif

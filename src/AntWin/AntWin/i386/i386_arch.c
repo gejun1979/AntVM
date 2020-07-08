@@ -25,7 +25,6 @@ const unsigned char parity_table[256] = {
 
 char phy_memory[MEMORY_SIZE] = { 0 };
 register_type registers[TOTAL_REGS];
-register_type restore_registers[TOTAL_REGS];
 
 void init_registers()
 {
@@ -39,74 +38,25 @@ void init_registers()
 
 unsigned int get_register_value( unsigned int index )
 {
- switch (index)
- {
- case EIP:
-  return registers[EIP].u32;
- case EAX:
-  return registers[EAX].u32;
- case ECX:
-  return registers[ECX].u32;
- case EDX:
-  return registers[EDX].u32;
- case EBX:
-  return registers[EBX].u32;
- case ESP:
-  return registers[ESP].u32;
- case EBP:
-  return registers[EBP].u32;
- case ESI:
-  return registers[ESI].u32;
- case EDI:
-  return registers[EDI].u32;
- case EFL:
-  return registers[EFL].u32;
- default:
-  ant_log(error, "Unknown register %d in %s\n", index, __FUNCTION__ );
+	if (index < TOTAL_REGS) {
+		return registers[index].u32;
+	}
 
-  exception_exit( 1 );
- }
+	ant_log(error, "Unknown register %d in %s\n", index, __FUNCTION__ );
+	exception_exit( 1 );
  
- return 0;
+	return 0;
 }
 
 void set_register_value( unsigned int index, unsigned int value )
 {
-	switch (index)
-	{
-	case EIP:
-		registers[EIP].u32 = value;
-		break;
- case EAX:
-  registers[EAX].u32 = value;
-  break;
- case ECX:
-  registers[ECX].u32 = value;
-  break;
- case EDX:
-  registers[EDX].u32 = value;
-  break;
- case EBX:
-  registers[EBX].u32 = value;
-  break;
- case ESP:
-  registers[ESP].u32 = value;
-  break;
- case EBP:
-  registers[EBP].u32 = value;
-  break;
- case ESI:
-  registers[ESI].u32 = value;
-  break;
- case EDI:
-  registers[EDI].u32 = value;
-  break;
- case EFL:
-  registers[EFL].u32 = value;
-  break;
- default:
-  break;
- }
+	if (index < TOTAL_REGS) {
+		registers[index].u32 = value;
+		return;
+	}
+
+	ant_log(error, "Unknown register %d in %s\n", index, __FUNCTION__ );
+	exception_exit( 1 );
 }
 
 const char * registers_desc[TOTAL_REGS] =
@@ -116,6 +66,60 @@ const char * registers_desc[TOTAL_REGS] =
 
 const char * get_register_desc( unsigned int index )
 {
-	return registers_desc[index];
+	if (index < TOTAL_REGS) {
+		return registers_desc[index];
+	}
+	
+	return "Unknown Reg";
 }
 
+/*********************************************/
+/*      UnProgrammed Register definition     */
+/*********************************************/
+
+segment_type unprogrammed_registers[TOTAL_UNPROGRAMMED_REGS];
+
+void init_unprogrammed_registers()
+{
+    memset( unprogrammed_registers, '\0', sizeof(unprogrammed_registers) );
+}
+
+segment_type * get_unprogrammed_register_value( unsigned int index )
+{
+	if (index < TOTAL_UNPROGRAMMED_REGS) {
+		return &unprogrammed_registers[index];
+	}
+
+	ant_log(error, "Unknown register %d in %s\n", index, __FUNCTION__ );
+	exception_exit( 1 );
+ 
+	return 0;
+}
+
+void set_unprogrammed_register_value( unsigned int index, segment_type * value )
+{
+	if (index < TOTAL_UNPROGRAMMED_REGS) {
+		if (value) {
+			unprogrammed_registers[index] = *value;
+		}
+
+		return;
+	}
+
+	ant_log(error, "Unknown register %d in %s\n", index, __FUNCTION__ );
+	exception_exit( 1 );
+}
+
+const char * unprogrammed_registers_desc[TOTAL_UNPROGRAMMED_REGS] =
+{
+	"ES", "CS", "SS", "DS", "FS", "GS"
+};
+
+const char * get_unprogrammed_register_desc( unsigned int index )
+{
+	if (index < TOTAL_UNPROGRAMMED_REGS) {
+		return unprogrammed_registers_desc[index];
+	}
+	
+	return "Unknown Reg";
+}
