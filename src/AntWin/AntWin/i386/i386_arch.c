@@ -126,3 +126,8 @@ const char * get_unprogrammed_register_desc( unsigned int index )
 	
 	return "Unknown Reg";
 }
+
+int isProtectedMode()
+{
+	return 0;
+}

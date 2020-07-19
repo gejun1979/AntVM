@@ -86,4 +86,6 @@ segment_type * get_unprogrammed_register_value( unsigned int index );
 void set_unprogrammed_register_value( unsigned int index, segment_type * value );
 const char * get_unprogrammed_register_desc( unsigned int index );
 
+extern int isProtectedMode();
+
 #endif

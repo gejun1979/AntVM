@@ -169,6 +169,7 @@ int jb_op( private_instruction_t * p_inst, int num, int instruction_len );
 int call_op( private_instruction_t * p_inst, int num, int instruction_len );
 int ret_op( private_instruction_t * p_inst, int num, int instruction_len );
 int mov_op( private_instruction_t * p_inst, int num, int instruction_len );
+int mov_s_op( private_instruction_t * p_inst, int num, int instruction_len );
 int xor_EG_op( private_instruction_t * p_inst, int num, int instruction_len );
 int movsx_op( private_instruction_t * p_inst, int num, int instruction_len );
 int movzx_op( private_instruction_t * p_inst, int num, int instruction_len );
@@ -214,7 +215,7 @@ instruction_oper_ftype op_array_1byte[256] = {
 /*07*/0,       0,       0,       0,       je_op,   jne_op,  0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*08*/0,       0,       0,       grp1_op, test_op, test_op, 0,        0,        mov_op,   mov_op,   mov_op,   mov_op,   0,        lea_op,   0,        0,
 /*09*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
-/*0A*/mov_op,  mov_op,  mov_op,  mov_op,  0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
+/*0A*/0,       0,       0,       mov_s_op,0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
 /*0B*/0,       0,       0,       0,       0,       0,       0,        0,        mov_op,   mov_op,   mov_op,   mov_op,   mov_op,   mov_op,   mov_op,   mov_op,
 /*0C*/sh_im_op,sh_im_op,0,       ret_op,  0,       0,       0,        mov_op,   0,        0,        0,        0,        0,        0,        0,        0,
 /*0D*/0,       0,       0,       0,       0,       0,       0,        0,        0,        0,        0,        0,        0,        0,        0,        0,
@@ -380,6 +381,26 @@ int xor_EG_op( private_instruction_t * p_inst, int num, int instruction_len )
 {
     unsigned int res = U32(p_inst->parameters[0]) ^ U32(p_inst->parameters[1]);
     operand_wrapper_set_value( &p_inst->parameters[0], res );
+
+    return 0;
+}
+
+int mov_s_op( private_instruction_t * p_inst, int num, int instruction_len )
+{
+	if (isProtectedMode()) {
+		//not implemented yet
+		ant_log(error, "Fatal error, protected mode isn't implemented yet\n");
+
+		exit(1);
+	}
+	else {
+		operand_wrapper_init(&p_inst->parameters[0]
+			, mem
+			, p_inst->parameters[0].size
+			, (int)phy_memory + get_unprogrammed_register_value(DS)->base + p_inst->parameters[0].value.v);
+
+		operand_wrapper_set_value(&p_inst->parameters[0], U32(p_inst->parameters[1]));
+	}
 
     return 0;
 }
