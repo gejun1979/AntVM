@@ -219,7 +219,7 @@ function number16_to_string(number) {
 var instruction_counter = 0;
 var instruction_op = 0;
 CPU_X86.prototype.dump_short = function() {
-	if (instruction_counter < 26500 && instruction_counter > 26000) {
+	if (instruction_counter < 26350 && instruction_counter > 26320) {
 		console.log(instruction_counter + ". " + number8_to_string(instruction_op));
 		console.log("EIP=" + number32_to_string(this.eip) 
 		+ " EAX=" + number32_to_string(this.regs[0]) 
@@ -231,6 +231,16 @@ CPU_X86.prototype.dump_short = function() {
 		+ " EBP=" + number32_to_string(this.regs[5]) 
 		+ " ESI=" + number32_to_string(this.regs[6]) 
 		+ " EDI=" + number32_to_string(this.regs[7]));
+
+		var i, tempVariable, logLine;
+		var ta = [" ES", " CS", " SS", " DS", " FS", " GS"];
+
+		for (i = 0; i < 6; i++) {
+			logLine = "";
+			tempVariable = this.SegDescriptors[i];
+			logLine += ta[i] + "=" + number16_to_string(tempVariable.selector) + " " + number32_to_string(tempVariable.base) + " " + number32_to_string(tempVariable.limit) + " " + number16_to_string((tempVariable.flags >> 8) & 0xf0ff);
+			console.log(logLine);
+		}
 	}
 
 	instruction_counter = instruction_counter + 1;
@@ -239,8 +249,9 @@ CPU_X86.prototype.dump_short = function() {
 //SRC and OP can be used to calculate carry
 CPU_X86.prototype.dump = function() {
     this.dump_short();    
+
 	/*
-	var i, sa, na;
+	var i, tempVariable, logLine;
     var ta = [" ES", " CS", " SS", " DS", " FS", " GS", "LDT", " TR"];
 
     console.log("TSC=" + number32_to_string(this.cycle_count) 
@@ -254,24 +265,25 @@ CPU_X86.prototype.dump = function() {
 	+ " CR2=" + number32_to_string(this.cr2) 
 	+ " CR3=" + number32_to_string(this.cr3) 
 	+ " CR4=" + number32_to_string(this.cr4));
-    na = "";
+    logLine = "";
     for (i = 0; i < 8; i++) {
-        if (i == 6) sa = this.ldt;
-        else if (i == 7) sa = this.tr;
-        else sa = this.SegDescriptors[i];
-        na += ta[i] + "=" + number16_to_string(sa.selector) + " " + number32_to_string(sa.base) + " " + number32_to_string(sa.limit) + " " + number16_to_string((sa.flags >> 8) & 0xf0ff);
+        if (i == 6) tempVariable = this.ldt;
+        else if (i == 7) tempVariable = this.tr;
+        else tempVariable = this.SegDescriptors[i];
+        logLine += ta[i] + "=" + number16_to_string(tempVariable.selector) + " " + number32_to_string(tempVariable.base) + " " + number32_to_string(tempVariable.limit) + " " + number16_to_string((tempVariable.flags >> 8) & 0xf0ff);
         if (i & 1) {
-            console.log(na);
-            na = "";
+            console.log(logLine);
+            logLine = "";
         } else {
-            na += " ";
+            logLine += " ";
         }
     }
-    sa = this.gdt;
-    na = "GDT=     " + number32_to_string(sa.base) + " " + number32_to_string(sa.limit) + "      ";
-    sa = this.idt;
-    na += "IDT=     " + number32_to_string(sa.base) + " " + number32_to_string(sa.limit);
-    console.log(na);*/
+    tempVariable = this.gdt;
+    logLine = "GDT=     " + number32_to_string(tempVariable.base) + " " + number32_to_string(tempVariable.limit) + "      ";
+    tempVariable = this.idt;
+    logLine += "IDT=     " + number32_to_string(tempVariable.base) + " " + number32_to_string(tempVariable.limit);
+    console.log(logLine);
+	*/
 };
 
 CPU_X86.prototype.exec_internal = function(ua, va) {
@@ -1978,8 +1990,8 @@ CPU_X86.prototype.exec_internal = function(ua, va) {
     function md() {
         return alias_CPU_X86.cycle_count + (ua - Ka);
     }
-    function nd(na) {
-        throw "CPU abort: " + na;
+    function nd(logLine) {
+        throw "CPU abort: " + logLine;
     }
     function od() {
         alias_CPU_X86.eip = EIPDword;
@@ -3196,12 +3208,12 @@ CPU_X86.prototype.exec_internal = function(ua, va) {
         else return 0xffff;
     }
     function Xd(selector) {
-        var sa, Rb, Yd, Wd;
-        if (selector & 0x4) sa = alias_CPU_X86.ldt;
-        else sa = alias_CPU_X86.gdt;
+        var tempVariable, Rb, Yd, Wd;
+        if (selector & 0x4) tempVariable = alias_CPU_X86.ldt;
+        else tempVariable = alias_CPU_X86.gdt;
         Rb = selector & ~7;
-        if ((Rb + 7) > sa.limit) return null;
-        v_addr = sa.base + Rb;
+        if ((Rb + 7) > tempVariable.limit) return null;
+        v_addr = tempVariable.base + Rb;
         Yd = ReadIntFromVaddrReadOnlySys();
         v_addr += 4;
         Wd = ReadIntFromVaddrReadOnlySys();
@@ -3216,10 +3228,10 @@ CPU_X86.prototype.exec_internal = function(ua, va) {
     function ae(Yd, Wd) {
         return (((Yd >>> 16) | ((Wd & 0xff) << 16) | (Wd & 0xff000000))) & -1;
     }
-    function be(sa, Yd, Wd) {
-        sa.base = ae(Yd, Wd);
-        sa.limit = Zd(Yd, Wd);
-        sa.flags = Wd;
+    function be(tempVariable, Yd, Wd) {
+        tempVariable.base = ae(Yd, Wd);
+        tempVariable.limit = Zd(Yd, Wd);
+        tempVariable.flags = Wd;
     }
     function ce() {
         Na = alias_CPU_X86.SegDescriptors[1].base;
@@ -3262,7 +3274,7 @@ CPU_X86.prototype.exec_internal = function(ua, va) {
         return [ke, le];
     }
     function me(intno, ne, error_code, oe, pe) {
-        var sa, qe, ie, he, selector, re, se;
+        var tempVariable, qe, ie, he, selector, re, se;
         var te, ue, je;
         var e, Yd, Wd, ve, ke, le, we, xe;
         var ye, Pa;
@@ -3282,9 +3294,9 @@ CPU_X86.prototype.exec_internal = function(ua, va) {
         }
         if (ne) ye = oe;
         else ye = EIPDword;
-        sa = alias_CPU_X86.idt;
-        if (intno * 8 + 7 > sa.limit) interuption(13, intno * 8 + 2);
-        v_addr = (sa.base + intno * 8) & -1;
+        tempVariable = alias_CPU_X86.idt;
+        if (intno * 8 + 7 > tempVariable.limit) interuption(13, intno * 8 + 2);
+        v_addr = (tempVariable.base + intno * 8) & -1;
         Yd = ReadIntFromVaddrReadOnlySys();
         v_addr += 4;
         Wd = ReadIntFromVaddrReadOnlySys();
@@ -3469,10 +3481,10 @@ CPU_X86.prototype.exec_internal = function(ua, va) {
         alias_CPU_X86.eflags &= ~ (0x00000100 | 0x00020000 | 0x00010000 | 0x00004000);
     }
     function ze(intno, ne, error_code, oe, pe) {
-        var sa, qe, selector, ve, le, ye;
-        sa = alias_CPU_X86.idt;
-        if (intno * 4 + 3 > sa.limit) interuption(13, intno * 8 + 2);
-        v_addr = (sa.base + (intno << 2)) >> 0;
+        var tempVariable, qe, selector, ve, le, ye;
+        tempVariable = alias_CPU_X86.idt;
+        if (intno * 4 + 3 > tempVariable.limit) interuption(13, intno * 8 + 2);
+        v_addr = (tempVariable.base + (intno << 2)) >> 0;
         ve = ReadShortFromVaddrReadOnlySys();
         v_addr = (v_addr + 2) >> 0;
         selector = ReadShortFromVaddrReadOnlySys();
@@ -3502,22 +3514,22 @@ CPU_X86.prototype.exec_internal = function(ua, va) {
         if (intno == 0x06) {
             var Be = EIPDword;
             var Nb;
-            na = "do_interrupt: intno=" + number8_to_string(intno) + " error_code=" + number32_to_string(error_code) + " EIP=" + number32_to_string(Be) + " ESP=" + number32_to_string(Registers[ESPIndex]) + " EAX=" + number32_to_string(Registers[EAXIndex]) + " EBX=" + number32_to_string(Registers[EBXIndex]) + " ECX=" + number32_to_string(Registers[ECXIndex]);
+            logLine = "do_interrupt: intno=" + number8_to_string(intno) + " error_code=" + number32_to_string(error_code) + " EIP=" + number32_to_string(Be) + " ESP=" + number32_to_string(Registers[ESPIndex]) + " EAX=" + number32_to_string(Registers[EAXIndex]) + " EBX=" + number32_to_string(Registers[EBXIndex]) + " ECX=" + number32_to_string(Registers[ECXIndex]);
             if (intno == 0x0e) {
-                na += " CR2=" + number32_to_string(alias_CPU_X86.cr2);
+                logLine += " CR2=" + number32_to_string(alias_CPU_X86.cr2);
             }
-            console.log(na);
+            console.log(logLine);
             if (intno == 0x06) {
-                var na, i, n;
-                na = "Code:";
+                var logLine, i, n;
+                logLine = "Code:";
                 Nb = (Be + Na) >> 0;
                 n = 4096 - (Nb & 0xfff);
                 if (n > 15) n = 15;
                 for (i = 0; i < n; i++) {
                     v_addr = (Nb + i) & -1;
-                    na += " " + number8_to_string(ReadByteFromVaddrReadOnly());
+                    logLine += " " + number8_to_string(ReadByteFromVaddrReadOnly());
                 }
-                console.log(na);
+                console.log(logLine);
             }
         }
         if (alias_CPU_X86.cr0 & (1 << 0)) {
@@ -3527,18 +3539,18 @@ CPU_X86.prototype.exec_internal = function(ua, va) {
         }
     }
     function Ce(selector) {
-        var sa, Yd, Wd, Rb, De;
+        var tempVariable, Yd, Wd, Rb, De;
         selector &= 0xffff;
         if ((selector & 0xfffc) == 0) {
             alias_CPU_X86.ldt.base = 0;
             alias_CPU_X86.ldt.limit = 0;
         } else {
             if (selector & 0x4) interuption(13, selector & 0xfffc);
-            sa = alias_CPU_X86.gdt;
+            tempVariable = alias_CPU_X86.gdt;
             Rb = selector & ~7;
             De = 7;
-            if ((Rb + De) > sa.limit) interuption(13, selector & 0xfffc);
-            v_addr = (sa.base + Rb) & -1;
+            if ((Rb + De) > tempVariable.limit) interuption(13, selector & 0xfffc);
+            v_addr = (tempVariable.base + Rb) & -1;
             Yd = ReadIntFromVaddrReadOnlySys();
             v_addr += 4;
             Wd = ReadIntFromVaddrReadOnlySys();
@@ -3549,7 +3561,7 @@ CPU_X86.prototype.exec_internal = function(ua, va) {
         alias_CPU_X86.ldt.selector = selector;
     }
     function Ee(selector) {
-        var sa, Yd, Wd, Rb, ie, De;
+        var tempVariable, Yd, Wd, Rb, ie, De;
         selector &= 0xffff;
         if ((selector & 0xfffc) == 0) {
             alias_CPU_X86.tr.base = 0;
@@ -3557,11 +3569,11 @@ CPU_X86.prototype.exec_internal = function(ua, va) {
             alias_CPU_X86.tr.flags = 0;
         } else {
             if (selector & 0x4) interuption(13, selector & 0xfffc);
-            sa = alias_CPU_X86.gdt;
+            tempVariable = alias_CPU_X86.gdt;
             Rb = selector & ~7;
             De = 7;
-            if ((Rb + De) > sa.limit) interuption(13, selector & 0xfffc);
-            v_addr = (sa.base + Rb) & -1;
+            if ((Rb + De) > tempVariable.limit) interuption(13, selector & 0xfffc);
+            v_addr = (tempVariable.base + Rb) & -1;
             Yd = ReadIntFromVaddrReadOnlySys();
             v_addr += 4;
             Wd = ReadIntFromVaddrReadOnlySys();
@@ -3575,17 +3587,17 @@ CPU_X86.prototype.exec_internal = function(ua, va) {
         alias_CPU_X86.tr.selector = selector;
     }
     function LoadSelectorIntoSegRegister80386(SegRegisterIndex, selector) {
-        var Yd, Wd, se, he, He, sa, Rb;
+        var Yd, Wd, se, he, He, tempVariable, Rb;
         se = alias_CPU_X86.cpl;
         if ((selector & 0xfffc) == 0) {
             if (SegRegisterIndex == 2) interuption(13, 0);
             UpdateRegister8086(SegRegisterIndex, selector, 0, 0, 0);
         } else {
-            if (selector & 0x4) sa = alias_CPU_X86.ldt;
-            else sa = alias_CPU_X86.gdt;
+            if (selector & 0x4) tempVariable = alias_CPU_X86.ldt;
+            else tempVariable = alias_CPU_X86.gdt;
             Rb = selector & ~7;
-            if ((Rb + 7) > sa.limit) interuption(13, selector & 0xfffc);
-            v_addr = (sa.base + Rb) & -1;
+            if ((Rb + 7) > tempVariable.limit) interuption(13, selector & 0xfffc);
+            v_addr = (tempVariable.base + Rb) & -1;
             Yd = ReadIntFromVaddrReadOnlySys();
             v_addr += 4;
             Wd = ReadIntFromVaddrReadOnlySys();
@@ -9376,8 +9388,8 @@ jh.prototype.send_char_from_fifo = function() {
         this.receive_fifo = nh.substr(1, nh.length - 1);
     }
 };
-jh.prototype.send_chars = function(na) {
-    this.receive_fifo += na;
+jh.prototype.send_chars = function(logLine) {
+    this.receive_fifo += logLine;
     this.send_char_from_fifo();
 };
 function gj_keyboard(gj_ioport_manager, ph) {
@@ -9412,10 +9424,10 @@ gj_dataexchange.prototype.ioport_writeb = function(v_addr, data) {
     this.doc_str += String.fromCharCode(data);
 };
 gj_dataexchange.prototype.ioport_readb = function(v_addr) {
-    var c, na, data;
-    na = this.doc_str;
-    if (this.cur_pos < na.length) {
-        data = na.charCodeAt(this.cur_pos) & 0xff;
+    var c, logLine, data;
+    logLine = this.doc_str;
+    if (this.cur_pos < logLine.length) {
+        data = logLine.charCodeAt(this.cur_pos) & 0xff;
     } else {
         data = 0;
     }
@@ -9423,7 +9435,7 @@ gj_dataexchange.prototype.ioport_readb = function(v_addr) {
     return data;
 };
 gj_dataexchange.prototype.ioport_writel = function(v_addr, data) {
-    var na;
+    var logLine;
     v_addr = (v_addr >> 2) & 3;
     switch (v_addr) {
     case 0:
@@ -9432,8 +9444,8 @@ gj_dataexchange.prototype.ioport_writel = function(v_addr, data) {
     case 1:
         return this.cur_pos = data >>> 0;
     case 2:
-        na = String.fromCharCode(data & 0xff) + String.fromCharCode((data >> 8) & 0xff) + String.fromCharCode((data >> 16) & 0xff) + String.fromCharCode((data >> 24) & 0xff);
-        this.doc_str += na;
+        logLine = String.fromCharCode(data & 0xff) + String.fromCharCode((data >> 8) & 0xff) + String.fromCharCode((data >> 16) & 0xff) + String.fromCharCode((data >> 24) & 0xff);
+        this.doc_str += logLine;
         break;
     case 3:
         this.write_func(this.doc_str);

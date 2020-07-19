@@ -39,12 +39,24 @@ void dump_registers()
 	ant_log(debug, "%s=%08X ", get_register_desc(ESI), get_register_value(ESI));
 	ant_log(debug, "%s=%08X\n", get_register_desc(EDI), get_register_value(EDI));
 
-	ant_log(debug, "%s=%08X ", get_unprogrammed_register_desc(ES), get_unprogrammed_register_value(ES));
-	ant_log(debug, "%s=%08X ", get_unprogrammed_register_desc(CS), get_unprogrammed_register_value(CS));
-	ant_log(debug, "%s=%08X ", get_unprogrammed_register_desc(SS), get_unprogrammed_register_value(SS));
-	ant_log(debug, "%s=%08X ", get_unprogrammed_register_desc(DS), get_unprogrammed_register_value(DS));
-	ant_log(debug, "%s=%08X ", get_unprogrammed_register_desc(FS), get_unprogrammed_register_value(FS));
-	ant_log(debug, "%s=%08X\n", get_unprogrammed_register_desc(GS), get_unprogrammed_register_value(GS));
+	segment_type * p_selector = NULL;
+	p_selector = get_unprogrammed_register_value(ES);
+	ant_log(debug, "%s=%08X %08X %08X %08X\n", get_unprogrammed_register_desc(ES), p_selector->base, p_selector->flags, p_selector->limit, p_selector->selector);
+
+	p_selector = get_unprogrammed_register_value(CS);
+	ant_log(debug, "%s=%08X %08X %08X %08X\n", get_unprogrammed_register_desc(CS), p_selector->base, p_selector->flags, p_selector->limit, p_selector->selector);
+
+	p_selector = get_unprogrammed_register_value(SS);
+	ant_log(debug, "%s=%08X %08X %08X %08X\n", get_unprogrammed_register_desc(SS), p_selector->base, p_selector->flags, p_selector->limit, p_selector->selector);
+
+	p_selector = get_unprogrammed_register_value(DS);
+	ant_log(debug, "%s=%08X %08X %08X %08X\n", get_unprogrammed_register_desc(DS), p_selector->base, p_selector->flags, p_selector->limit, p_selector->selector);
+
+	p_selector = get_unprogrammed_register_value(FS);
+	ant_log(debug, "%s=%08X %08X %08X %08X\n", get_unprogrammed_register_desc(FS), p_selector->base, p_selector->flags, p_selector->limit, p_selector->selector);
+
+	p_selector = get_unprogrammed_register_value(GS);
+	ant_log(debug, "%s=%08X %08X %08X %08X\n", get_unprogrammed_register_desc(GS), p_selector->base, p_selector->flags, p_selector->limit, p_selector->selector);
 }
 
 int load_image( const char * image_path, char * p_memory, int image_address )

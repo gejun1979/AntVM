@@ -82,6 +82,9 @@ segment_type unprogrammed_registers[TOTAL_UNPROGRAMMED_REGS];
 void init_unprogrammed_registers()
 {
     memset( unprogrammed_registers, '\0', sizeof(unprogrammed_registers) );
+
+	unprogrammed_registers[CS].flags = 1 << 22;
+	unprogrammed_registers[SS].flags = 1 << 22;
 }
 
 segment_type * get_unprogrammed_register_value( unsigned int index )
@@ -93,7 +96,7 @@ segment_type * get_unprogrammed_register_value( unsigned int index )
 	ant_log(error, "Unknown register %d in %s\n", index, __FUNCTION__ );
 	exception_exit( 1 );
  
-	return 0;
+	return NULL;
 }
 
 void set_unprogrammed_register_value( unsigned int index, segment_type * value )

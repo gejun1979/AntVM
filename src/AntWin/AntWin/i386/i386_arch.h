@@ -74,7 +74,7 @@ extern const unsigned char parity_table[256];
 #define	GS		5
 #define TOTAL_UNPROGRAMMED_REGS	6
 
-typedef union _segment_type_t {
+typedef struct _segment_type_t {
 	int selector;
 	int base;
 	int limit;

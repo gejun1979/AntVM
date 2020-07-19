@@ -19,6 +19,8 @@ void reset()
 
     init_registers();
 
+	init_unprogrammed_registers();
+
     strcpy( phy_memory + get_register_value(ECX), cmd_line );
 
     init_port_action_map();
